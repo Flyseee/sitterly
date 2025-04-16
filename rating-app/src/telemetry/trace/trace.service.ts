@@ -79,65 +79,31 @@ export class TraceService {
         span.addEvent(name, this.formattedTraceArgs(args));
     }
 
-    public traceIncomingRequest(
-        request: TraceRequest,
-        span: Span = this.getSpan(),
-    ) {
+    public traceIncomingRequest(request: any, span: Span = this.getSpan()) {
         span.addEvent(
-            EVENTS.HTTP_INCOMING_REQUEST,
-            this.formattedTraceArgs({
-                'http.url': request.url,
-                'x-request-id': request['x-request-id'],
-                'http.method': request.method,
-                'http.headers': request.headers,
-                'http.body': request.body,
-            }),
+            EVENTS.GRPC_INCOMING_REQUEST,
+            this.formattedTraceArgs({ request }),
         );
     }
 
-    public traceOutgoingRequest(
-        request: TraceRequest,
-        span: Span = this.getSpan(),
-    ) {
+    public traceOutgoingRequest(request: any, span: Span = this.getSpan()) {
         span.addEvent(
-            EVENTS.HTTP_OUTGOING_REQUEST,
-            this.formattedTraceArgs({
-                'http.url': request.url,
-                'x-request-id': request['x-request-id'],
-                'http.method': request.method,
-                'http.headers': request.headers,
-                'http.body': request.body,
-            }),
+            EVENTS.GRPC_OUTGOING_REQUEST,
+            this.formattedTraceArgs({ request }),
         );
     }
 
-    public traceIncomingResponse(
-        response: TraceResponse,
-        span: Span = this.getSpan(),
-    ) {
+    public traceIncomingResponse(response: any, span: Span = this.getSpan()) {
         span.addEvent(
-            EVENTS.HTTP_INCOMING_RESPONSE,
-            this.formattedTraceArgs({
-                'http.code': response.code,
-                'x-request-id': response['x-request-id'],
-                'http.headers': response.headers,
-                'http.body': response.body,
-            }),
+            EVENTS.GRPC_INCOMING_RESPONSE,
+            this.formattedTraceArgs({ response }),
         );
     }
 
-    public traceOutgoingResponse(
-        response: TraceResponse,
-        span: Span = this.getSpan(),
-    ) {
+    public traceOutgoingResponse(response: any, span: Span = this.getSpan()) {
         span.addEvent(
-            EVENTS.HTTP_OUTGOING_RESPONSE,
-            this.formattedTraceArgs({
-                'http.code': response.code,
-                'x-request-id': response['x-request-id'],
-                'http.headers': response.headers,
-                'http.body': response.body,
-            }),
+            EVENTS.GRPC_OUTGOING_RESPONSE,
+            this.formattedTraceArgs({ response }),
         );
     }
 
@@ -163,17 +129,17 @@ export class TraceService {
         if (error instanceof HttpException) {
             switch (error.getStatus()) {
                 case HttpStatus.BAD_REQUEST:
-                    return EVENTS.HTTP_BAD_REQUEST_ERROR;
+                    return EVENTS.GRPC_BAD_REQUEST_ERROR;
                 case HttpStatus.UNAUTHORIZED:
-                    return EVENTS.HTTP_UNAUTHORIZED_ERROR;
+                    return EVENTS.GRPC_UNAUTHORIZED_ERROR;
                 case HttpStatus.NOT_FOUND:
-                    return EVENTS.HTTP_NOT_FOUND_ERROR;
+                    return EVENTS.GRPC_NOT_FOUND_ERROR;
                 case HttpStatus.UNPROCESSABLE_ENTITY:
-                    return EVENTS.HTTP_UNPROCESSABLE_ENTITY_ERROR;
+                    return EVENTS.GRPC_UNPROCESSABLE_ENTITY_ERROR;
                 case HttpStatus.FORBIDDEN:
-                    return EVENTS.HTTP_FORBIDDEN_ERROR;
+                    return EVENTS.GRPC_FORBIDDEN_ERROR;
                 case HttpStatus.CONFLICT:
-                    return EVENTS.HTTP_CONFLICT_ERROR;
+                    return EVENTS.GRPC_CONFLICT_ERROR;
             }
         }
 
@@ -181,7 +147,7 @@ export class TraceService {
             return EVENTS.DATABASE_ERROR;
         }
 
-        return EVENTS.HTTP_INTERNAL_SERVER_ERROR;
+        return EVENTS.GRPC_INTERNAL_SERVER_ERROR;
     }
 
     public saveHttpSpan(rqId: string, span: Span) {

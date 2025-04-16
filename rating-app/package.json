@@ -46,6 +46,8 @@
         "@opentelemetry/sdk-trace-base": "1.29.0",
         "axios": "^1.8.4",
         "cache-manager": "^6.4.1",
+        "class-transformer": "^0.5.1",
+        "class-validator": "^0.14.1",
         "mongoose": "^8.13.2",
         "opentelemetry-instrumentation-typeorm": "^0.41.0",
         "pg": "^8.14.1",

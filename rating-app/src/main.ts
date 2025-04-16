@@ -1,21 +1,19 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
-import { VersioningType } from '@nestjs/common';
+import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { TraceService } from './telemetry/trace/trace.service';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { otelSDK } from './telemetry/config/otel-config';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { join } from 'path';
-import { HttpExceptionFilter } from '~src/app/filter/error.filter';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
-    app.useGlobalFilters(new HttpExceptionFilter(new TraceService()));
     app.enableVersioning({
         type: VersioningType.URI,
         defaultVersion: '1',
     });
+    app.useGlobalPipes(new ValidationPipe());
 
     const configService = app.get(ConfigService);
 
@@ -45,8 +43,8 @@ async function bootstrap() {
     app.connectMicroservice<MicroserviceOptions>({
         transport: Transport.GRPC,
         options: {
-            package: 'version',
-            protoPath: join(__dirname, './grpc/proto/version.proto'),
+            package: 'rating',
+            protoPath: join(__dirname, './grpc/proto/rating.proto'),
             url: configService.get('grpc.url'),
         },
     });

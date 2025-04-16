@@ -12,7 +12,7 @@ export default {
         const dataSource = new DataSource({
             ...config.getOrThrow<DataSourceOptions>('database.psql'),
             entities: [
-                join(__dirname, '../../../**/entities/*.entity{.ts,.js}'),
+                join(__dirname, '../../../**/entities/*.entities{.ts,.js}'),
             ],
             migrations: [
                 join(

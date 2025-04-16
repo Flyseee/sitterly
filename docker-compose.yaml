@@ -75,7 +75,7 @@ services:
             - 8.8.8.8
         ports:
             - 1010:3000
-            - 50155:50055
+            - 51055:50055
         environment:
             - PORT=3000
             - PG_USERNAME=myuser
@@ -98,7 +98,7 @@ services:
 
     nest_order:
         build:
-            context: ./order-app/
+            context: ./order-app
             dockerfile: Dockerfile
             args:
                 - NODE_ENV=development
@@ -106,7 +106,7 @@ services:
             - 8.8.8.8
         ports:
             - 2020:3000
-            - 50255:50055
+            - 52055:50055
         environment:
             - PORT=3000
             - PG_USERNAME=myuser
@@ -137,7 +137,7 @@ services:
             - 8.8.8.8
         ports:
             - 3030:3000
-            - 50355:50055
+            - 53055:50055
         environment:
             - PORT=3000
             - PG_USERNAME=myuser
@@ -168,7 +168,7 @@ services:
             - 8.8.8.8
         ports:
             - 4040:3000
-            - 50455:50055
+            - 54055:50055
         environment:
             - PORT=3000
             - PG_USERNAME=myuser

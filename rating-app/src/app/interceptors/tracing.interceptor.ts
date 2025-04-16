@@ -42,7 +42,7 @@ export class TracingInterceptor implements NestInterceptor {
                             span.setAttribute('http.status_code', 200);
                             if (httpSpan)
                                 this.traceService.event(
-                                    EVENTS.HTTP_INCOMING_RESPONSE,
+                                    EVENTS.GRPC_INCOMING_RESPONSE,
                                     { 'http.body': response },
                                     httpSpan,
                                 );

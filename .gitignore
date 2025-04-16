@@ -1,0 +1,10 @@
+/postgres_auth
+/postgres_order
+/postgres_profile
+/postgres_rating
+
+/dist
+/node_modules
+/build
+/data
+/.idea

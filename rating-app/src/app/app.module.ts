@@ -24,10 +24,10 @@ import { HttpModule } from '~src/http/http.module';
     ],
     controllers: [],
     providers: [
-        {
-            provide: APP_INTERCEPTOR,
-            useClass: TracingInterceptor,
-        },
+        // {
+        //     provide: APP_INTERCEPTOR,
+        //     useClass: TracingInterceptor,
+        // },
         {
             provide: APP_INTERCEPTOR,
             useClass: CacheInterceptor,

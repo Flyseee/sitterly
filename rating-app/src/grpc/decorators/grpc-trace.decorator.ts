@@ -3,5 +3,5 @@ import { TRACERS } from '~src/telemetry/trace/const/const';
 
 export const GRPCTrace = (name: string) =>
     Trace(`gRPC ${name}`, { logInput: true, logOutput: true }, TRACERS.GRPC, {
-        root: true,
+        root: false,
     });
