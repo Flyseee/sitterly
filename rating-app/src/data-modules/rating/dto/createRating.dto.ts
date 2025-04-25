@@ -1,20 +1,30 @@
 import { Entity } from 'typeorm';
-import { IsNotEmpty, IsNumber, Max, Min } from 'class-validator';
+import { IsEnum, IsInt, IsNotEmpty, IsNumber, Max, Min } from 'class-validator';
+import { ProfileType } from '~src/data-modules/reviews/enums/profile-type.enum';
 
 @Entity()
 export class CreateRatingDto {
-    @IsNumber({ allowNaN: false, allowInfinity: false })
-    @IsNotEmpty({ message: 'id is empty' })
+    @IsInt({ message: 'rating profileId must be integer' })
+    @IsNotEmpty({ message: 'profileId is empty' })
     @Min(0)
-    id: number;
+    profileId: number;
 
-    @IsNumber({ allowNaN: false, allowInfinity: false })
+    @IsEnum(ProfileType, {
+        message: `profileType must be one of: ${Object.values(ProfileType).join(', ')}`,
+    })
+    @IsNotEmpty({ message: 'profileType is empty' })
+    profileType: ProfileType;
+
+    @IsNumber(
+        { allowNaN: false, allowInfinity: false },
+        { message: 'rating rating must be number' },
+    )
     @IsNotEmpty({ message: 'rating is empty' })
     @Min(0)
     @Max(5)
     rating: number;
 
-    @IsNumber({ allowNaN: false, allowInfinity: false })
+    @IsInt({ message: 'rating reviewsAmount must be integer' })
     @IsNotEmpty({ message: 'reviews amount is empty' })
     @Min(0)
     reviewsAmount: number;

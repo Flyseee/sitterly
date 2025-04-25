@@ -3,15 +3,9 @@ import { TerminusModule } from '@nestjs/terminus';
 import { HealthcheckController } from './healthcheck.controller';
 import { PostgresqlModule } from '~src/database-modules/postgresql/postgresql.module';
 import { CacheModule } from '@nestjs/cache-manager';
-import { VersionModule } from '~src/data-modules/version/version.module';
 
 @Module({
-    imports: [
-        TerminusModule,
-        PostgresqlModule,
-        CacheModule.register({}),
-        VersionModule,
-    ],
+    imports: [TerminusModule, PostgresqlModule, CacheModule.register({})],
     controllers: [HealthcheckController],
 })
 export class HealthcheckModule {}

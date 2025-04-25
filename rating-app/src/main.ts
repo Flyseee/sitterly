@@ -43,9 +43,15 @@ async function bootstrap() {
     app.connectMicroservice<MicroserviceOptions>({
         transport: Transport.GRPC,
         options: {
-            package: 'rating',
-            protoPath: join(__dirname, './grpc/proto/rating.proto'),
+            package: ['ratingApp', 'reviews'],
+            protoPath: [
+                join(__dirname, './grpc/proto/ratingApp.proto'),
+                join(__dirname, './grpc/proto/reviews.proto'),
+            ],
             url: configService.get('grpc.url'),
+            loader: {
+                enums: String,
+            },
         },
     });
 

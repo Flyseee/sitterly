@@ -10,6 +10,7 @@ import { TraceModule } from '~src/telemetry/trace/trace.module';
 import { CacheInterceptor, CacheModule } from '@nestjs/cache-manager';
 import { GrpcModule } from '~src/grpc/grpc.module';
 import { HttpModule } from '~src/http/http.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
     imports: [
@@ -21,6 +22,7 @@ import { HttpModule } from '~src/http/http.module';
         CacheModule.register({}),
         HttpModule,
         GrpcModule,
+        ScheduleModule.forRoot(),
     ],
     controllers: [],
     providers: [

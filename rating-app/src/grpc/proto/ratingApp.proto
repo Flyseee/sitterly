@@ -1,0 +1,76 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+package ratingApp;
+
+enum ProfileType {
+    PARENT = 0;
+    SITTER = 1;
+}
+
+message GetRatingArgs {
+  int32 profileId = 1;
+  ProfileType profileType = 2;
+}
+
+message Rating {
+  int32 profileId = 1;
+  ProfileType profileType = 2;
+  float rating = 3;
+  int32 reviewsAmount = 4;
+}
+
+message Error {
+  string code = 1;
+  string message = 2;
+}
+
+message RatingResult {
+  optional Rating data = 1;
+  optional Error _error = 100;
+}
+
+message CalcRatingDto {
+  int32 stars = 1;
+}
+
+message UpdateRatingRequest {
+  int32 profileId = 1;
+  ProfileType profileType = 2;
+  CalcRatingDto calcRatingDto = 3;
+}
+
+service UserRatingRpcService {
+  rpc get (GetRatingArgs) returns (RatingResult);
+  rpc put (Rating) returns (RatingResult);
+//  rpc update (UpdateRatingRequest) returns (RatingResult);
+}
+
+//message Review {
+//  int32 id = 1;
+//  int32 profileFromId = 2;
+//  int32 profileToId = 3;
+//  ProfileType profileToType = 4;
+//  string text = 5;
+//  int32 stars = 6;
+//}
+//
+//message GetReviewsArg {
+//  int32 profileToId = 1;
+//}
+//
+//message PutReviewResult {
+//  optional Review data = 1;
+//  optional Error _error = 100;
+//}
+//
+//message GetReviewsResult {
+//  repeated Review data = 1;
+//  optional Error _error = 100;
+//}
+//
+//service ProfileReviewsRpcService {
+//  rpc put (Review) returns (PutReviewResult);
+//  rpc getList (GetReviewsArg) returns (GetReviewsResult);
+//}
