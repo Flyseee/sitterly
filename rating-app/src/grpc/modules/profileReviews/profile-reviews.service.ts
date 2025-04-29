@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Validator } from 'class-validator';
-import { CreateFullReviewDto } from '~src/data-modules/reviews/dto/createFullReview.dto';
-import { GetReviewForProfileDto } from '~src/data-modules/reviews/dto/getReviewForProfile.dto';
+import { CreateFullReviewDto } from '~src/data-modules/reviews/dto/create-full-review.dto';
+import { GetReviewForProfileDto } from '~src/data-modules/reviews/dto/get-review-for-profile.dto';
 import { ReviewService } from '~src/data-modules/reviews/review.service';
 import { Trace } from '~src/telemetry/trace/decorators/trace.decorator';
 

@@ -1,10 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
-import { CreateRatingDto } from '~src/data-modules/rating/dto/createRating.dto';
-import { UpdateRatingDto } from '~src/data-modules/rating/dto/updateRating.dto';
+import { CreateRatingDto } from '~src/data-modules/rating/dto/create-rating.dto';
+import { UpdateRatingDto } from '~src/data-modules/rating/dto/update-rating.dto';
 import { Rating } from '~src/data-modules/rating/entities/rating.entity';
 import { Trace } from '~src/telemetry/trace/decorators/trace.decorator';
-import { GetRatingDto } from './dto/getRating.dto';
+import { GetRatingDto } from './dto/get-rating.dto';
 
 @Injectable()
 export class RatingService {

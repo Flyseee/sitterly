@@ -2,11 +2,11 @@ import { Controller, UseFilters, UseInterceptors } from '@nestjs/common';
 import { GrpcMethod } from '@nestjs/microservices';
 import { GrpcExceptionFilter } from '~src/app/filter/grpc-exception.filter';
 import { GrpcResultWrapperInterceptor } from '~src/app/interceptors/grpc-result-wrapper.interceptor';
-import { CreateRatingDto } from '~src/data-modules/rating/dto/createRating.dto';
-import { GetRatingDto } from '~src/data-modules/rating/dto/getRating.dto';
+import { CreateRatingDto } from '~src/data-modules/rating/dto/create-rating.dto';
+import { GetRatingDto } from '~src/data-modules/rating/dto/get-rating.dto';
 import { Rating } from '~src/data-modules/rating/entities/rating.entity';
 import { GRPCTrace } from '~src/grpc/decorators/grpc-trace.decorator';
-import { UserRatingService } from '~src/grpc/modules/userRating/userRating.service';
+import { UserRatingService } from '~src/grpc/modules/userRating/user-rating.service';
 import { ValidationUtils } from '~src/utils/validation.utuls';
 
 @Controller('userRating')
