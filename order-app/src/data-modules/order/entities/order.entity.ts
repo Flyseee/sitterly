@@ -1,17 +1,34 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
-import { ProfileType } from '~src/data-modules/review/enums/profile-type.enum';
 
-@Entity({ name: 'rating' })
-export class Rating {
-    @PrimaryColumn({ name: 'profile_id' })
-    profileId: number;
+@Entity({ name: 'order' })
+export class Order {
+    @PrimaryColumn({ name: 'id' })
+    id: number;
 
-    @PrimaryColumn({ name: 'profile_type' })
-    profileType: ProfileType;
+    @Column({ name: 'parent_id' })
+    parentId: number;
 
-    @Column({ name: 'rating' })
-    rating: number;
+    @Column({ name: 'sitter_id' })
+    sitterId: number;
 
-    @Column({ name: 'reviews_amount' })
-    reviewsAmount: number;
+    @Column({ name: 'description' })
+    description: string;
+
+    @Column({ name: 'location' })
+    location: string;
+
+    @Column({ name: 'duration_hours' })
+    durationHours: number;
+
+    @Column({ name: 'duration_minutes' })
+    durationMinutes: number;
+
+    @Column({ name: 'cost' })
+    cost: number;
+
+    @Column({ name: 'kids_description' })
+    kidsDescription: string;
+
+    @Column({ name: 'date', type: 'datetime' })
+    date: Date;
 }

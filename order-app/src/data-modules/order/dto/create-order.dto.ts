@@ -1,31 +1,53 @@
-import { IsEnum, IsInt, IsNotEmpty, IsNumber, Max, Min } from 'class-validator';
+import { IsDate, IsInt, IsNotEmpty, IsString, Max, Min } from 'class-validator';
 import { Entity } from 'typeorm';
-import { ProfileType } from '~src/data-modules/review/enums/profile-type.enum';
 
 @Entity()
-export class CreateRatingDto {
-    @IsInt({ message: 'rating profileId must be integer' })
-    @IsNotEmpty({ message: 'profileId is empty' })
+export class CreateOrderDto {
+    @IsInt({ message: 'order id must be integer' })
+    @IsNotEmpty({ message: 'id is empty' })
     @Min(0)
-    profileId: number;
+    id: number;
 
-    @IsEnum(ProfileType, {
-        message: `profileType must be one of: ${Object.values(ProfileType).join(', ')}`,
-    })
-    @IsNotEmpty({ message: 'profileType is empty' })
-    profileType: ProfileType;
-
-    @IsNumber(
-        { allowNaN: false, allowInfinity: false },
-        { message: 'rating rating must be number' },
-    )
-    @IsNotEmpty({ message: 'rating is empty' })
+    @IsInt({ message: 'order parentId must be integer' })
+    @IsNotEmpty({ message: 'parentId is empty' })
     @Min(0)
-    @Max(5)
-    rating: number;
+    parentId: number;
 
-    @IsInt({ message: 'rating reviewsAmount must be integer' })
-    @IsNotEmpty({ message: 'reviews amount is empty' })
+    @IsInt({ message: 'order sitterId must be integer' })
+    @IsNotEmpty({ message: 'sitterId is empty' })
     @Min(0)
-    reviewsAmount: number;
+    sitterId: number;
+
+    @IsString({ message: 'order description must be string' })
+    @IsNotEmpty({ message: 'description is empty' })
+    description: string;
+
+    @IsString({ message: 'order location must be string' })
+    @IsNotEmpty({ message: 'location is empty' })
+    location: string;
+
+    @IsInt({ message: 'order durationHours must be integer' })
+    @IsNotEmpty({ message: 'durationHours is empty' })
+    @Min(0)
+    @Max(24)
+    durationHours: number;
+
+    @IsInt({ message: 'order durationMinutes must be integer' })
+    @IsNotEmpty({ message: 'durationMinutes is empty' })
+    @Min(0)
+    @Max(60)
+    durationMinutes: number;
+
+    @IsInt({ message: 'order cost must be integer' })
+    @IsNotEmpty({ message: 'cost is empty' })
+    @Min(0)
+    cost: number;
+
+    @IsString({ message: 'order kidsDescription must be string' })
+    @IsNotEmpty({ message: 'kidsDescription is empty' })
+    kidsDescription: string;
+
+    @IsDate({ message: 'order date must be date type' })
+    @IsNotEmpty({ message: 'date is empty' })
+    date: Date;
 }

@@ -1,19 +1,16 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class CreateOrderTable1743795951706 implements MigrationInterface {
-    name = 'CreateOrderTable1743795951706';
+export class CreateApplicationTable1743795951707 implements MigrationInterface {
+    name = 'CreateApplicationTable1743795951707';
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`
-            CREATE TABLE order (
-                id SERIAL PRIMARY KEY,
-                version VARCHAR(50) NOT NULL UNIQUE,
-                release_date DATE NOT NULL DEFAULT now()
+            CREATE TABLE application (
+                id INTEGER PRIMARY KEY,
+                order_id INTEGER NOT NULL,
+                sitter_id INTEGER NOT NULL,
+                is_actual BOOLEAN NOT NULL DEFAULT TRUE,
             );
-        `);
-
-        await queryRunner.query(`
-            INSERT INTO service_version (version) VALUES ('1.0.0');
         `);
     }
 

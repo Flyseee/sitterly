@@ -1,13 +1,13 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app/app.module';
 import { VersioningType } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { TraceService } from './telemetry/trace/trace.service';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { otelSDK } from './telemetry/config/otel-config';
+import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { join } from 'path';
 import { HttpExceptionFilter } from '~src/app/filter/error.filter';
+import { AppModule } from './app/app.module';
+import { otelSDK } from './telemetry/config/otel-config';
+import { TraceService } from './telemetry/trace/trace.service';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
@@ -45,8 +45,11 @@ async function bootstrap() {
     app.connectMicroservice<MicroserviceOptions>({
         transport: Transport.GRPC,
         options: {
-            package: 'version',
-            protoPath: join(__dirname, './grpc/proto/version.proto'),
+            package: ['order', 'application'],
+            protoPath: [
+                join(__dirname, './grpc/proto/order.proto'),
+                join(__dirname, './grpc/proto/application.proto'),
+            ],
             url: configService.get('grpc.url'),
         },
     });

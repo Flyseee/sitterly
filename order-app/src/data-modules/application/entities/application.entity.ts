@@ -1,17 +1,16 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
-import { ProfileType } from '~src/data-modules/review/enums/profile-type.enum';
 
-@Entity({ name: 'rating' })
-export class Rating {
-    @PrimaryColumn({ name: 'profile_id' })
-    profileId: number;
+@Entity({ name: 'application' })
+export class Application {
+    @PrimaryColumn({ name: 'id' })
+    id: number;
 
-    @PrimaryColumn({ name: 'profile_type' })
-    profileType: ProfileType;
+    @Column({ name: 'order_id' })
+    orderId: number;
 
-    @Column({ name: 'rating' })
-    rating: number;
+    @Column({ name: 'sitter_id' })
+    sitterId: number;
 
-    @Column({ name: 'reviews_amount' })
-    reviewsAmount: number;
+    @Column({ name: 'isActual' })
+    isActual: boolean;
 }

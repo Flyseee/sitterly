@@ -1,7 +1,6 @@
-import { validate } from 'class-validator';
-import { plainToInstance } from 'class-transformer';
-import { BadRequestException } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
+import { plainToInstance } from 'class-transformer';
+import { validate } from 'class-validator';
 import { GrpcStatusCode } from '~src/app/filter/grpc-status-code.enum';
 
 export class ValidationUtils {

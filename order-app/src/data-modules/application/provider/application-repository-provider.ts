@@ -1,8 +1,9 @@
 import { DataSource } from 'typeorm';
-import { Rating } from '../entities/rating.entity';
+import { Application } from '~src/data-modules/application/entities/application.entity';
 
 export default {
-    provide: 'RATING_REPOSITORY',
-    useFactory: (dataSource: DataSource) => dataSource.getRepository(Rating),
+    provide: 'APPLICATION_REPOSITORY',
+    useFactory: (dataSource: DataSource) =>
+        dataSource.getRepository(Application),
     inject: [DataSource],
 };
