@@ -1,11 +1,11 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app/app.module';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { otelSDK } from './telemetry/config/otel-config';
+import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { join } from 'path';
+import { AppModule } from './app/app.module';
+import { otelSDK } from './telemetry/config/otel-config';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
@@ -43,10 +43,10 @@ async function bootstrap() {
     app.connectMicroservice<MicroserviceOptions>({
         transport: Transport.GRPC,
         options: {
-            package: ['ratingApp', 'reviews'],
+            package: ['rating', 'review'],
             protoPath: [
-                join(__dirname, './grpc/proto/ratingApp.proto'),
-                join(__dirname, './grpc/proto/reviews.proto'),
+                join(__dirname, './grpc/proto/rating.proto'),
+                join(__dirname, './grpc/proto/review.proto'),
             ],
             url: configService.get('grpc.url'),
             loader: {

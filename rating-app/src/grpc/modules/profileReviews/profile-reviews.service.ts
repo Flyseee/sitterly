@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { Validator } from 'class-validator';
-import { Trace } from '~src/telemetry/trace/decorators/trace.decorator';
+import { CreateFullReviewDto } from '~src/data-modules/reviews/dto/createFullReview.dto';
+import { GetReviewForProfileDto } from '~src/data-modules/reviews/dto/getReviewForProfile.dto';
 import { ReviewService } from '~src/data-modules/reviews/review.service';
-import { CreateReviewDto } from '~src/data-modules/reviews/dto/createReview.dto';
-import { GetReviewDto } from '~src/data-modules/reviews/dto/getReview.dto';
+import { Trace } from '~src/telemetry/trace/decorators/trace.decorator';
 
 @Injectable()
 export class ProfileReviewsService {
@@ -12,15 +12,17 @@ export class ProfileReviewsService {
     constructor(private reviewService: ReviewService) {}
 
     @Trace('ProfileReviewsService.put', { logInput: true, logOutput: true })
-    async put(createReviewDto: CreateReviewDto) {
-        return await this.reviewService.put(createReviewDto);
+    async put(createFullReviewDto: CreateFullReviewDto) {
+        return await this.reviewService.put(createFullReviewDto);
     }
 
-    @Trace('ProfileReviewsService.getList', {
+    @Trace('ProfileReviewsService.getListForProfile', {
         logInput: true,
         logOutput: true,
     })
-    async getList(getReviewDto: GetReviewDto) {
-        return await this.reviewService.getList(getReviewDto);
+    async getListForProfile(getReviewForProfileDto: GetReviewForProfileDto) {
+        return await this.reviewService.getListForProfile(
+            getReviewForProfileDto,
+        );
     }
 }

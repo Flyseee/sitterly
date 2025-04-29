@@ -1,9 +1,17 @@
-import { IsEnum, IsInt, IsNotEmpty, IsString, Max, Min } from 'class-validator';
+import {
+    IsBoolean,
+    IsEnum,
+    IsInt,
+    IsNotEmpty,
+    IsString,
+    Max,
+    Min,
+} from 'class-validator';
 import { Entity } from 'typeorm';
 import { ProfileType } from '~src/data-modules/reviews/enums/profile-type.enum';
 
 @Entity()
-export class CreateReviewDto {
+export class CreateFullReviewDto {
     @IsInt({ message: 'review id must be integer' })
     @IsNotEmpty({ message: 'review id is empty' })
     @Min(0)
@@ -33,4 +41,10 @@ export class CreateReviewDto {
     @Min(0)
     @Max(5)
     stars: number;
+
+    @IsString({ message: 'review date must be string' })
+    date: string;
+
+    @IsBoolean({ message: 'review isConsidered field must be boolean' })
+    isConsidered: boolean;
 }

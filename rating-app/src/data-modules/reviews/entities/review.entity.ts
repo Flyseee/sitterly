@@ -1,9 +1,9 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryColumn } from 'typeorm';
 import { ProfileType } from '~src/data-modules/reviews/enums/profile-type.enum';
 
-@Entity({ name: 'rating' })
+@Entity({ name: 'review' })
 export class Review {
-    @PrimaryGeneratedColumn({ name: 'id' })
+    @PrimaryColumn({ name: 'id' })
     id: number;
 
     @Column({ name: 'profile_from_id' })
@@ -12,7 +12,7 @@ export class Review {
     @Column({ name: 'profile_to_id' })
     profileToId: number;
 
-    @Column({ name: 'profile_type' })
+    @Column({ name: 'profile_to_type' })
     profileToType: ProfileType;
 
     @Column({ name: 'text' })
@@ -20,4 +20,10 @@ export class Review {
 
     @Column({ name: 'stars' })
     stars: number;
+
+    @Column({ name: 'date', type: 'date' })
+    date: string;
+
+    @Column({ name: 'is_considered' })
+    isConsidered: boolean;
 }

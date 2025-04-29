@@ -1,5 +1,5 @@
-import { Entity } from 'typeorm';
 import { IsEnum, IsInt, IsNotEmpty, IsNumber, Max, Min } from 'class-validator';
+import { Entity } from 'typeorm';
 import { ProfileType } from '~src/data-modules/reviews/enums/profile-type.enum';
 
 @Entity()

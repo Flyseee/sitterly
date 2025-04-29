@@ -2,7 +2,7 @@ syntax = "proto3";
 
 import "google/protobuf/empty.proto";
 
-package reviews;
+package review;
 
 enum ProfileType {
     PARENT = 0;
@@ -21,10 +21,13 @@ message Review {
   ProfileType profileToType = 4;
   string text = 5;
   int32 stars = 6;
+  string date = 7;
+  bool isConsidered = 8;
 }
 
 message GetReviewsArg {
   int32 profileToId = 1;
+  ProfileType profileToType = 4;
 }
 
 message PutReviewResult {
@@ -39,5 +42,5 @@ message GetReviewsResult {
 
 service ProfileReviewsRpcService {
   rpc put (Review) returns (PutReviewResult);
-  rpc getList (GetReviewsArg) returns (GetReviewsResult);
+  rpc getListForProfile (GetReviewsArg) returns (GetReviewsResult);
 }

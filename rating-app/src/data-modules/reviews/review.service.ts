@@ -1,9 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
-import { Trace } from '~src/telemetry/trace/decorators/trace.decorator';
+import { CreateFullReviewDto } from '~src/data-modules/reviews/dto/createFullReview.dto';
+import { GetReviewForProfileDto } from '~src/data-modules/reviews/dto/getReviewForProfile.dto';
+import { GetUnconsideredResultDto } from '~src/data-modules/reviews/dto/getUnconsideredResult.dto';
+import { GetUnconsideredReviewDto } from '~src/data-modules/reviews/dto/getUnconsideredReview.dto';
+import { UpdateReviewDto } from '~src/data-modules/reviews/dto/updateReview.dto';
 import { Review } from '~src/data-modules/reviews/entities/review.entity';
-import { CreateReviewDto } from '~src/data-modules/reviews/dto/createReview.dto';
-import { GetReviewDto } from '~src/data-modules/reviews/dto/getReview.dto';
+import { Trace } from '~src/telemetry/trace/decorators/trace.decorator';
 
 @Injectable()
 export class ReviewService {
@@ -13,15 +16,52 @@ export class ReviewService {
     ) {}
 
     @Trace('ReviewService.put', { logInput: true, logOutput: true })
-    async put(createReviewDto: CreateReviewDto) {
-        const entity = this.reviewRepository.create(createReviewDto);
+    async put(createFullReviewDto: CreateFullReviewDto) {
+        const entity = this.reviewRepository.create(createFullReviewDto);
         return await this.reviewRepository.save(entity);
     }
 
-    @Trace('ReviewService.getList', { logInput: true, logOutput: true })
-    async getList(getReviewDto: GetReviewDto): Promise<Review[]> {
+    @Trace('ReviewService.getListForProfile', {
+        logInput: true,
+        logOutput: true,
+    })
+    async getListForProfile(
+        getReviewForProfileDto: GetReviewForProfileDto,
+    ): Promise<Review[]> {
         return await this.reviewRepository.findBy({
-            profileToId: getReviewDto.profileToId,
+            profileToId: getReviewForProfileDto.profileToId,
+            profileToType: getReviewForProfileDto.profileToType,
         });
+    }
+
+    @Trace('ReviewService.getUnconsideredList', {
+        logInput: true,
+        logOutput: true,
+    })
+    async getUnconsideredList(
+        getUnconsideredReviewDto: GetUnconsideredReviewDto,
+    ): Promise<GetUnconsideredResultDto[]> {
+        return await this.reviewRepository.query(
+            `SELECT profile_to_id, profile_to_type, AVG(stars) as avg, COUNT(stars) as count ` +
+                `FROM review ` +
+                `WHERE is_considered = false ` +
+                `GROUP BY profile_to_id, profile_to_type ` +
+                `LIMIT ${getUnconsideredReviewDto.limit} ` +
+                `OFFSET 0`,
+        );
+    }
+
+    @Trace('ReviewService.update', {
+        logInput: true,
+        logOutput: true,
+    })
+    async updateProfileReviews(updateReviewDto: UpdateReviewDto) {
+        return await this.reviewRepository.update(
+            {
+                profileToId: updateReviewDto.profileToId,
+                profileToType: updateReviewDto.profileToType,
+            },
+            { isConsidered: true },
+        );
     }
 }

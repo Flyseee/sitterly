@@ -5,19 +5,21 @@ export class CreateReviewsTable1744560698799 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`
-            CREATE TABLE IF NOT EXISTS reviews
+            CREATE TABLE IF NOT EXISTS review
             (
                 id INTEGER PRIMARY KEY,
                 profile_from_id INTEGER,
                 profile_to_id INTEGER,
-                profile_type profile_types,
+                profile_to_type profile_types,
                 text VARCHAR(255),
-                stars INTEGER
+                stars INTEGER,
+                date DATE,
+                is_considered BOOLEAN
             )
         `);
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`DROP TABLE IF EXISTS reviews;`);
+        await queryRunner.query(`DROP TABLE IF EXISTS review;`);
     }
 }

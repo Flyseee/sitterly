@@ -21,6 +21,7 @@
         "psql:migration:create": "node ./src/database-modules/postgresql/migrations/migration-create.mjs"
     },
     "dependencies": {
+        "-": "^0.0.1",
         "@followtheowlets/yaml-conf": "^1.0.2-b",
         "@grpc/grpc-js": "^1.13.2",
         "@grpc/proto-loader": "^0.7.13",
@@ -52,6 +53,7 @@
         "mongoose": "^8.13.2",
         "opentelemetry-instrumentation-typeorm": "^0.41.0",
         "pg": "^8.14.1",
+        "prettier-plugin-organize-imports": "^4.1.0",
         "protoc": "^1.1.3",
         "redis": "^4.7.0",
         "reflect-metadata": "^0.2.2",
