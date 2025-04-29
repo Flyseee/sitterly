@@ -8,13 +8,13 @@ export class CreateReviewsTable1744560698799 implements MigrationInterface {
             CREATE TABLE IF NOT EXISTS review
             (
                 id INTEGER PRIMARY KEY,
-                profile_from_id INTEGER,
-                profile_to_id INTEGER,
-                profile_to_type profile_types,
+                profile_from_id INTEGER NOT NULL,
+                profile_to_id INTEGER NOT NULL,
+                profile_to_type profile_types NOT NULL,
                 text VARCHAR(255),
-                stars INTEGER,
-                date DATE,
-                is_considered BOOLEAN
+                stars INTEGER NOT NULL,
+                date DATE NOT NULL DEFAULT NOW(),
+                is_considered BOOLEAN NOT NULL DEFAULT FALSE
             )
         `);
     }

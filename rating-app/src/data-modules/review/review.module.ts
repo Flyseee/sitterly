@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
+import reviewRepositoryProvider from '~src/data-modules/review/provider/review-repository-provider';
+import { ReviewService } from '~src/data-modules/review/review.service';
 import { PostgresqlModule } from '~src/database-modules/postgresql/postgresql.module';
-import { ReviewService } from '~src/data-modules/reviews/review.service';
-import reviewRepositoryProvider from '~src/data-modules/reviews/provider/review-repository-provider';
 
 @Module({
     imports: [PostgresqlModule],

@@ -7,7 +7,7 @@ import { CreateRatingDto } from '~src/data-modules/rating/dto/create-rating.dto'
 import { GetRatingDto } from '~src/data-modules/rating/dto/get-rating.dto';
 import { Rating } from '~src/data-modules/rating/entities/rating.entity';
 import { RatingService } from '~src/data-modules/rating/rating.service';
-import { ReviewService } from '~src/data-modules/reviews/review.service';
+import { ReviewService } from '~src/data-modules/review/review.service';
 import { Trace } from '~src/telemetry/trace/decorators/trace.decorator';
 
 @Injectable()
@@ -43,8 +43,7 @@ export class UserRatingService {
     @Trace('UserRatingService.update', { logInput: true, logOutput: true })
     async update() {
         const limit = 10;
-        let listLength = 10;
-        this.logger.log('MIAU');
+        let listLength = 10000;
 
         while (listLength == limit) {
             let unconsideredList = await this.reviewService.getUnconsideredList(

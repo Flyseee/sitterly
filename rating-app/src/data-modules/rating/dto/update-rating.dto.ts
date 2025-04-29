@@ -2,7 +2,7 @@ import { PartialType } from '@nestjs/mapped-types';
 import { IsEnum, IsInt, IsNotEmpty, Min } from 'class-validator';
 import { Entity } from 'typeorm';
 import { CreateRatingDto } from '~src/data-modules/rating/dto/create-rating.dto';
-import { ProfileType } from '~src/data-modules/reviews/enums/profile-type.enum';
+import { ProfileType } from '~src/data-modules/review/enums/profile-type.enum';
 
 @Entity()
 export class UpdateRatingDto extends PartialType(CreateRatingDto) {

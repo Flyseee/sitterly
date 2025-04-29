@@ -1,11 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
-import { CreateFullReviewDto } from '~src/data-modules/reviews/dto/create-full-review.dto';
-import { GetReviewForProfileDto } from '~src/data-modules/reviews/dto/get-review-for-profile.dto';
-import { GetUnconsideredResultDto } from '~src/data-modules/reviews/dto/get-unconsidered-result.dto';
-import { GetUnconsideredReviewDto } from '~src/data-modules/reviews/dto/get-unconsidered-review.dto';
-import { UpdateReviewDto } from '~src/data-modules/reviews/dto/update-review.dto';
-import { Review } from '~src/data-modules/reviews/entities/review.entity';
+import { CreateFullReviewDto } from '~src/data-modules/review/dto/create-full-review.dto';
+import { GetReviewForProfileDto } from '~src/data-modules/review/dto/get-review-for-profile.dto';
+import { GetUnconsideredResultDto } from '~src/data-modules/review/dto/get-unconsidered-result.dto';
+import { GetUnconsideredReviewDto } from '~src/data-modules/review/dto/get-unconsidered-review.dto';
+import { UpdateReviewDto } from '~src/data-modules/review/dto/update-review.dto';
+import { Review } from '~src/data-modules/review/entities/review.entity';
 import { Trace } from '~src/telemetry/trace/decorators/trace.decorator';
 
 @Injectable()
