@@ -29,12 +29,7 @@ export class RatingService {
 
     @Trace('RatingService.update', { logInput: true, logOutput: true })
     async update(updateRatingDto: UpdateRatingDto) {
-        return await this.ratingRepository.update(
-            {
-                profileId: updateRatingDto.profileId,
-                profileType: updateRatingDto.profileType,
-            },
-            updateRatingDto,
-        );
+        const entity = this.ratingRepository.create(updateRatingDto);
+        return this.ratingRepository.save(entity);
     }
 }

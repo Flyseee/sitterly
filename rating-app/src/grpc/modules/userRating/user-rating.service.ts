@@ -35,8 +35,20 @@ export class UserRatingService {
     }
 
     @Trace('UserRatingService.put', { logInput: true, logOutput: true })
-    async put(rating: CreateRatingDto) {
-        return await this.ratingService.put(rating);
+    async put(createRatingDto: CreateRatingDto) {
+        const rating = await this.ratingService.get({
+            profileId: createRatingDto.profileId,
+            profileType: createRatingDto.profileType,
+        });
+        if (rating)
+            throw new RpcException({
+                message:
+                    `Rating with profileId = ${createRatingDto.profileId} and` +
+                    `profileType = ${createRatingDto.profileType} already exists`,
+                code: GrpcStatusCode.NOT_FOUND,
+            });
+
+        return await this.ratingService.put(createRatingDto);
     }
 
     @Cron('0 0 0 * * *')

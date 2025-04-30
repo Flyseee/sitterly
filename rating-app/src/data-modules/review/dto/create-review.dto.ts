@@ -10,19 +10,19 @@ export class CreateReviewDto {
     id: number;
 
     @IsInt({ message: 'review profileFromId must be integer' })
-    @IsNotEmpty({ message: 'profile_from_id is empty' })
+    @IsNotEmpty({ message: 'profileFromId is empty' })
     @Min(0)
     profileFromId: number;
 
     @IsInt({ message: 'review profileToId must be integer' })
-    @IsNotEmpty({ message: 'profile_to_id is empty' })
+    @IsNotEmpty({ message: 'profileToId is empty' })
     @Min(0)
     profileToId: number;
 
     @IsEnum(ProfileType, {
-        message: `profileType must be one of: ${Object.values(ProfileType).join(', ')}`,
+        message: `profileToType must be one of: ${Object.values(ProfileType).join(', ')}`,
     })
-    @IsNotEmpty({ message: 'profile_type is empty' })
+    @IsNotEmpty({ message: 'profileToType is empty' })
     profileToType: ProfileType;
 
     @IsString({ message: 'review text must be string' })

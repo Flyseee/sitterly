@@ -15,6 +15,10 @@ export class ReviewService {
         private reviewRepository: Repository<Review>,
     ) {}
 
+    get(id: number) {
+        return this.reviewRepository.findOneBy({ id });
+    }
+
     @Trace('ReviewService.put', { logInput: true, logOutput: true })
     async put(createFullReviewDto: CreateFullReviewDto) {
         const entity = this.reviewRepository.create(createFullReviewDto);
