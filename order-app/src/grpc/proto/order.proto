@@ -22,8 +22,14 @@ message Order {
   string date = 10;
 }
 
+enum ProfileType {
+  PARENT = 0;
+  SITTER = 1;
+}
+
 message getOrderArg {
-  int32 sitterId = 1;
+  int32 id = 1;
+  ProfileType profileType = 2;
 }
 
 message OrderArrayResult {

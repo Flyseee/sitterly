@@ -1,4 +1,4 @@
-import { IsDate, IsInt, IsNotEmpty, IsString, Max, Min } from 'class-validator';
+import { IsInt, IsNotEmpty, IsString, Max, Min } from 'class-validator';
 import { Entity } from 'typeorm';
 
 @Entity()
@@ -47,7 +47,6 @@ export class CreateOrderDto {
     @IsNotEmpty({ message: 'kidsDescription is empty' })
     kidsDescription: string;
 
-    @IsDate({ message: 'order date must be date type' })
-    @IsNotEmpty({ message: 'date is empty' })
-    date: Date;
+    @IsString({ message: 'order date must be a string' })
+    date: string;
 }

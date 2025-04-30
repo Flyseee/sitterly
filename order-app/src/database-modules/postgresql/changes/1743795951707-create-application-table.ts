@@ -5,12 +5,13 @@ export class CreateApplicationTable1743795951707 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`
-            CREATE TABLE application (
+            CREATE TABLE IF NOT EXISTS "application" 
+            (
                 id INTEGER PRIMARY KEY,
                 order_id INTEGER NOT NULL,
                 sitter_id INTEGER NOT NULL,
-                is_actual BOOLEAN NOT NULL DEFAULT TRUE,
-            );
+                is_actual BOOLEAN NOT NULL DEFAULT TRUE
+            )
         `);
     }
 

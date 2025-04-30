@@ -39,7 +39,7 @@ message Empty {
 }
 
 service OrderApplicationRpcService {
-  rpc create (Application) returns (CreateResult);
+  rpc applyOrder (Application) returns (CreateResult);
   rpc getApplicationsForOrder (GetApplicationArgs) returns (GetResult);
   rpc cancelOrderApplication (CancelApplicationArgs) returns (Empty);
 }

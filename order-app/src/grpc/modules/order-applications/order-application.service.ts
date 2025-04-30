@@ -1,4 +1,6 @@
 import { Injectable } from '@nestjs/common';
+import { RpcException } from '@nestjs/microservices';
+import { GrpcStatusCode } from '~src/app/filter/grpc-status-code.enum';
 import { ApplicationService } from '~src/data-modules/application/application.service';
 import { CancelApplicationDto } from '~src/data-modules/application/dto/cancel-application.dto';
 import { CreateApplicationDto } from '~src/data-modules/application/dto/create-application.dto';
@@ -8,7 +10,16 @@ import { GetApplicationDto } from '~src/data-modules/application/dto/get-applica
 export class OrderApplicationService {
     constructor(private readonly applicationService: ApplicationService) {}
 
-    create(createApplicationDto: CreateApplicationDto) {
+    async create(createApplicationDto: CreateApplicationDto) {
+        const application = await this.applicationService.get(
+            createApplicationDto.id,
+        );
+        if (application)
+            throw new RpcException({
+                message: `Application with id = ${createApplicationDto.id} already exists`,
+                code: GrpcStatusCode.NOT_FOUND,
+            });
+
         return this.applicationService.create(createApplicationDto);
     }
 
@@ -19,6 +30,6 @@ export class OrderApplicationService {
     }
 
     async cancel(cancelApplicationDto: CancelApplicationDto) {
-        await this.applicationService.cancel(cancelApplicationDto);
+        return await this.applicationService.cancel(cancelApplicationDto);
     }
 }

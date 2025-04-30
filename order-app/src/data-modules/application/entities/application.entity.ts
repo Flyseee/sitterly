@@ -11,6 +11,6 @@ export class Application {
     @Column({ name: 'sitter_id' })
     sitterId: number;
 
-    @Column({ name: 'isActual' })
+    @Column({ name: 'is_actual' })
     isActual: boolean;
 }

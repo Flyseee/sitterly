@@ -29,6 +29,6 @@ export class Order {
     @Column({ name: 'kids_description' })
     kidsDescription: string;
 
-    @Column({ name: 'date', type: 'datetime' })
+    @Column({ name: 'date', type: 'timestamptz' })
     date: Date;
 }

@@ -12,6 +12,10 @@ export class ApplicationService {
         private applicationRepository: Repository<Application>,
     ) {}
 
+    get(id: number) {
+        return this.applicationRepository.findOneBy({ id });
+    }
+
     create(createApplicationDto: CreateApplicationDto) {
         const entity = this.applicationRepository.create(createApplicationDto);
         return this.applicationRepository.save(entity);
@@ -24,7 +28,7 @@ export class ApplicationService {
     }
 
     async cancel(cancelApplicationDto: CancelApplicationDto) {
-        await this.applicationRepository.update(
+        return await this.applicationRepository.update(
             { id: cancelApplicationDto.id },
             { isActual: false },
         );

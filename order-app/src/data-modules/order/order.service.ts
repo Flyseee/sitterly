@@ -1,9 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { LessThan, MoreThan, Repository } from 'typeorm';
-import { CreateOrderDto } from '~src/data-modules/order/dto/create-order.dto';
+import { CreateOrderWithCorrectDateDto } from '~src/data-modules/order/dto/create-order-with-correct-date.dto';
 import { GetOrdersForUserDto } from '~src/data-modules/order/dto/get-orders-for-user.dto';
-import { UpdateOrderDto } from '~src/data-modules/order/dto/update-order.dto';
+import { UpdateOrderWithCorrectDateDto } from '~src/data-modules/order/dto/update-order-with-correct-date.dto';
 import { Order } from '~src/data-modules/order/entities/order.entity';
+import { ProfileType } from '~src/data-modules/order/enums/profile-type.enum';
 
 @Injectable()
 export class OrderService {
@@ -23,29 +24,43 @@ export class OrderService {
 
     getActualOrdersForUser(getOrdersForUserDto: GetOrdersForUserDto) {
         const currDate = new Date();
-        return this.orderRepository.findBy({
-            sitterId: getOrdersForUserDto.sitterId,
-            date: MoreThan(currDate),
-        });
+
+        if (getOrdersForUserDto.profileType == ProfileType.SITTER) {
+            return this.orderRepository.findBy({
+                sitterId: getOrdersForUserDto.id,
+                date: MoreThan(currDate),
+            });
+        } else {
+            return this.orderRepository.findBy({
+                parentId: getOrdersForUserDto.id,
+                date: MoreThan(currDate),
+            });
+        }
     }
 
     getPassedOrdersForUser(getOrdersForUserDto: GetOrdersForUserDto) {
         const currDate = new Date();
-        return this.orderRepository.findBy({
-            sitterId: getOrdersForUserDto.sitterId,
-            date: LessThan(currDate),
-        });
+
+        if (getOrdersForUserDto.profileType == ProfileType.SITTER) {
+            return this.orderRepository.findBy({
+                sitterId: getOrdersForUserDto.id,
+                date: LessThan(currDate),
+            });
+        } else {
+            return this.orderRepository.findBy({
+                parentId: getOrdersForUserDto.id,
+                date: LessThan(currDate),
+            });
+        }
     }
 
-    createOrder(createOrderDto: CreateOrderDto) {
+    createOrder(createOrderDto: CreateOrderWithCorrectDateDto) {
         const entity = this.orderRepository.create(createOrderDto);
         return this.orderRepository.save(entity);
     }
 
-    updateOrder(updateOrderDto: UpdateOrderDto) {
-        return this.orderRepository.update(
-            { id: updateOrderDto.id },
-            updateOrderDto,
-        );
+    updateOrder(updateOrderDto: UpdateOrderWithCorrectDateDto) {
+        const entity = this.orderRepository.create(updateOrderDto);
+        return this.orderRepository.save(entity);
     }
 }

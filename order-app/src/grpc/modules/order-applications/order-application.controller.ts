@@ -48,6 +48,6 @@ export class OrderApplicationController {
             CancelApplicationDto,
             cancelApplicationDto,
         );
-        await this.orderApplicationService.cancel(dto);
+        return await this.orderApplicationService.cancel(dto);
     }
 }

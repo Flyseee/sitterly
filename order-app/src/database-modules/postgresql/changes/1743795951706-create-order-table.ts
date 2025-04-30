@@ -5,7 +5,8 @@ export class CreateOrderTable1743795951706 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`
-            CREATE TABLE order (
+            CREATE TABLE IF NOT EXISTS "order" 
+            (
                 id INTEGER PRIMARY KEY,
                 parent_id INTEGER NOT NULL,
                 sitter_id INTEGER NOT NULL,
@@ -15,7 +16,8 @@ export class CreateOrderTable1743795951706 implements MigrationInterface {
                 duration_minutes INTEGER NOT NULL,
                 cost INTEGER NOT NULL,
                 kids_description VARCHAR(500) NOT NULL,
-            );
+                date TIMESTAMPTZ NOT NULL
+            )
         `);
     }
 
