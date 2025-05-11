@@ -2,12 +2,13 @@ import { Controller, UseFilters, UseInterceptors } from '@nestjs/common';
 import { GrpcMethod } from '@nestjs/microservices';
 import { GrpcExceptionFilter } from '~src/app/filter/grpc-exception.filter';
 import { GrpcResultWrapperInterceptor } from '~src/app/interceptors/grpc-result-wrapper.interceptor';
-import { CreateRatingDto } from '~src/data-modules/rating/dto/create-rating.dto';
-import { GetRatingDto } from '~src/data-modules/rating/dto/get-rating.dto';
-import { Rating } from '~src/data-modules/rating/entities/rating.entity';
+import { ReqCreateRatingDto } from '~src/data-modules/rating/dto/request-dto/req-create-rating.dto';
+import { ReqGetRatingDto } from '~src/data-modules/rating/dto/request-dto/req-get-rating.dto';
+import { ResCreateRatingDto } from '~src/data-modules/rating/dto/response-dto/res-create-rating.dto';
+import { ResGetRatingDto } from '~src/data-modules/rating/dto/response-dto/res-get-rating.dto';
 import { GRPCTrace } from '~src/grpc/decorators/grpc-trace.decorator';
 import { UserRatingService } from '~src/grpc/modules/userRating/user-rating.service';
-import { ValidationUtils } from '~src/utils/validation.utuls';
+import { ValidationUtils } from '~src/utils/validation.utils';
 
 @Controller('userRating')
 export class UserRatingController {
@@ -17,9 +18,11 @@ export class UserRatingController {
     @GRPCTrace('UserRatingRpcService.put')
     @UseFilters(GrpcExceptionFilter)
     @UseInterceptors(GrpcResultWrapperInterceptor)
-    async put(createRatingDto: CreateRatingDto): Promise<Rating> {
+    async put(
+        createRatingDto: ReqCreateRatingDto,
+    ): Promise<ResCreateRatingDto> {
         const dto = await ValidationUtils.validateInput(
-            CreateRatingDto,
+            ReqCreateRatingDto,
             createRatingDto,
         );
         return this.userRatingService.put(dto);
@@ -29,9 +32,9 @@ export class UserRatingController {
     @GRPCTrace('UserRatingRpcService.get')
     @UseFilters(GrpcExceptionFilter)
     @UseInterceptors(GrpcResultWrapperInterceptor)
-    async get(getRatingDto: GetRatingDto) {
+    async get(getRatingDto: ReqGetRatingDto): Promise<ResGetRatingDto> {
         const dto = await ValidationUtils.validateInput(
-            GetRatingDto,
+            ReqGetRatingDto,
             getRatingDto,
         );
         return this.userRatingService.get(dto);

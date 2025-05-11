@@ -1,10 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
-import { CreateRatingDto } from '~src/data-modules/rating/dto/create-rating.dto';
-import { UpdateRatingDto } from '~src/data-modules/rating/dto/update-rating.dto';
+import { ReqCreateRatingDto } from '~src/data-modules/rating/dto/request-dto/req-create-rating.dto';
+import { ReqUpdateRatingDto } from '~src/data-modules/rating/dto/request-dto/req-update-rating.dto';
 import { Rating } from '~src/data-modules/rating/entities/rating.entity';
 import { Trace } from '~src/telemetry/trace/decorators/trace.decorator';
-import { GetRatingDto } from './dto/get-rating.dto';
+import { ReqGetRatingDto } from './dto/request-dto/req-get-rating.dto';
 
 @Injectable()
 export class RatingService {
@@ -14,7 +14,7 @@ export class RatingService {
     ) {}
 
     @Trace('RatingService.get', { logInput: true, logOutput: true })
-    async get(getRatingDto: GetRatingDto): Promise<Rating | null> {
+    async get(getRatingDto: ReqGetRatingDto): Promise<Rating | null> {
         return await this.ratingRepository.findOneBy({
             profileId: getRatingDto.profileId,
             profileType: getRatingDto.profileType,
@@ -22,13 +22,13 @@ export class RatingService {
     }
 
     @Trace('RatingService.put', { logInput: true, logOutput: true })
-    async put(rating: CreateRatingDto) {
+    async put(rating: ReqCreateRatingDto): Promise<Rating> {
         const entity = this.ratingRepository.create(rating);
         return await this.ratingRepository.save(entity);
     }
 
     @Trace('RatingService.update', { logInput: true, logOutput: true })
-    async update(updateRatingDto: UpdateRatingDto) {
+    async update(updateRatingDto: ReqUpdateRatingDto): Promise<Rating> {
         const entity = this.ratingRepository.create(updateRatingDto);
         return this.ratingRepository.save(entity);
     }

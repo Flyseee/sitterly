@@ -2,12 +2,13 @@ import { Controller, UseFilters, UseInterceptors } from '@nestjs/common';
 import { GrpcMethod } from '@nestjs/microservices';
 import { GrpcExceptionFilter } from '~src/app/filter/grpc-exception.filter';
 import { GrpcResultWrapperInterceptor } from '~src/app/interceptors/grpc-result-wrapper.interceptor';
-import { CreateReviewDto } from '~src/data-modules/review/dto/create-review.dto';
-import { GetReviewForProfileDto } from '~src/data-modules/review/dto/get-review-for-profile.dto';
-import { Review } from '~src/data-modules/review/entities/review.entity';
+import { ReqCreateReviewDto } from '~src/data-modules/review/dto/request-dto/req-create-review.dto';
+import { ReqGetReviewsForProfileDto } from '~src/data-modules/review/dto/request-dto/req-get-reviews-for-profile.dto';
+import { ResCreateReviewDto } from '~src/data-modules/review/dto/response-dto/res-create-review.dto';
+import { ResGetReviewsForProfileDto } from '~src/data-modules/review/dto/response-dto/res-get-reviews-for-profile.dto';
 import { GRPCTrace } from '~src/grpc/decorators/grpc-trace.decorator';
 import { ProfileReviewsService } from '~src/grpc/modules/profileReviews/profile-reviews.service';
-import { ValidationUtils } from '~src/utils/validation.utuls';
+import { ValidationUtils } from '~src/utils/validation.utils';
 
 @Controller('profileReviews')
 export class ProfileReviewsController {
@@ -19,9 +20,11 @@ export class ProfileReviewsController {
     @GRPCTrace('ProfileReviewsRpcService.put')
     @UseFilters(GrpcExceptionFilter)
     @UseInterceptors(GrpcResultWrapperInterceptor)
-    async put(createReviewDto: CreateReviewDto) {
+    async put(
+        createReviewDto: ReqCreateReviewDto,
+    ): Promise<ResCreateReviewDto> {
         const dto = await ValidationUtils.validateInput(
-            CreateReviewDto,
+            ReqCreateReviewDto,
             createReviewDto,
         );
         let date = new Date().toISOString().split('T')[0];
@@ -38,10 +41,10 @@ export class ProfileReviewsController {
     @UseFilters(GrpcExceptionFilter)
     @UseInterceptors(GrpcResultWrapperInterceptor)
     async getListForProfile(
-        getReviewForProfileDto: GetReviewForProfileDto,
-    ): Promise<Review[]> {
+        getReviewForProfileDto: ReqGetReviewsForProfileDto,
+    ): Promise<ResGetReviewsForProfileDto[]> {
         const dto = await ValidationUtils.validateInput(
-            GetReviewForProfileDto,
+            ReqGetReviewsForProfileDto,
             getReviewForProfileDto,
         );
         return this.profileReviewsService.getListForProfile(dto);

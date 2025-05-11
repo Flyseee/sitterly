@@ -3,8 +3,10 @@ import { RpcException } from '@nestjs/microservices';
 import { Cron } from '@nestjs/schedule';
 import { Validator } from 'class-validator';
 import { GrpcStatusCode } from '~src/app/filter/grpc-status-code.enum';
-import { CreateRatingDto } from '~src/data-modules/rating/dto/create-rating.dto';
-import { GetRatingDto } from '~src/data-modules/rating/dto/get-rating.dto';
+import { ReqCreateRatingDto } from '~src/data-modules/rating/dto/request-dto/req-create-rating.dto';
+import { ReqGetRatingDto } from '~src/data-modules/rating/dto/request-dto/req-get-rating.dto';
+import { ResCreateRatingDto } from '~src/data-modules/rating/dto/response-dto/res-create-rating.dto';
+import { ResGetRatingDto } from '~src/data-modules/rating/dto/response-dto/res-get-rating.dto';
 import { Rating } from '~src/data-modules/rating/entities/rating.entity';
 import { RatingService } from '~src/data-modules/rating/rating.service';
 import { ReviewService } from '~src/data-modules/review/review.service';
@@ -21,21 +23,26 @@ export class UserRatingService {
     ) {}
 
     @Trace('UserRatingService.get', { logInput: true, logOutput: true })
-    async get(getRatingDto: GetRatingDto) {
+    async get(getRatingDto: ReqGetRatingDto): Promise<ResGetRatingDto> {
         const rating: Rating | null =
             await this.ratingService.get(getRatingDto);
 
         if (!rating)
             throw new RpcException({
-                message: `Rating was not found for id: ${getRatingDto.profileId} and profile type: ${getRatingDto.profileType}`,
+                message:
+                    `Rating was not found for id: ${getRatingDto.profileId}` +
+                    ` and profile type: ${getRatingDto.profileType}`,
                 code: GrpcStatusCode.NOT_FOUND,
             });
 
-        return rating;
+        const resRatingDto: ResGetRatingDto = { ...rating };
+        return resRatingDto;
     }
 
     @Trace('UserRatingService.put', { logInput: true, logOutput: true })
-    async put(createRatingDto: CreateRatingDto) {
+    async put(
+        createRatingDto: ReqCreateRatingDto,
+    ): Promise<ResCreateRatingDto> {
         const rating = await this.ratingService.get({
             profileId: createRatingDto.profileId,
             profileType: createRatingDto.profileType,
@@ -48,7 +55,9 @@ export class UserRatingService {
                 code: GrpcStatusCode.NOT_FOUND,
             });
 
-        return await this.ratingService.put(createRatingDto);
+        const resRatingDto: ResCreateRatingDto =
+            await this.ratingService.put(createRatingDto);
+        return resRatingDto;
     }
 
     @Cron('0 0 0 * * *')
@@ -80,7 +89,7 @@ export class UserRatingService {
                 rating.reviewsAmount = newReviewsAmount;
 
                 await this.ratingService.update(rating);
-                await this.reviewService.updateProfileReviews({
+                await this.reviewService.updateProfileReview({
                     profileToId: rating.profileId,
                     profileToType: rating.profileType,
                 });
