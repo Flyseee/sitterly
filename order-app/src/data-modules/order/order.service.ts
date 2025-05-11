@@ -1,9 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { LessThan, MoreThan, Repository } from 'typeorm';
-import { CreateOrderWithCorrectDateDto } from '~src/data-modules/order/dto/create-order-with-correct-date.dto';
-import { GetOrdersForUserDto } from '~src/data-modules/order/dto/get-orders-for-user.dto';
-import { UpdateOrderWithCorrectDateDto } from '~src/data-modules/order/dto/update-order-with-correct-date.dto';
+import { FindOperator, LessThan, MoreThan, Repository } from 'typeorm';
+import { ReqCreateOrderWithCorrectDateDto } from '~src/data-modules/order/dto/request-dto/req-create-order-with-correct-date.dto';
+import { ReqGetOrdersForUserDto } from '~src/data-modules/order/dto/request-dto/req-get-orders-for-user.dto';
+import { ReqUpdateOrderWithCorrectDateDto } from '~src/data-modules/order/dto/request-dto/req-update-order-with-correct-date.dto';
 import { Order } from '~src/data-modules/order/entities/order.entity';
+import { OrderDateType } from '~src/data-modules/order/enums/order-date-type.enum';
 import { ProfileType } from '~src/data-modules/order/enums/profile-type.enum';
 
 @Injectable()
@@ -13,54 +14,65 @@ export class OrderService {
         private orderRepository: Repository<Order>,
     ) {}
 
-    get(id: number) {
+    get(id: number): Promise<Order | null> {
         return this.orderRepository.findOneBy({ id });
     }
 
-    getActualOrders() {
+    getActualOrders(): Promise<Order[]> {
         const currDate = new Date();
         return this.orderRepository.findBy({ date: MoreThan(currDate) });
     }
 
-    getActualOrdersForUser(getOrdersForUserDto: GetOrdersForUserDto) {
-        const currDate = new Date();
+    async getOrdersForUser(
+        getOrdersForUserDto: ReqGetOrdersForUserDto,
+    ): Promise<Order[] | undefined> {
+        const conditionDate = this.getConditionDate(
+            getOrdersForUserDto.orderDateType,
+        );
 
-        if (getOrdersForUserDto.profileType == ProfileType.SITTER) {
-            return this.orderRepository.findBy({
-                sitterId: getOrdersForUserDto.id,
-                date: MoreThan(currDate),
-            });
-        } else {
-            return this.orderRepository.findBy({
-                parentId: getOrdersForUserDto.id,
-                date: MoreThan(currDate),
-            });
-        }
+        return await this.getOrdersByProfileType(
+            getOrdersForUserDto,
+            conditionDate,
+        );
     }
 
-    getPassedOrdersForUser(getOrdersForUserDto: GetOrdersForUserDto) {
-        const currDate = new Date();
-
-        if (getOrdersForUserDto.profileType == ProfileType.SITTER) {
-            return this.orderRepository.findBy({
-                sitterId: getOrdersForUserDto.id,
-                date: LessThan(currDate),
-            });
-        } else {
-            return this.orderRepository.findBy({
-                parentId: getOrdersForUserDto.id,
-                date: LessThan(currDate),
-            });
-        }
-    }
-
-    createOrder(createOrderDto: CreateOrderWithCorrectDateDto) {
+    createOrder(
+        createOrderDto: ReqCreateOrderWithCorrectDateDto,
+    ): Promise<Order> {
         const entity = this.orderRepository.create(createOrderDto);
         return this.orderRepository.save(entity);
     }
 
-    updateOrder(updateOrderDto: UpdateOrderWithCorrectDateDto) {
+    updateOrder(
+        updateOrderDto: ReqUpdateOrderWithCorrectDateDto,
+    ): Promise<Order> {
         const entity = this.orderRepository.create(updateOrderDto);
         return this.orderRepository.save(entity);
+    }
+
+    private getConditionDate(orderType: OrderDateType) {
+        const currDate = new Date();
+        if (orderType == OrderDateType.ACTUAL) {
+            return MoreThan(currDate);
+        } else if (orderType == OrderDateType.PASSED) {
+            return LessThan(currDate);
+        }
+    }
+
+    private async getOrdersByProfileType(
+        getOrdersForUserDto: ReqGetOrdersForUserDto,
+        conditionDate: FindOperator<Date> | undefined,
+    ): Promise<Order[] | undefined> {
+        if (getOrdersForUserDto.profileType == ProfileType.SITTER) {
+            return await this.orderRepository.findBy({
+                sitterId: getOrdersForUserDto.id,
+                date: conditionDate,
+            });
+        } else if (getOrdersForUserDto.profileType == ProfileType.PARENT) {
+            return await this.orderRepository.findBy({
+                parentId: getOrdersForUserDto.id,
+                date: conditionDate,
+            });
+        }
     }
 }

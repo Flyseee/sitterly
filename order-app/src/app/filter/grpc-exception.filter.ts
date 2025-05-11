@@ -1,8 +1,8 @@
 import { Catch, RpcExceptionFilter } from '@nestjs/common';
-import { Observable, of } from 'rxjs';
 import { RpcException } from '@nestjs/microservices';
-import { TraceService } from '~src/telemetry/trace/trace.service';
+import { Observable, of } from 'rxjs';
 import { GrpcStatusCode } from '~src/app/filter/grpc-status-code.enum';
+import { TraceService } from '~src/telemetry/trace/trace.service';
 
 interface ErrorResponse {
     data: null;
@@ -12,7 +12,7 @@ interface ErrorResponse {
     };
 }
 
-@Catch() // перехватываем все исключения
+@Catch()
 export class GrpcExceptionFilter implements RpcExceptionFilter {
     constructor(private readonly traceService: TraceService) {}
 

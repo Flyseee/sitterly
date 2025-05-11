@@ -27,9 +27,15 @@ enum ProfileType {
   SITTER = 1;
 }
 
+enum OrderDateType {
+  ACTUAL = 0;
+  PASSED = 1;
+}
+
 message getOrderArg {
   int32 id = 1;
   ProfileType profileType = 2;
+  OrderDateType orderDateType = 3;
 }
 
 message OrderArrayResult {
@@ -44,8 +50,7 @@ message OrderResult {
 
 service FuncOrderRpcService {
   rpc getActualOrders (google.protobuf.Empty) returns (OrderArrayResult);
-  rpc getActualOrdersForUser (getOrderArg) returns (OrderArrayResult);
-  rpc getPassedOrdersForUser (getOrderArg) returns (OrderArrayResult);
+  rpc getOrdersForUser (getOrderArg) returns (OrderArrayResult);
   rpc createOrder (Order) returns (OrderResult);
   rpc updateOrder (Order) returns (OrderResult);
 }

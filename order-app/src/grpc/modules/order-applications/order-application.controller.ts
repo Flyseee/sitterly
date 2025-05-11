@@ -2,9 +2,12 @@ import { Controller, UseFilters, UseInterceptors } from '@nestjs/common';
 import { GrpcMethod } from '@nestjs/microservices';
 import { GrpcExceptionFilter } from '~src/app/filter/grpc-exception.filter';
 import { GrpcResultWrapperInterceptor } from '~src/app/interceptors/grpc-result-wrapper.interceptor';
-import { CancelApplicationDto } from '~src/data-modules/application/dto/cancel-application.dto';
-import { CreateApplicationDto } from '~src/data-modules/application/dto/create-application.dto';
-import { GetApplicationDto } from '~src/data-modules/application/dto/get-application.dto';
+import { ReqCancelApplicationDto } from '~src/data-modules/application/dto/request-dto/req-cancel-application.dto';
+import { ReqCreateApplicationDto } from '~src/data-modules/application/dto/request-dto/req-create-application.dto';
+import { ReqGetApplicationDto } from '~src/data-modules/application/dto/request-dto/req-get-application.dto';
+import { ResCancelApplicationDto } from '~src/data-modules/application/dto/response-dto/res-cancel-application.dto';
+import { ResCreateApplicationDto } from '~src/data-modules/application/dto/response-dto/res-create-application.dto';
+import { ResGetApplicationDto } from '~src/data-modules/application/dto/response-dto/res-get-application.dto';
 import { GRPCTrace } from '~src/grpc/decorators/grpc-trace.decorator';
 import { OrderApplicationService } from '~src/grpc/modules/order-applications/order-application.service';
 import { ValidationUtils } from '~src/utils/validation.utuls';
@@ -19,9 +22,11 @@ export class OrderApplicationController {
     @GRPCTrace('OrderApplicationRpcService.applyOrder')
     @UseFilters(GrpcExceptionFilter)
     @UseInterceptors(GrpcResultWrapperInterceptor)
-    async applyOrder(createApplicationDto: CreateApplicationDto) {
+    async applyOrder(
+        createApplicationDto: ReqCreateApplicationDto,
+    ): Promise<ResCreateApplicationDto> {
         const dto = await ValidationUtils.validateInput(
-            CreateApplicationDto,
+            ReqCreateApplicationDto,
             createApplicationDto,
         );
         return this.orderApplicationService.create(dto);
@@ -31,9 +36,11 @@ export class OrderApplicationController {
     @GRPCTrace('OrderApplicationRpcService.getApplicationsForOrder')
     @UseFilters(GrpcExceptionFilter)
     @UseInterceptors(GrpcResultWrapperInterceptor)
-    async getApplicationsForOrder(getApplicationDto: GetApplicationDto) {
+    async getApplicationsForOrder(
+        getApplicationDto: ReqGetApplicationDto,
+    ): Promise<ResGetApplicationDto[]> {
         const dto = await ValidationUtils.validateInput(
-            GetApplicationDto,
+            ReqGetApplicationDto,
             getApplicationDto,
         );
         return this.orderApplicationService.getApplicationsForOrder(dto);
@@ -43,9 +50,11 @@ export class OrderApplicationController {
     @GRPCTrace('OrderApplicationRpcService.cancelOrderApplication')
     @UseFilters(GrpcExceptionFilter)
     @UseInterceptors(GrpcResultWrapperInterceptor)
-    async cancelOrderApplication(cancelApplicationDto: CancelApplicationDto) {
+    async cancelOrderApplication(
+        cancelApplicationDto: ReqCancelApplicationDto,
+    ): Promise<ResCancelApplicationDto> {
         const dto = await ValidationUtils.validateInput(
-            CancelApplicationDto,
+            ReqCancelApplicationDto,
             cancelApplicationDto,
         );
         return await this.orderApplicationService.cancel(dto);

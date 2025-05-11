@@ -1,4 +1,4 @@
-export class ResGetOrdersForUserDto {
+export class ResGetActualOrders {
     id: number;
     parentId: number;
     sitterId: number;

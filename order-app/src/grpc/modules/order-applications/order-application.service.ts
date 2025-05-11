@@ -2,15 +2,20 @@ import { Injectable } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
 import { GrpcStatusCode } from '~src/app/filter/grpc-status-code.enum';
 import { ApplicationService } from '~src/data-modules/application/application.service';
-import { CancelApplicationDto } from '~src/data-modules/application/dto/cancel-application.dto';
-import { CreateApplicationDto } from '~src/data-modules/application/dto/create-application.dto';
-import { GetApplicationDto } from '~src/data-modules/application/dto/get-application.dto';
+import { ReqCancelApplicationDto } from '~src/data-modules/application/dto/request-dto/req-cancel-application.dto';
+import { ReqCreateApplicationDto } from '~src/data-modules/application/dto/request-dto/req-create-application.dto';
+import { ReqGetApplicationDto } from '~src/data-modules/application/dto/request-dto/req-get-application.dto';
+import { ResCancelApplicationDto } from '~src/data-modules/application/dto/response-dto/res-cancel-application.dto';
+import { ResCreateApplicationDto } from '~src/data-modules/application/dto/response-dto/res-create-application.dto';
+import { ResGetApplicationDto } from '~src/data-modules/application/dto/response-dto/res-get-application.dto';
 
 @Injectable()
 export class OrderApplicationService {
     constructor(private readonly applicationService: ApplicationService) {}
 
-    async create(createApplicationDto: CreateApplicationDto) {
+    async create(
+        createApplicationDto: ReqCreateApplicationDto,
+    ): Promise<ResCreateApplicationDto> {
         const application = await this.applicationService.get(
             createApplicationDto.id,
         );
@@ -20,16 +25,36 @@ export class OrderApplicationService {
                 code: GrpcStatusCode.NOT_FOUND,
             });
 
-        return this.applicationService.create(createApplicationDto);
+        const resCreateApp: ResCreateApplicationDto =
+            await this.applicationService.create(createApplicationDto);
+        return resCreateApp;
     }
 
-    async getApplicationsForOrder(getApplicationDto: GetApplicationDto) {
-        return await this.applicationService.getApplicationsForOrder(
-            getApplicationDto,
+    async getApplicationsForOrder(
+        getApplicationDto: ReqGetApplicationDto,
+    ): Promise<ResGetApplicationDto[]> {
+        const resGetApp: ResGetApplicationDto[] =
+            await this.applicationService.getApplicationsForOrder(
+                getApplicationDto,
+            );
+
+        return resGetApp;
+    }
+
+    async cancel(
+        cancelApplicationDto: ReqCancelApplicationDto,
+    ): Promise<ResCancelApplicationDto> {
+        const application = await this.applicationService.get(
+            cancelApplicationDto.id,
         );
-    }
+        if (!application)
+            throw new RpcException({
+                message: `Application with id = ${cancelApplicationDto.id} not found`,
+                code: GrpcStatusCode.NOT_FOUND,
+            });
 
-    async cancel(cancelApplicationDto: CancelApplicationDto) {
-        return await this.applicationService.cancel(cancelApplicationDto);
+        const resCancelApp: ResCancelApplicationDto =
+            await this.applicationService.cancel(cancelApplicationDto);
+        return resCancelApp;
     }
 }

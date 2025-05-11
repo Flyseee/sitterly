@@ -8,7 +8,7 @@ export class CreateApplicationTable1743795951707 implements MigrationInterface {
             CREATE TABLE IF NOT EXISTS "application" 
             (
                 id INTEGER PRIMARY KEY,
-                order_id INTEGER NOT NULL,
+                order_id INTEGER NOT NULL REFERENCES "order" (id),
                 sitter_id INTEGER NOT NULL,
                 is_actual BOOLEAN NOT NULL DEFAULT TRUE
             )

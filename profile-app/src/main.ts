@@ -42,14 +42,14 @@ async function bootstrap() {
 
     otelSDK?.start();
 
-    app.connectMicroservice<MicroserviceOptions>({
-        transport: Transport.GRPC,
-        options: {
-            package: 'version',
-            protoPath: join(__dirname, './grpc/proto/version.proto'),
-            url: configService.get('grpc.url'),
-        },
-    });
+    // app.connectMicroservice<MicroserviceOptions>({
+    //     transport: Transport.GRPC,
+    //     options: {
+    //         package: '',
+    //         protoPath: join(__dirname, ''),
+    //         url: configService.get('grpc.url'),
+    //     },
+    // });
 
     await app.startAllMicroservices();
     await app.listen(configService.get('http.port') || 3000);

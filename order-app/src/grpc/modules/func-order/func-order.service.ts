@@ -2,29 +2,38 @@ import { Injectable } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
 import { plainToInstance } from 'class-transformer';
 import { GrpcStatusCode } from '~src/app/filter/grpc-status-code.enum';
-import { CreateOrderWithCorrectDateDto } from '~src/data-modules/order/dto/create-order-with-correct-date.dto';
-import { CreateOrderDto } from '~src/data-modules/order/dto/create-order.dto';
-import { GetOrdersForUserDto } from '~src/data-modules/order/dto/get-orders-for-user.dto';
-import { UpdateOrderDto } from '~src/data-modules/order/dto/update-order.dto';
+import { ReqCreateOrderWithCorrectDateDto } from '~src/data-modules/order/dto/request-dto/req-create-order-with-correct-date.dto';
+import { ReqCreateOrderDto } from '~src/data-modules/order/dto/request-dto/req-create-order.dto';
+import { ReqGetOrdersForUserDto } from '~src/data-modules/order/dto/request-dto/req-get-orders-for-user.dto';
+import { ReqUpdateOrderDto } from '~src/data-modules/order/dto/request-dto/req-update-order.dto';
+import { ResCreateOrderDto } from '~src/data-modules/order/dto/response-dto/res-create-order.dto';
+import { ResGetActualOrders } from '~src/data-modules/order/dto/response-dto/res-get-actual-orders.dto';
+import { ResGetOrdersForUserDto } from '~src/data-modules/order/dto/response-dto/res-get-orders-for-user.dto';
+import { ResUpdateOrderDto } from '~src/data-modules/order/dto/response-dto/res-update-order.dto';
 import { OrderService } from '~src/data-modules/order/order.service';
 
 @Injectable()
 export class FuncOrderService {
     constructor(private readonly orderService: OrderService) {}
 
-    getActualOrders() {
-        return this.orderService.getActualOrders();
+    async getActualOrders(): Promise<ResGetActualOrders[]> {
+        const resGetOrders: ResGetActualOrders[] =
+            await this.orderService.getActualOrders();
+
+        return resGetOrders;
     }
 
-    getActualOrdersForUser(getOrdersForUserDto: GetOrdersForUserDto) {
-        return this.orderService.getActualOrdersForUser(getOrdersForUserDto);
+    async getOrdersForUser(
+        getOrdersForUserDto: ReqGetOrdersForUserDto,
+    ): Promise<ResGetOrdersForUserDto[] | undefined> {
+        const resActualOrders: ResGetOrdersForUserDto[] | undefined =
+            await this.orderService.getOrdersForUser(getOrdersForUserDto);
+        return resActualOrders;
     }
 
-    getPassedOrdersForUser(getOrdersForUserDto: GetOrdersForUserDto) {
-        return this.orderService.getPassedOrdersForUser(getOrdersForUserDto);
-    }
-
-    async createOrder(createOrderDto: CreateOrderDto) {
+    async createOrder(
+        createOrderDto: ReqCreateOrderDto,
+    ): Promise<ResCreateOrderDto> {
         const order = await this.orderService.get(createOrderDto.id);
         if (order)
             throw new RpcException({
@@ -44,17 +53,19 @@ export class FuncOrderService {
         }
 
         const orderWithCorrectDate = plainToInstance(
-            CreateOrderWithCorrectDateDto,
+            ReqCreateOrderWithCorrectDateDto,
             {
                 ...createOrderDto,
                 date: orderDate,
             },
         );
 
-        return this.orderService.createOrder(orderWithCorrectDate);
+        const resCreateOrder: ResCreateOrderDto =
+            await this.orderService.createOrder(orderWithCorrectDate);
+        return resCreateOrder;
     }
 
-    async updateOrder(updateOrderDto: UpdateOrderDto) {
+    async updateOrder(updateOrderDto: ReqUpdateOrderDto) {
         const order = await this.orderService.get(updateOrderDto.id);
         if (!order)
             throw new RpcException({
@@ -72,6 +83,10 @@ export class FuncOrderService {
             Object.assign(order, updateOrderDto);
         }
 
-        return this.orderService.updateOrder({ ...order });
+        const resUpdateOrder: ResUpdateOrderDto =
+            await this.orderService.updateOrder({
+                ...order,
+            });
+        return resUpdateOrder;
     }
 }

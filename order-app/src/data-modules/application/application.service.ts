@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
-import { CancelApplicationDto } from '~src/data-modules/application/dto/cancel-application.dto';
-import { CreateApplicationDto } from '~src/data-modules/application/dto/create-application.dto';
-import { GetApplicationDto } from '~src/data-modules/application/dto/get-application.dto';
+import { ReqCancelApplicationDto } from '~src/data-modules/application/dto/request-dto/req-cancel-application.dto';
+import { ReqCreateApplicationDto } from '~src/data-modules/application/dto/request-dto/req-create-application.dto';
+import { ReqGetApplicationDto } from '~src/data-modules/application/dto/request-dto/req-get-application.dto';
 import { Application } from '~src/data-modules/application/entities/application.entity';
 
 @Injectable()
@@ -12,25 +12,32 @@ export class ApplicationService {
         private applicationRepository: Repository<Application>,
     ) {}
 
-    get(id: number) {
+    get(id: number): Promise<Application | null> {
         return this.applicationRepository.findOneBy({ id });
     }
 
-    create(createApplicationDto: CreateApplicationDto) {
+    create(
+        createApplicationDto: ReqCreateApplicationDto,
+    ): Promise<Application> {
         const entity = this.applicationRepository.create(createApplicationDto);
         return this.applicationRepository.save(entity);
     }
 
-    async getApplicationsForOrder(getApplicationDto: GetApplicationDto) {
+    async getApplicationsForOrder(
+        getApplicationDto: ReqGetApplicationDto,
+    ): Promise<Application[]> {
         return await this.applicationRepository.findBy({
             orderId: getApplicationDto.orderId,
         });
     }
 
-    async cancel(cancelApplicationDto: CancelApplicationDto) {
-        return await this.applicationRepository.update(
-            { id: cancelApplicationDto.id },
-            { isActual: false },
-        );
+    async cancel(
+        cancelApplicationDto: ReqCancelApplicationDto,
+    ): Promise<Application> {
+        const entity = this.applicationRepository.create({
+            id: cancelApplicationDto.id,
+            isActual: false,
+        });
+        return this.applicationRepository.save(entity);
     }
 }
