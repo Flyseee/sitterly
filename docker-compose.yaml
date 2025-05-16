@@ -105,6 +105,7 @@ services:
       - PG_HOST=postgres_auth
       - PG_PORT=5432
       - REDIS_URL=redis://redis:6379
+      - MINIO_URL=http://minio:9000
       - RPC_HOST=nest_auth:50055
       - SWAGGER_TITLE=AuthUser App
       - SERVICE_NAME=AuthUser App
