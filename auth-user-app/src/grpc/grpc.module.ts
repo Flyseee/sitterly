@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { VersionModule } from '~src/grpc/modules/version/version.module';
+import { UserInfoModule } from './modules/user-info/user-info.module';
 
 @Module({
-    imports: [VersionModule],
+    imports: [UserInfoModule],
 })
 export class GrpcModule {}

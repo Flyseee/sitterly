@@ -1,25 +1,53 @@
+app:
+  profile: <%= process.env.NODE_ENV %>
+  name: <%= process.env.SERVICE_NAME %>
+  _host: <%= process.env.HOST %>
+
+service:
+  system:
+    headers:
+      x-api-key: <%= process.env.X_API_KEY ||  'x-api-key-example' %>
+  auth:
+    certPath: <%= process.cwd() + '/cert/Random-CA.pem' %>
+    jwtSecret: <%= process.env.JWT_SECRET || 'secret' %>
+
 http:
-    port: <%= process.env.PORT || 3000 %>
-    host: <%= process.env.HOST %>
+  port: <%= process.env.PORT || 3000 %>
 
 grpc:
-    url: <%= process.env.RPC_HOST %>
+  url: <%= process.env.RPC_HOST %>
 
 swagger:
-    path: '/api'
-    jsonPath: '/api-json'
-    title: <%= process.env.SWAGGER_TITLE %>
-    description: <%= process.env.SWAGGER_DESC %>
+  path: '/api'
+  jsonPath: '/api-json'
+  title: <%= process.env.SWAGGER_TITLE %>
+  description: <%= process.env.SWAGGER_DESC %>
+
+s3:
+  region: 'ru-central1'
+  bucketName: 'sitterly'
+  requestHandler:
+    timeout: 1800000
+  endpoint: <%= process.env.MINIO_URL %>
+  credentials:
+    accessKeyId: 'minioadmin'
+    secretAccessKey: 'minioadmin'
+  forcePathStyle: true
 
 database:
-    psql:
-        type: 'postgres'
-        host: <%= process.env.PG_HOST %>
-        port: <%= process.env.PG_PORT %>
-        username: <%= process.env.PG_USERNAME %>
-        password: <%= process.env.PG_PASSWORD %>
-        database: <%= process.env.PG_DATABASE %>
-        synchronize: false
-        migrationsRun: true
-    redis:
-        url: <%= process.env.REDIS_URL || 'redis://redis:6379' %>
+  psql:
+    type: 'postgres'
+    host: <%= process.env.PG_HOST %>
+    port: <%= process.env.PG_PORT %>
+    username: <%= process.env.PG_USERNAME %>
+    password: <%= process.env.PG_PASSWORD %>
+    database: <%= process.env.PG_DATABASE %>
+    schema: <%= process.env.PG_SCHEMA || 'public' %>
+    synchronize: false
+    migrationsRun: true
+
+hosts:
+  http:
+    version: <%= process.env.HTTP_VERSION_HOST  || 'http://localhost:3000'%>
+  grpc:
+    version: <%= process.env.GRPC_VERSION_HOST  || 'localhost:50055'%>

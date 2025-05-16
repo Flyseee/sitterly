@@ -1,0 +1,28 @@
+doctype html
+html(lang="ru")
+    head
+        meta(charset="utf-8")
+        meta(name="viewport" content="width=device-width, initial-scale=1")
+        title Вход
+        link(href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7", crossorigin="anonymous")
+    body
+        .container
+            .row.justify-content-center
+                .col-md-6.mt-5
+                    h1.mb-4.text-center Вход
+                    if error
+                        .alert.alert-danger #{error}
+                    form#loginForm(method="post", action="/v1/authorize" + params, novalidate)
+                        .mb-3
+                            label.form-label(for="phone") Телефон
+                            input#phone.form-control(type="tel", name="phoneNumber", placeholder="+7XXXXXXXXXX", required, pattern="\\+7\\d{10}")
+                            .invalid-feedback Телефон должен быть в формате +7XXXXXXXXXX
+                        .mb-3
+                            label.form-label(for="password") Пароль
+                            input#password.form-control(type="password", name="password", placeholder="••••••••", required, minlength="8")
+                            .invalid-feedback Пароль должен быть минимум 8 символов
+                        .row.justify-content-center.mb-3
+                            button.btn.btn-primary(w="100%", type="submit") Войти
+                        .row.justify-content-center.mb-3
+                            a(href="/v1/register" + params, w="100%", type="button").btn.btn-light Создать аккаунт
+        script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous")

@@ -1,0 +1,73 @@
+doctype html
+html(lang="ru")
+    head
+        meta(charset="utf-8")
+        meta(name="viewport" content="width=device-width, initial-scale=1")
+        title Регистрация
+        link(href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7", crossorigin="anonymous")
+    body
+        .container
+            .row.justify-content-center
+                .col-md-6.mt-5
+                    h1.mb-4.text-center Регистрация
+                    form#registerForm(method="post", action="/v1/register" + params, novalidate)
+                        .mb-3
+                            label.form-label(for="phone") Телефон
+                            input#phone.form-control(type="tel", name="phoneNumber", placeholder="+7XXXXXXXXXX", required, pattern="\\+7\\d{10}")
+                            .invalid-feedback
+                                | Введите корректный российский номер (+7 и 10 цифр)
+                        .mb-3
+                            label.form-label(for="password") Пароль
+                            input#password.form-control(type="password", name="password", placeholder="Min 8 симв., A-Z, a-z, 0-9, спец", required)
+                            .invalid-feedback
+                                | Пароль должен быть минимум 8 символов, содержать заглавную и строчную буквы, цифры и спецсимволы
+                        .mb-3
+                            label.form-label(for="confirmPassword") Повтор пароля
+                            input#confirmPassword.form-control(type="password", name="confirmPassword", placeholder="Повторите пароль", required)
+                            .invalid-feedback Пароли не совпадают
+                        .row.justify-content-center.mb-3
+                            button.btn.btn-primary(w="100%", type="submit") Зарегистрироваться
+                        .row.justify-content-center.mb-3
+                            a(href="/v1/authorize" + params, w="100%", type="button").btn.btn-light У меня уже есть учетная запись
+        script.
+            (function() {
+                'use strict';
+                const form = document.getElementById('registerForm');
+                form.addEventListener('submit', function(e) {
+                    const phoneRe = /^\+7\d{10}$/;
+                    let valid = true;
+
+                    // Очищаем предыдущие ошибки
+                    ['phone','password','confirmPassword'].forEach(id => {
+                        const inp = form[id];
+                        inp.classList.remove('is-invalid');
+                    });
+
+                    // Телефон
+                    const phone = form.phone.value.trim();
+                    if (!phoneRe.test(phone)) {
+                        form.phone.classList.add('is-invalid');
+                        valid = false;
+                    }
+
+                    // Пароль
+                    const pw = form.password.value;
+                    const complexity = [/[A-Z]/, /[a-z]/, /\d/, /[\W_]/];
+                    if (pw.length < 8 || complexity.some(rx => !rx.test(pw))) {
+                        form.password.classList.add('is-invalid');
+                        valid = false;
+                    }
+
+                    // Повтор
+                    if (form.confirmPassword.value !== pw) {
+                        form.confirmPassword.classList.add('is-invalid');
+                        valid = false;
+                    }
+
+                    if (!valid) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                    }
+                }, false);
+            })();
+        script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous")
