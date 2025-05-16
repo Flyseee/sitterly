@@ -97,6 +97,7 @@ services:
       - 1010:3000
       - 51055:50055
     environment:
+      - NODE_ENV=development
       - PORT=3000
       - PG_USERNAME=myuser
       - PG_PASSWORD=mypassword
