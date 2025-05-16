@@ -17,8 +17,8 @@ export class FuncParentProfileController {
         private readonly funcParentProfileService: FuncParentProfileService,
     ) {}
 
-    @GrpcMethod('FuncParentProfileController', 'get')
-    @GRPCTrace('FuncParentProfileController.get')
+    @GrpcMethod('FuncParentProfileRpcService', 'get')
+    @GRPCTrace('FuncParentProfileRpcService.get')
     @UseFilters(GrpcExceptionFilter)
     @UseInterceptors(GrpcResultWrapperInterceptor)
     async get(
@@ -31,8 +31,8 @@ export class FuncParentProfileController {
         return this.funcParentProfileService.get(dto);
     }
 
-    @GrpcMethod('FuncParentProfileController', 'put')
-    @GRPCTrace('FuncParentProfileController.put')
+    @GrpcMethod('FuncParentProfileRpcService', 'put')
+    @GRPCTrace('FuncParentProfileRpcService.put')
     @UseFilters(GrpcExceptionFilter)
     @UseInterceptors(GrpcResultWrapperInterceptor)
     async put(
@@ -45,8 +45,8 @@ export class FuncParentProfileController {
         return this.funcParentProfileService.put(dto);
     }
 
-    @GrpcMethod('FuncParentProfileController', 'update')
-    @GRPCTrace('FuncParentProfileController.update')
+    @GrpcMethod('FuncParentProfileRpcService', 'update')
+    @GRPCTrace('FuncParentProfileRpcService.update')
     @UseFilters(GrpcExceptionFilter)
     @UseInterceptors(GrpcResultWrapperInterceptor)
     async update(

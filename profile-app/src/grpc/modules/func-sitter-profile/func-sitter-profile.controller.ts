@@ -17,8 +17,8 @@ export class FuncSitterProfileController {
         private readonly funcSitterProfileService: FuncSitterProfileService,
     ) {}
 
-    @GrpcMethod('FuncSitterProfileController', 'get')
-    @GRPCTrace('FuncSitterProfileController.get')
+    @GrpcMethod('FuncSitterProfileRpcService', 'get')
+    @GRPCTrace('FuncSitterProfileRpcService.get')
     @UseFilters(GrpcExceptionFilter)
     @UseInterceptors(GrpcResultWrapperInterceptor)
     async get(
@@ -31,8 +31,8 @@ export class FuncSitterProfileController {
         return this.funcSitterProfileService.get(dto);
     }
 
-    @GrpcMethod('FuncSitterProfileController', 'put')
-    @GRPCTrace('FuncSitterProfileController.put')
+    @GrpcMethod('FuncSitterProfileRpcService', 'put')
+    @GRPCTrace('FuncSitterProfileRpcService.put')
     @UseFilters(GrpcExceptionFilter)
     @UseInterceptors(GrpcResultWrapperInterceptor)
     async put(
@@ -45,8 +45,8 @@ export class FuncSitterProfileController {
         return this.funcSitterProfileService.put(dto);
     }
 
-    @GrpcMethod('FuncSitterProfileController', 'update')
-    @GRPCTrace('FuncSitterProfileController.update')
+    @GrpcMethod('FuncSitterProfileRpcService', 'update')
+    @GRPCTrace('FuncSitterProfileRpcService.update')
     @UseFilters(GrpcExceptionFilter)
     @UseInterceptors(GrpcResultWrapperInterceptor)
     async update(
