@@ -21,8 +21,8 @@ export class OrderApplicationService {
         );
         if (application)
             throw new RpcException({
-                message: `Application with id = ${createApplicationDto.id} already exists`,
-                code: GrpcStatusCode.NOT_FOUND,
+                message: `application with id = ${createApplicationDto.id} already exists`,
+                code: GrpcStatusCode.ALREADY_EXISTS,
             });
 
         const resCreateApp: ResCreateApplicationDto =
@@ -49,7 +49,7 @@ export class OrderApplicationService {
         );
         if (!application)
             throw new RpcException({
-                message: `Application with id = ${cancelApplicationDto.id} not found`,
+                message: `application with id = ${cancelApplicationDto.id} not found`,
                 code: GrpcStatusCode.NOT_FOUND,
             });
 

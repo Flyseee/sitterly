@@ -1,15 +1,16 @@
+import { CacheInterceptor, CacheModule } from '@nestjs/cache-manager';
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { ConfigModule } from 'src/common-modules/config/config.module';
 import { LoggingModule } from 'src/common-modules/logging/logging.module';
 import { PostgresqlModule } from 'src/database-modules/postgresql/postgresql.module';
 import { RedisModule } from 'src/database-modules/redis/redis.module';
-import { TracingInterceptor } from './interceptors/tracing.interceptor';
-import { XRequestMiddleware } from './middleware/x-request.middleware';
-import { TraceModule } from '~src/telemetry/trace/trace.module';
-import { CacheInterceptor, CacheModule } from '@nestjs/cache-manager';
+import { RequestLogMiddleware } from '~src/app/middleware/request-log.middleware';
 import { GrpcModule } from '~src/grpc/grpc.module';
 import { HttpModule } from '~src/http/http.module';
+import { TraceModule } from '~src/telemetry/trace/trace.module';
+import { TracingInterceptor } from './interceptors/tracing.interceptor';
+import { XRequestMiddleware } from './middleware/x-request.middleware';
 
 @Module({
     imports: [
@@ -36,6 +37,10 @@ import { HttpModule } from '~src/http/http.module';
 })
 export class AppModule implements NestModule {
     configure(consumer: MiddlewareConsumer) {
-        return consumer.apply(XRequestMiddleware).forRoutes('*');
+        return consumer
+            .apply(XRequestMiddleware)
+            .forRoutes('*')
+            .apply(RequestLogMiddleware)
+            .forRoutes('*');
     }
 }

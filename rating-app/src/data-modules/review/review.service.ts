@@ -15,6 +15,7 @@ export class ReviewService {
         private reviewRepository: Repository<Review>,
     ) {}
 
+    @Trace('ReviewService.get', { logInput: true, logOutput: true })
     get(id: number): Promise<Review | null> {
         return this.reviewRepository.findOneBy({ id });
     }

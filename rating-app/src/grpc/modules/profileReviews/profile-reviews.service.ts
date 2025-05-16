@@ -22,7 +22,7 @@ export class ProfileReviewsService {
         const review = await this.reviewService.get(createFullReviewDto.id);
         if (review)
             throw new RpcException({
-                message: `Review with id = ${createFullReviewDto.id} already exists`,
+                message: `review with id = ${createFullReviewDto.id} already exists`,
                 code: GrpcStatusCode.NOT_FOUND,
             });
 

@@ -1,0 +1,61 @@
+import { Injectable, UseFilters, UseInterceptors } from '@nestjs/common';
+import { GrpcMethod } from '@nestjs/microservices';
+import { GrpcExceptionFilter } from '~src/app/filter/grpc-exception.filter';
+import { GrpcResultWrapperInterceptor } from '~src/app/interceptors/grpc-result-wrapper.interceptor';
+import { ReqCreateSitterProfileDto } from '~src/data-modules/sitter-profile/dto/request-dto/req-create-sitter-profile.dto';
+import { ReqGetSitterProfileDto } from '~src/data-modules/sitter-profile/dto/request-dto/req-get-sitter-profile.dto';
+import { ReqUpdateSitterProfileDto } from '~src/data-modules/sitter-profile/dto/request-dto/req-update-sitter-profile.dto';
+import { ResGetSitterProfileDto } from '~src/data-modules/sitter-profile/dto/response-dto/res-get-sitter-profile.dto';
+import { ResUpdateSitterProfileDto } from '~src/data-modules/sitter-profile/dto/response-dto/res-update-sitter-profile.dto';
+import { GRPCTrace } from '~src/grpc/decorators/grpc-trace.decorator';
+import { FuncSitterProfileService } from '~src/grpc/modules/func-sitter-profile/func-sitter-profile.service';
+import { ValidationUtils } from '~src/utils/validation.utils';
+
+@Injectable()
+export class FuncSitterProfileController {
+    constructor(
+        private readonly funcSitterProfileService: FuncSitterProfileService,
+    ) {}
+
+    @GrpcMethod('FuncSitterProfileController', 'get')
+    @GRPCTrace('FuncSitterProfileController.get')
+    @UseFilters(GrpcExceptionFilter)
+    @UseInterceptors(GrpcResultWrapperInterceptor)
+    async get(
+        getSitterProfileDto: ReqGetSitterProfileDto,
+    ): Promise<ResGetSitterProfileDto | null> {
+        const dto = await ValidationUtils.validateInput(
+            ReqGetSitterProfileDto,
+            getSitterProfileDto,
+        );
+        return this.funcSitterProfileService.get(dto);
+    }
+
+    @GrpcMethod('FuncSitterProfileController', 'put')
+    @GRPCTrace('FuncSitterProfileController.put')
+    @UseFilters(GrpcExceptionFilter)
+    @UseInterceptors(GrpcResultWrapperInterceptor)
+    async put(
+        createSitterProfileDto: ReqCreateSitterProfileDto,
+    ): Promise<ResUpdateSitterProfileDto | null> {
+        const dto = await ValidationUtils.validateInput(
+            ReqCreateSitterProfileDto,
+            createSitterProfileDto,
+        );
+        return this.funcSitterProfileService.put(dto);
+    }
+
+    @GrpcMethod('FuncSitterProfileController', 'update')
+    @GRPCTrace('FuncSitterProfileController.update')
+    @UseFilters(GrpcExceptionFilter)
+    @UseInterceptors(GrpcResultWrapperInterceptor)
+    async update(
+        updateSitterProfileDto: ReqUpdateSitterProfileDto,
+    ): Promise<ResUpdateSitterProfileDto | null> {
+        const dto = await ValidationUtils.validateInput(
+            ReqUpdateSitterProfileDto,
+            updateSitterProfileDto,
+        );
+        return this.funcSitterProfileService.update(dto);
+    }
+}

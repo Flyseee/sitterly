@@ -2,7 +2,7 @@ import { IsEnum, IsInt, IsNotEmpty, Min } from 'class-validator';
 import { ProfileType } from '~src/data-modules/review/enums/profile-type.enum';
 
 export class ReqGetReviewsForProfileDto {
-    @IsInt({ message: 'review profileToId must be an integer' })
+    @IsInt({ message: 'review profileToId must be integer' })
     @IsNotEmpty({ message: 'profileToId is empty' })
     @Min(0)
     profileToId: number;

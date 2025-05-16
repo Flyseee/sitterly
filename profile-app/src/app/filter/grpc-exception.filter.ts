@@ -1,8 +1,8 @@
 import { Catch, RpcExceptionFilter } from '@nestjs/common';
-import { Observable, of } from 'rxjs';
 import { RpcException } from '@nestjs/microservices';
-import { TraceService } from '~src/telemetry/trace/trace.service';
+import { Observable, of } from 'rxjs';
 import { GrpcStatusCode } from '~src/app/filter/grpc-status-code.enum';
+import { TraceService } from '~src/telemetry/trace/trace.service';
 
 interface ErrorResponse {
     data: null;
@@ -23,7 +23,7 @@ export class GrpcExceptionFilter implements RpcExceptionFilter {
             data: null,
             _error: {
                 code: GrpcStatusCode.UNKNOWN,
-                message: 'Произошла непредвиденная ошибка',
+                message: 'unexpected error occurred',
             },
         };
 
@@ -38,7 +38,7 @@ export class GrpcExceptionFilter implements RpcExceptionFilter {
                     data: null,
                     _error: {
                         code,
-                        message: (err as any).message || 'Произошла ошибка RPC',
+                        message: (err as any).message || 'RPC error occurred',
                     },
                 };
             } else {
@@ -82,6 +82,7 @@ export class GrpcExceptionFilter implements RpcExceptionFilter {
 
         return errorMap[exception.name] || GrpcStatusCode.INTERNAL;
     }
+
     private getErrorCodeFromString(code: string): number {
         const codeMap: Record<string, number> = {
             OK: GrpcStatusCode.OK,

@@ -37,8 +37,8 @@ export class FuncOrderService {
         const order = await this.orderService.get(createOrderDto.id);
         if (order)
             throw new RpcException({
-                message: `Order with id = ${createOrderDto.id} already exists`,
-                code: GrpcStatusCode.NOT_FOUND,
+                message: `order with id = ${createOrderDto.id} already exists`,
+                code: GrpcStatusCode.ALREADY_EXISTS,
             });
 
         const orderDate = new Date(createOrderDto.date);
@@ -46,8 +46,8 @@ export class FuncOrderService {
         if (orderDate < minAllowed) {
             throw new RpcException({
                 message:
-                    `Order date must be at least one hour in the future.` +
-                    `Minimum allowed: ${minAllowed.toISOString()}`,
+                    `order date must be at least one hour in the future.` +
+                    `minimum allowed: ${minAllowed.toISOString()}`,
                 code: GrpcStatusCode.INVALID_ARGUMENT,
             });
         }
@@ -69,7 +69,7 @@ export class FuncOrderService {
         const order = await this.orderService.get(updateOrderDto.id);
         if (!order)
             throw new RpcException({
-                message: `Order was not found for id: ${updateOrderDto.id}`,
+                message: `order was not found for id: ${updateOrderDto.id}`,
                 code: GrpcStatusCode.NOT_FOUND,
             });
 

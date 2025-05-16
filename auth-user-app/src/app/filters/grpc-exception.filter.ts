@@ -23,7 +23,7 @@ export class GrpcExceptionFilter implements RpcExceptionFilter {
             data: null,
             _error: {
                 code: GrpcStatusCode.UNKNOWN,
-                message: 'Произошла непредвиденная ошибка',
+                message: 'unexpected error occurred',
             },
         };
 
@@ -38,7 +38,7 @@ export class GrpcExceptionFilter implements RpcExceptionFilter {
                     data: null,
                     _error: {
                         code,
-                        message: (err as any).message || 'Произошла ошибка RPC',
+                        message: (err as any).message || 'RPC error occurred',
                     },
                 };
             } else {

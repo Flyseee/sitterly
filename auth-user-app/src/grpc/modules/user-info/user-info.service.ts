@@ -30,7 +30,7 @@ export class UserInfoService {
         if (!user) {
             throw new RpcException({
                 code: GrpcStatusCode.NOT_FOUND,
-                message: 'User not found',
+                message: `user was not found for id: ${getUserDto.id}`,
             });
         }
         const url = await this.s3Service.getPresignedUrl(user.phoneNumber);
@@ -47,14 +47,14 @@ export class UserInfoService {
         } catch (e) {
             throw new RpcException({
                 code: GrpcStatusCode.UNAUTHENTICATED,
-                message: 'Invalid token',
+                message: 'invalid token',
             });
         }
         const user = await this.userService.findOne(payload.sub);
         if (!user) {
             throw new RpcException({
                 code: GrpcStatusCode.NOT_FOUND,
-                message: 'User not found',
+                message: `user was not found for id: ${payload.sub}`,
             });
         }
         const url = await this.s3Service.getPresignedUrl(user.phoneNumber);
@@ -76,7 +76,7 @@ export class UserInfoService {
         if (!user) {
             throw new RpcException({
                 code: status.NOT_FOUND,
-                message: 'User not found',
+                message: `user was not found for id: ${reqUpdateUserDto.id}`,
             });
         }
         const url = await this.s3Service.getPresignedUrl(user.phoneNumber);
@@ -96,7 +96,7 @@ export class UserInfoService {
         if (!user) {
             throw new RpcException({
                 code: status.NOT_FOUND,
-                message: 'User not found',
+                message: `user was not found for id: ${uploadAvatarDto.id}`,
             });
         }
         const resUrl: ResUploadAvatarDto = {

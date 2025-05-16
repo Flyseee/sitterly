@@ -30,7 +30,7 @@ export class UserRatingService {
         if (!rating)
             throw new RpcException({
                 message:
-                    `Rating was not found for id: ${getRatingDto.profileId}` +
+                    `rating was not found for id: ${getRatingDto.profileId}` +
                     ` and profile type: ${getRatingDto.profileType}`,
                 code: GrpcStatusCode.NOT_FOUND,
             });
@@ -50,7 +50,7 @@ export class UserRatingService {
         if (rating)
             throw new RpcException({
                 message:
-                    `Rating with profileId = ${createRatingDto.profileId} and` +
+                    `rating with profileId = ${createRatingDto.profileId} and` +
                     `profileType = ${createRatingDto.profileType} already exists`,
                 code: GrpcStatusCode.NOT_FOUND,
             });

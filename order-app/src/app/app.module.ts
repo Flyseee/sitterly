@@ -5,6 +5,7 @@ import { ConfigModule } from 'src/common-modules/config/config.module';
 import { LoggingModule } from 'src/common-modules/logging/logging.module';
 import { PostgresqlModule } from 'src/database-modules/postgresql/postgresql.module';
 import { RedisModule } from 'src/database-modules/redis/redis.module';
+import { RequestLogMiddleware } from '~src/app/middleware/request-log.middleware';
 import { GrpcModule } from '~src/grpc/grpc.module';
 import { FuncOrderModule } from '~src/grpc/modules/func-order/func-order.module';
 import { OrderApplicationModule } from '~src/grpc/modules/order-applications/order-application.module';
@@ -40,6 +41,10 @@ import { XRequestMiddleware } from './middleware/x-request.middleware';
 })
 export class AppModule implements NestModule {
     configure(consumer: MiddlewareConsumer) {
-        return consumer.apply(XRequestMiddleware).forRoutes('*');
+        return consumer
+            .apply(XRequestMiddleware)
+            .forRoutes('*')
+            .apply(RequestLogMiddleware)
+            .forRoutes('*');
     }
 }
