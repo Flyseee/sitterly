@@ -28,7 +28,7 @@ export class AuthController {
      */
     @Get('/authorize')
     @Render('authorize')
-    @HTTPTrace('AuthService.authorizePage')
+    @HTTPTrace('AuthHttpService.authorizePage')
     @ApiOperation({
         summary: 'Страница авторизации',
         operationId: 'post-authorize',
@@ -67,7 +67,7 @@ export class AuthController {
             transform: true,
         }),
     )
-    @HTTPTrace('AuthService.authorize')
+    @HTTPTrace('AuthHttpService.authorize')
     async authorize(
         @Query('client_id') clientId: string,
         @Query('redirect_uri') redirectUri: string,
@@ -103,7 +103,7 @@ export class AuthController {
      */
     @Get('/register')
     @Render('register')
-    @HTTPTrace('AuthService.registerPage')
+    @HTTPTrace('AuthHttpService.registerPage')
     @ApiOperation({
         summary: 'Страница регистрации',
         operationId: 'get-register',
@@ -139,7 +139,7 @@ export class AuthController {
             transform: true,
         }),
     )
-    @HTTPTrace('AuthService.register')
+    @HTTPTrace('AuthHttpService.register')
     async register(
         @Query('client_id') clientId: string,
         @Query('redirect_uri') redirectUri: string,

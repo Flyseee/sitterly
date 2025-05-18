@@ -21,7 +21,7 @@ export class CreateTableServiceUser1743942137500 implements MigrationInterface {
                 "first_name" TEXT,
                 "last_name" TEXT,
                 "second_name" TEXT,
-                "birth_date" DATE NOT NULL,
+                "birth_date" DATE,
                 "email" TEXT
                 )
         `);
