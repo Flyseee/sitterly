@@ -149,36 +149,36 @@ services:
       - postgres_order
       - jaeger
 
-    nest_profile:
-      build:
-        context: ./profile-app
-        dockerfile: Dockerfile
-        args:
-          - NODE_ENV=development
-      dns:
-        - 8.8.8.8
-      ports:
-        - 3030:3000
-        - 53055:50055
-      environment:
-        - PORT=3000
-        - PG_USERNAME=myuser
-        - PG_PASSWORD=mypassword
-        - PG_DATABASE=postgres
-        - PG_HOST=postgres_profile
-        - PG_PORT=5432
-        - REDIS_URL=redis://redis:6379
-        - RPC_HOST=nest_profile:50055
-        - SWAGGER_TITLE=Profile App
-        - SERVICE_NAME=Profile App
-        - SWAGGER_DESC=Сервис Profile
-      volumes:
-        - .:/usr/src/app
-      depends_on:
-        - mongodb
-        - redis
-        - postgres_profile
-        - jaeger
+  nest_profile:
+    build:
+      context: ./profile-app
+      dockerfile: Dockerfile
+      args:
+        - NODE_ENV=development
+    dns:
+      - 8.8.8.8
+    ports:
+      - 3030:3000
+      - 53055:50055
+    environment:
+      - PORT=3000
+      - PG_USERNAME=myuser
+      - PG_PASSWORD=mypassword
+      - PG_DATABASE=postgres
+      - PG_HOST=postgres_profile
+      - PG_PORT=5432
+      - REDIS_URL=redis://redis:6379
+      - RPC_HOST=nest_profile:50055
+      - SWAGGER_TITLE=Profile App
+      - SERVICE_NAME=Profile App
+      - SWAGGER_DESC=Сервис Profile
+    volumes:
+      - .:/usr/src/app
+    depends_on:
+      - mongodb
+      - redis
+      - postgres_profile
+      - jaeger
 
   nest_rating:
     build:
