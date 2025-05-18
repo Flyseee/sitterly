@@ -2,6 +2,7 @@ import {
     Body,
     Controller,
     Get,
+    Logger,
     Post,
     Query,
     Render,
@@ -21,7 +22,10 @@ import { AuthService } from '~src/http/modules/auth/auth.service';
 @ApiTags('auth')
 @Controller()
 export class AuthController {
-    constructor(private readonly authService: AuthService) {}
+    constructor(
+        private readonly authService: AuthService,
+        private readonly logger: Logger,
+    ) {}
 
     /**
      * Страница авторизации (логин)
@@ -40,7 +44,10 @@ export class AuthController {
         @Query('error') error?: string,
     ): ResLoginPageDto {
         const params = `?redirect_uri=${redirectUri}${state ? `&state=${state}` : ''}${clientId ? `&client_id=${clientId}` : ''}`;
-        const resLoginPage: ResLoginPageDto = { params, error: error || null };
+        const resLoginPage: ResLoginPageDto = {
+            params: params,
+            error: error || null,
+        };
         return resLoginPage;
     }
 
@@ -84,11 +91,11 @@ export class AuthController {
                 error: 'Неверный телефон или пароль',
             });
         }
-        const { accessToken } = await this.authService.login(user);
 
+        const { accessToken } = await this.authService.login(user);
         if (!redirectUri) {
             return res.redirect(
-                `/v1/authorize?access_token=${accessToken}&error=${'redirect_uri_not_found'}`,
+                `/v1/authorize?access_token=${accessToken}&error='redirect_uri_not_found'`,
             );
         }
 
@@ -114,7 +121,10 @@ export class AuthController {
         @Query('state') state?: string,
     ): ResRegisterPageDto {
         const params = `?redirect_uri=${redirectUri}${state ? `&state=${state}` : ''}${clientId ? `&client_id=${clientId}` : ''}`;
-        const resRegisterPage: ResRegisterPageDto = { params, error: null };
+        const resRegisterPage: ResRegisterPageDto = {
+            params: params,
+            error: null,
+        };
         return resRegisterPage;
     }
 
