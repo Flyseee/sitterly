@@ -247,10 +247,10 @@ services:
   #      - nest_order
   #      - nest_profile
   #      - nest_rating
-  #  redis:
-  #    image: 'redis:alpine'
-  #    ports:
-  #      - '6379:6379'
+  redis:
+    image: 'redis:alpine'
+    ports:
+      - '6379:6379'
 
   mongodb:
     image: 'mongo:latest'
