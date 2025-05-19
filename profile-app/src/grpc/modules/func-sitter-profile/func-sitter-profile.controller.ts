@@ -1,5 +1,6 @@
-import { Injectable, UseFilters, UseInterceptors } from '@nestjs/common';
+import { Controller, UseFilters, UseInterceptors } from '@nestjs/common';
 import { GrpcMethod } from '@nestjs/microservices';
+import { GRPCTrace } from '~src/app/decorators/grpc-trace.decorator';
 import { GrpcExceptionFilter } from '~src/app/filter/grpc-exception.filter';
 import { GrpcResultWrapperInterceptor } from '~src/app/interceptors/grpc-result-wrapper.interceptor';
 import { ReqCreateSitterProfileDto } from '~src/data-modules/sitter-profile/dto/request-dto/req-create-sitter-profile.dto';
@@ -7,11 +8,10 @@ import { ReqGetSitterProfileDto } from '~src/data-modules/sitter-profile/dto/req
 import { ReqUpdateSitterProfileDto } from '~src/data-modules/sitter-profile/dto/request-dto/req-update-sitter-profile.dto';
 import { ResGetSitterProfileDto } from '~src/data-modules/sitter-profile/dto/response-dto/res-get-sitter-profile.dto';
 import { ResUpdateSitterProfileDto } from '~src/data-modules/sitter-profile/dto/response-dto/res-update-sitter-profile.dto';
-import { GRPCTrace } from '~src/grpc/decorators/grpc-trace.decorator';
 import { FuncSitterProfileService } from '~src/grpc/modules/func-sitter-profile/func-sitter-profile.service';
 import { ValidationUtils } from '~src/utils/validation.utils';
 
-@Injectable()
+@Controller('FuncSitterProfileController')
 export class FuncSitterProfileController {
     constructor(
         private readonly funcSitterProfileService: FuncSitterProfileService,

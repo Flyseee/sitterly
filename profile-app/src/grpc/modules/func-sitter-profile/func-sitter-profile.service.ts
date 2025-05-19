@@ -26,15 +26,6 @@ export class FuncSitterProfileService {
     async put(
         createSitterProfileDto: ReqCreateSitterProfileDto,
     ): Promise<ResUpdateSitterProfileDto | null> {
-        const profile = await this.sitterProfileService.get({
-            id: createSitterProfileDto.id,
-        });
-        if (profile)
-            throw new RpcException({
-                message: `sitter profile with id = ${createSitterProfileDto.id} already exists`,
-                code: GrpcStatusCode.ALREADY_EXISTS,
-            });
-
         const resSitter: ResUpdateSitterProfileDto | null =
             await this.sitterProfileService.put(createSitterProfileDto);
         return resSitter;

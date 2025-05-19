@@ -9,4 +9,8 @@ export class ReqUpdateParentProfileDto extends PartialType(
     @IsNotEmpty({ message: 'parentProfile id is empty' })
     @Min(0)
     id: number;
+
+    @IsInt({ message: 'parentProfile ordersAmount must be integer' })
+    @Min(0)
+    ordersAmount?: number;
 }

@@ -9,12 +9,12 @@ message GetRequest {
 }
 
 message PutRequest {
-  int32 id = 1;
   int32 ordersAmount = 2;
 }
 
 message UpdateRequest {
   int32 id = 1;
+  int32 ordersAmount = 2;
 }
 
 message ParentProfile {
@@ -32,8 +32,8 @@ message ParentProfileResponse {
   optional Error _error = 100;
 }
 
-service FuncSitterProfileRpcService {
-  rpc get (GetRequest) returns (ParentProfileResponse)
-  rpc put (PutRequest) returns (ParentProfileResponse)
-  rpc update (UpdateRequest) returns (ParentProfileResponse)
+service FuncParentProfileRpcService {
+  rpc get (GetRequest) returns (ParentProfileResponse);
+  rpc put (PutRequest) returns (ParentProfileResponse);
+  rpc update (UpdateRequest) returns (ParentProfileResponse);
 }

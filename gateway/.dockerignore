@@ -1,0 +1,7 @@
+/data
+/dist
+/node_modules
+config/.env
+/.idea
+.prettierrc
+eslint.config.mjs

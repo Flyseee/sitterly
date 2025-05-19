@@ -10,22 +10,21 @@ export class CreateSitterProfileTable1744560698699
             CREATE TABLE IF NOT EXISTS sitter_profile
             (
                 "id"
-                SERIAL
-                INTEGER
-                PRIMARY
-                KEY,
+                    SERIAL
+                    PRIMARY
+                        KEY,
                 "orders_amount"
-                INTEGER
-                DEFAULT
-                0
-                NOT
-                NULL,
+                    INTEGER
+                    DEFAULT
+                        0
+                    NOT
+                        NULL,
                 "price"
-                INTEGER,
+                    INTEGER,
                 "location"
-                TEXT
-                NOT
-                NULL
+                    TEXT
+                    NOT
+                        NULL
             )
         `);
     }

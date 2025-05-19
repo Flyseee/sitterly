@@ -20,7 +20,7 @@ export class AuthService {
 
     /**
      * Регистрирует нового пользователя.
-     * @param registerUserRqDto DTO для создания пользователя
+     * @param ReqRegisterDto DTO для создания пользователя
      */
     @Trace('UserService.register', { logInput: true, logOutput: true })
     async register(registerDto: ReqRegisterDto) {
@@ -44,7 +44,7 @@ export class AuthService {
 
     /**
      * Генерирует JWT для авторизованного пользователя.
-     * @param loginUserDto DTO c cущностью пользователя
+     * @param ReqLoginUserDto DTO c cущностью пользователя
      */
     @Trace('UserService.login', { logInput: true, logOutput: true })
     async login(loginUserDto: ReqLoginUserDto): Promise<ResLoginDto> {

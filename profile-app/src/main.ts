@@ -45,7 +45,7 @@ async function bootstrap() {
     app.connectMicroservice<MicroserviceOptions>({
         transport: Transport.GRPC,
         options: {
-            package: ['sitterProfile, parentProfile'],
+            package: ['sitterProfile', 'parentProfile'],
             protoPath: [
                 join(__dirname, './grpc/proto/parent-profile.proto'),
                 join(__dirname, './grpc/proto/sitter-profile.proto'),

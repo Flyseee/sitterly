@@ -39,6 +39,30 @@ export class UserEntity {
     password: string;
 
     /**
+     * Идентификатор профиля ситтера
+     * @type integer, NULLABLE
+     * @description sitter_profile_id
+     */
+    @Column({
+        type: 'int',
+        name: 'sitter_profile_id',
+        nullable: true,
+    })
+    sitterProfileId: number;
+
+    /**
+     * Идентификатор профиля родителя
+     * @type integer, NULLABLE
+     * @description parent_profile_id
+     */
+    @Column({
+        type: 'int',
+        name: 'parent_profile_id',
+        nullable: true,
+    })
+    parentProfileId: number;
+
+    /**
      * Имя пользователя
      * @type text, NULLABLE
      * @description first_name

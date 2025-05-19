@@ -26,15 +26,6 @@ export class FuncParentProfileService {
     async put(
         createParentProfileDto: ReqCreateParentProfileDto,
     ): Promise<ResUpdateParentProfileDto | null> {
-        const profile = await this.parentProfileService.get({
-            id: createParentProfileDto.id,
-        });
-        if (profile)
-            throw new RpcException({
-                message: `parent profile with id = ${createParentProfileDto.id} already exists`,
-                code: GrpcStatusCode.ALREADY_EXISTS,
-            });
-
         const resParent: ResUpdateParentProfileDto | null =
             await this.parentProfileService.put(createParentProfileDto);
         return resParent;

@@ -1,5 +1,6 @@
 import { Controller, UseFilters, UseInterceptors } from '@nestjs/common';
 import { GrpcMethod } from '@nestjs/microservices';
+import { GRPCTrace } from '~src/app/decorators/grpc-trace.decorator';
 import { GrpcExceptionFilter } from '~src/app/filter/grpc-exception.filter';
 import { GrpcResultWrapperInterceptor } from '~src/app/interceptors/grpc-result-wrapper.interceptor';
 import { ReqCreateOrderDto } from '~src/data-modules/order/dto/request-dto/req-create-order.dto';
@@ -9,7 +10,6 @@ import { ResCreateOrderDto } from '~src/data-modules/order/dto/response-dto/res-
 import { ResGetActualOrders } from '~src/data-modules/order/dto/response-dto/res-get-actual-orders.dto';
 import { ResGetOrdersForUserDto } from '~src/data-modules/order/dto/response-dto/res-get-orders-for-user.dto';
 import { ResUpdateOrderDto } from '~src/data-modules/order/dto/response-dto/res-update-order.dto';
-import { GRPCTrace } from '~src/grpc/decorators/grpc-trace.decorator';
 import { FuncOrderService } from '~src/grpc/modules/func-order/func-order.service';
 import { ValidationUtils } from '~src/utils/validation.utuls';
 

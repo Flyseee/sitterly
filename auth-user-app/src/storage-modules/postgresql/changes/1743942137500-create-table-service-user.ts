@@ -9,21 +9,20 @@ export class CreateTableServiceUser1743942137500 implements MigrationInterface {
             CREATE TABLE IF NOT EXISTS "${this.tableName}"
             (
                 "id"
-                SERIAL
-                PRIMARY
-                KEY,
+                                    SERIAL
+                    PRIMARY
+                        KEY,
                 "phone_number"
-                VARCHAR
-            (
-                12
-            ) NOT NULL UNIQUE,
-                "password" TEXT NOT NULL,
-                "first_name" TEXT,
-                "last_name" TEXT,
-                "second_name" TEXT,
-                "birth_date" DATE,
-                "email" TEXT
-                )
+                                    VARCHAR(12) NOT NULL UNIQUE,
+                "password"          TEXT        NOT NULL,
+                "parent_profile_id" INTEGER,
+                "sitter_profile_id" INTEGER,
+                "first_name"        TEXT,
+                "last_name"         TEXT,
+                "second_name"       TEXT,
+                "birth_date"        DATE,
+                "email"             TEXT
+            )
         `);
 
         await queryRunner.query(

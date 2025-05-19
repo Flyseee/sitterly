@@ -5,7 +5,7 @@ export class SitterProfile {
     @PrimaryGeneratedColumn({ name: 'id' })
     id: number;
 
-    @Column({ name: 'ordersAmount' })
+    @Column({ name: 'orders_amount' })
     ordersAmount: number;
 
     @Column({ name: 'price' })

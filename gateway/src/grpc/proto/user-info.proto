@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+package userinfo;
+
+message Error {
+  string code = 1;
+  string message = 2;
+}
+
+message User {
+  int32   id = 1;
+  string  phone_number = 2;
+  string  password = 3;
+  string  first_name = 4;
+  string  last_name = 5;
+  string  second_name = 6;
+  string  email = 7;
+  string  avatar_url = 8;
+}
+
+message UserResponseDto {
+  optional User data = 1;
+  optional Error _error = 100;
+}
+
+message UpdateUserRequest {
+  int32   id = 1;
+  string  phone_number = 2;
+  string  password = 3;
+  string  first_name = 4;
+  string  last_name = 5;
+  string  second_name = 6;
+  string  email = 7;
+  string  avatar_url = 8;
+}
+
+message GetUserByIdRequest {
+  int32 id = 1;
+}
+
+message CheckJWTRequest {
+  string token = 1;
+}
+
+message UploadAvatarRequest {
+  int32  id = 1;
+  string filename = 2;
+  bytes  fileData = 3;
+}
+
+message UploadAvatar {
+  string avatarUrl = 1;
+}
+
+message UploadAvatarResponseDto {
+  optional UploadAvatar data = 1;
+  optional Error _error = 100;
+}
+
+service UserInfoService {
+  rpc GetUserById (GetUserByIdRequest) returns (UserResponseDto);
+  rpc CheckJWT (CheckJWTRequest) returns (UserResponseDto);
+  rpc UpdateUserProfile (UpdateUserRequest) returns (UserResponseDto);
+  rpc UploadAvatar (UploadAvatarRequest) returns (UploadAvatarResponseDto);
+}

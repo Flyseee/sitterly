@@ -7,6 +7,8 @@ import { PostgresqlModule } from 'src/database-modules/postgresql/postgresql.mod
 import { RedisModule } from 'src/database-modules/redis/redis.module';
 import { RequestLogMiddleware } from '~src/app/middleware/request-log.middleware';
 import { GrpcModule } from '~src/grpc/grpc.module';
+import { FuncParentProfileModule } from '~src/grpc/modules/func-parent-profile/func-parent-profile.module';
+import { FuncSitterProfileModule } from '~src/grpc/modules/func-sitter-profile/func-sitter-profile.module';
 import { HttpModule } from '~src/http/http.module';
 import { TraceModule } from '~src/telemetry/trace/trace.module';
 import { TracingInterceptor } from './interceptors/tracing.interceptor';
@@ -22,6 +24,8 @@ import { XRequestMiddleware } from './middleware/x-request.middleware';
         CacheModule.register({}),
         HttpModule,
         GrpcModule,
+        FuncSitterProfileModule,
+        FuncParentProfileModule,
     ],
     controllers: [],
     providers: [

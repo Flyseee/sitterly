@@ -11,15 +11,14 @@ export class CreateParentProfileTable1744560698600
             (
                 "id"
                 SERIAL
-                INTEGER
                 PRIMARY
                 KEY,
                 "orders_amount"
                 INTEGER
-                DEFAULT
-                0
                 NOT
                 NULL
+                DEFAULT
+                0
             )
         `);
     }

@@ -1,11 +1,6 @@
 import { IsInt, IsNotEmpty, IsString, Min } from 'class-validator';
 
 export class ReqCreateSitterProfileDto {
-    @IsInt({ message: 'sitterProfile id must be integer' })
-    @IsNotEmpty({ message: 'sitterProfile id is empty' })
-    @Min(0)
-    id: number;
-
     @IsInt({ message: 'sitterProfile ordersAmount must be integer' })
     @IsNotEmpty({ message: 'sitterProfile ordersAmount is empty' })
     @Min(0)
