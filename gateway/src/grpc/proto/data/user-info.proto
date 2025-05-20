@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package userinfo;
+package userInfo;
 
 message Error {
   string code = 1;
@@ -57,7 +57,7 @@ message UploadAvatarResponseDto {
   optional Error _error = 100;
 }
 
-service UserInfoService {
+service UserInfoRpcService {
   rpc GetUserById (GetUserByIdRequest) returns (UserResponseDto);
   rpc CheckJWT (CheckJWTRequest) returns (UserResponseDto);
   rpc UpdateUserProfile (UpdateUserRequest) returns (UserResponseDto);

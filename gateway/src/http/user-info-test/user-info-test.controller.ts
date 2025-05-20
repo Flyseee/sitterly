@@ -26,6 +26,7 @@ import {
 } from '@nestjs/swagger';
 import { join } from 'path';
 import { HTTPTrace } from '~src/app/decorators/http-trace.decorator';
+import { HttpExceptionFilter } from '~src/app/filter/error.filter';
 import { TracingInterceptor } from '~src/app/interceptors/tracing.interceptor';
 import { ReqCheckJwtDto } from '~src/data-modules/user/dto/request-dto/req-check-jwt.dto';
 import { ReqGetUserDto } from '~src/data-modules/user/dto/request-dto/req-get-user.dto';
@@ -35,15 +36,13 @@ import { ResCheckJwtDto } from '~src/data-modules/user/dto/response-dto/res-chec
 import { ResGetUserDto } from '~src/data-modules/user/dto/response-dto/res-get-user.dto';
 import { ResUpdateUserDto } from '~src/data-modules/user/dto/response-dto/res-update-user.dto';
 import { ResUploadAvatarDto } from '~src/data-modules/user/dto/response-dto/res-upload-avatar-dto';
-import { HttpExceptionFilter } from '~src/http/filter/error.filter';
 
 class GrpcDto<T> {
     data: T;
     _error: any;
 }
 
-// Интерфейс gRPC-сервиса
-interface UserInfoRpcService {
+interface UserInfoService {
     GetUserById(getUserDto: ReqGetUserDto): Promise<GrpcDto<ResGetUserDto>>;
 
     CheckJWT(checkJwtDto: ReqCheckJwtDto): Promise<GrpcDto<ResCheckJwtDto>>;
@@ -60,21 +59,21 @@ interface UserInfoRpcService {
 @ApiTags('UserInfo/Test')
 @Controller('test-user-info')
 export class UserInfoTestController implements OnModuleInit {
-    private userInfoRpcService: UserInfoRpcService;
+    private userInfoService: UserInfoService;
 
     @Client({
         transport: Transport.GRPC,
         options: {
             package: 'userInfo',
-            protoPath: join(__dirname, '../../../grpc/proto/user-info.proto'),
+            protoPath: join(__dirname, '../../grpc/proto/user-info.proto'),
             url: 'localhost:50055',
         },
     })
     private client: ClientGrpc;
 
     onModuleInit() {
-        this.userInfoRpcService =
-            this.client.getService<UserInfoRpcService>('UserInfoRpcService');
+        this.userInfoService =
+            this.client.getService<UserInfoService>('UserInfoService');
     }
 
     @Get('/users/:id')
@@ -94,7 +93,7 @@ export class UserInfoTestController implements OnModuleInit {
     @HTTPTrace('UserInfoTest.getById')
     async getById(@Param('id') id: string): Promise<GrpcDto<ResGetUserDto>> {
         try {
-            const user = await this.userInfoRpcService.GetUserById({ id: +id });
+            const user = await this.userInfoService.GetUserById({ id: +id });
             return user;
         } catch (e) {
             throw new HttpException(e.message, HttpStatus.NOT_FOUND);
@@ -119,9 +118,7 @@ export class UserInfoTestController implements OnModuleInit {
     async checkJwt(@Headers() headers): Promise<GrpcDto<ResCheckJwtDto>> {
         try {
             const localToken = headers.authorization.split(' ')[1];
-            return await this.userInfoRpcService.CheckJWT({
-                token: localToken,
-            });
+            return await this.userInfoService.CheckJWT({ token: localToken });
         } catch (e) {
             throw new HttpException(e.message, HttpStatus.UNAUTHORIZED);
         }
@@ -158,7 +155,7 @@ export class UserInfoTestController implements OnModuleInit {
         @Body() dto: ReqUpdateUserDto,
     ): Promise<GrpcDto<ResUpdateUserDto>> {
         try {
-            return await this.userInfoRpcService.UpdateUserProfile(dto);
+            return await this.userInfoService.UpdateUserProfile(dto);
         } catch (e) {
             throw new HttpException(e.message, HttpStatus.NOT_FOUND);
         }
@@ -200,7 +197,7 @@ export class UserInfoTestController implements OnModuleInit {
         console.log(file.buffer);
 
         try {
-            const result = await this.userInfoRpcService.UploadAvatar({
+            const result = await this.userInfoService.UploadAvatar({
                 id: +id,
                 filename: file.originalname,
                 fileData: file.buffer,

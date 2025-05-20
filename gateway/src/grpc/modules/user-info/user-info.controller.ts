@@ -42,7 +42,6 @@ class GrpcDto<T> {
     _error: any;
 }
 
-// Интерфейс gRPC-сервиса
 interface UserInfoService {
     GetUserById(getUserDto: ReqGetUserDto): Promise<GrpcDto<ResGetUserDto>>;
 
@@ -66,7 +65,7 @@ export class UserInfoController implements OnModuleInit {
         transport: Transport.GRPC,
         options: {
             package: 'userinfo',
-            protoPath: join(__dirname, '../../../grpc/proto/user-info.proto'),
+            protoPath: join(__dirname, '../../grpc/proto/user-info.proto'),
             url: '89.169.2.227:51055',
         },
     })

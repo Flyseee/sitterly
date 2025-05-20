@@ -18,8 +18,8 @@ import { ValidationUtils } from '~src/utils/validation.utils';
 export class UserInfoController {
     constructor(private readonly userInfoService: UserInfoService) {}
 
-    @GrpcMethod('UserInfoService', 'GetUserById')
-    @GRPCTrace('UserInfoService.getUserById')
+    @GrpcMethod('UserInfoRpcService', 'GetUserById')
+    @GRPCTrace('UserInfoRpcService.getUserById')
     @UseFilters(GrpcExceptionFilter)
     @UseInterceptors(GrpcResultWrapperInterceptor)
     async getUserById(getUserDto: ReqGetUserDto): Promise<ResGetUserDto> {
@@ -30,8 +30,8 @@ export class UserInfoController {
         return await this.userInfoService.getUserById(dto);
     }
 
-    @GrpcMethod('UserInfoService', 'CheckJWT')
-    @GRPCTrace('UserInfoService.checkJWT')
+    @GrpcMethod('UserInfoRpcService', 'CheckJWT')
+    @GRPCTrace('UserInfoRpcService.checkJWT')
     @UseFilters(GrpcExceptionFilter)
     @UseInterceptors(GrpcResultWrapperInterceptor)
     async checkJWT(checkJwtDto: ReqCheckJwtDto): Promise<ResCheckJwtDto> {
@@ -42,8 +42,8 @@ export class UserInfoController {
         return await this.userInfoService.checkJWT(dto);
     }
 
-    @GrpcMethod('UserInfoService', 'UpdateUserProfile')
-    @GRPCTrace('UserInfoService.updateUserProfile')
+    @GrpcMethod('UserInfoRpcService', 'UpdateUserProfile')
+    @GRPCTrace('UserInfoRpcService.updateUserProfile')
     @UseFilters(GrpcExceptionFilter)
     @UseInterceptors(GrpcResultWrapperInterceptor)
     async updateUserProfile(
@@ -56,8 +56,8 @@ export class UserInfoController {
         return await this.userInfoService.updateUserProfile(dto);
     }
 
-    @GrpcMethod('UserInfoService', 'UploadAvatar')
-    @GRPCTrace('UserInfoService.uploadAvatar')
+    @GrpcMethod('UserInfoRpcService', 'UploadAvatar')
+    @GRPCTrace('UserInfoRpcService.uploadAvatar')
     @UseFilters(GrpcExceptionFilter)
     @UseInterceptors(GrpcResultWrapperInterceptor)
     async uploadAvatar(

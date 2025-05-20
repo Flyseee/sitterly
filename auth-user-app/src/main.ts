@@ -44,7 +44,7 @@ async function bootstrap() {
     app.connectMicroservice<MicroserviceOptions>({
         transport: Transport.GRPC,
         options: {
-            package: 'userinfo',
+            package: 'userInfo',
             protoPath: join(__dirname, './grpc/proto/user-info.proto'),
             url: configService.get('grpc.url'),
         },
