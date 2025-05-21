@@ -16,15 +16,6 @@ export class OrderApplicationService {
     async create(
         createApplicationDto: ReqCreateApplicationDto,
     ): Promise<ResCreateApplicationDto> {
-        const application = await this.applicationService.get(
-            createApplicationDto.id,
-        );
-        if (application)
-            throw new RpcException({
-                message: `application with id = ${createApplicationDto.id} already exists`,
-                code: GrpcStatusCode.ALREADY_EXISTS,
-            });
-
         const resCreateApp: ResCreateApplicationDto =
             await this.applicationService.create(createApplicationDto);
         return resCreateApp;

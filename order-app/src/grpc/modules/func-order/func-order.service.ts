@@ -34,13 +34,6 @@ export class FuncOrderService {
     async createOrder(
         createOrderDto: ReqCreateOrderDto,
     ): Promise<ResCreateOrderDto> {
-        const order = await this.orderService.get(createOrderDto.id);
-        if (order)
-            throw new RpcException({
-                message: `order with id = ${createOrderDto.id} already exists`,
-                code: GrpcStatusCode.ALREADY_EXISTS,
-            });
-
         const orderDate = new Date(createOrderDto.date);
         const minAllowed = new Date(Date.now() + 60 * 60 * 1000);
         if (orderDate < minAllowed) {
