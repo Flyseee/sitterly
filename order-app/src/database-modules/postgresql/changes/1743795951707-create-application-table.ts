@@ -8,7 +8,6 @@ export class CreateApplicationTable1743795951707 implements MigrationInterface {
             CREATE TABLE IF NOT EXISTS "application"
             (
                 id
-                INTEGER
                 SERIAL
                 PRIMARY
                 KEY,

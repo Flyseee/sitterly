@@ -118,36 +118,36 @@ services:
       - postgres_auth
       - jaeger
 
-  #  nest_order:
-  #    build:
-  #      context: ./order-app
-  #      dockerfile: Dockerfile
-  #      args:
-  #        - NODE_ENV=development
-  #    dns:
-  #      - 8.8.8.8
-  #    ports:
-  #      - 2020:3000
-  #      - 52055:50055
-  #    environment:
-  #      - PORT=3000
-  #      - PG_USERNAME=myuser
-  #      - PG_PASSWORD=mypassword
-  #      - PG_DATABASE=postgres
-  #      - PG_HOST=postgres_order
-  #      - PG_PORT=5432
-  #      - REDIS_URL=redis://redis:6379
-  #      - RPC_HOST=nest_order:50055
-  #      - SWAGGER_TITLE=Order App
-  #      - SERVICE_NAME=Order App
-  #      - SWAGGER_DESC=Сервис Order
-  #    volumes:
-  #      - .:/usr/src/app
-  #    depends_on:
-  #      - mongodb
-  #      - redis
-  #      - postgres_order
-  #      - jaeger
+  nest_order:
+    build:
+      context: ./order-app
+      dockerfile: Dockerfile
+      args:
+        - NODE_ENV=development
+    dns:
+      - 8.8.8.8
+    ports:
+      - 2020:3000
+      - 52055:50055
+    environment:
+      - PORT=3000
+      - PG_USERNAME=myuser
+      - PG_PASSWORD=mypassword
+      - PG_DATABASE=postgres
+      - PG_HOST=postgres_order
+      - PG_PORT=5432
+      - REDIS_URL=redis://redis:6379
+      - RPC_HOST=nest_order:50055
+      - SWAGGER_TITLE=Order App
+      - SERVICE_NAME=Order App
+      - SWAGGER_DESC=Сервис Order
+    volumes:
+      - .:/usr/src/app
+    depends_on:
+      - mongodb
+      - redis
+      - postgres_order
+      - jaeger
 
   nest_profile:
     build:

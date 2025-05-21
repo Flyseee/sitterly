@@ -8,7 +8,6 @@ export class CreateOrderTable1743795951706 implements MigrationInterface {
             CREATE TABLE IF NOT EXISTS "order"
             (
                 id
-                INTEGER
                 SERIAL
                 PRIMARY
                 KEY,
