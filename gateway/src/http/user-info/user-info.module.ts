@@ -3,7 +3,7 @@ import { UserInfoController } from './user-info.controller';
 
 @Module({
     imports: [],
-    controllers: [UserInfoController],
     providers: [],
+    controllers: [UserInfoController],
 })
 export class UserInfoModule {}

@@ -22,7 +22,6 @@ import {
     ApiOperation,
     ApiParam,
     ApiResponse,
-    ApiTags,
 } from '@nestjs/swagger';
 import { join } from 'path';
 import { HTTPTrace } from '~src/app/decorators/http-trace.decorator';
@@ -42,7 +41,7 @@ class GrpcDto<T> {
     _error: any;
 }
 
-interface UserInfoService {
+interface UserInfoRpcService {
     GetUserById(getUserDto: ReqGetUserDto): Promise<GrpcDto<ResGetUserDto>>;
 
     CheckJWT(checkJwtDto: ReqCheckJwtDto): Promise<GrpcDto<ResCheckJwtDto>>;
@@ -56,15 +55,14 @@ interface UserInfoService {
     ): Promise<GrpcDto<ResUploadAvatarDto>>;
 }
 
-@ApiTags('UserInfo/Test')
-@Controller('test-user-info')
+@Controller('userInfo')
 export class UserInfoController implements OnModuleInit {
-    private userInfoService: UserInfoService;
+    private userInfoRpcService: UserInfoRpcService;
 
     @Client({
         transport: Transport.GRPC,
         options: {
-            package: 'userinfo',
+            package: 'userInfo',
             protoPath: join(__dirname, '../../grpc/proto/user-info.proto'),
             url: '89.169.2.227:51055',
         },
@@ -72,8 +70,8 @@ export class UserInfoController implements OnModuleInit {
     private client: ClientGrpc;
 
     onModuleInit() {
-        this.userInfoService =
-            this.client.getService<UserInfoService>('UserInfoService');
+        this.userInfoRpcService =
+            this.client.getService<UserInfoRpcService>('UserInfoRpcService');
     }
 
     @Get('/users/:id')
@@ -90,11 +88,12 @@ export class UserInfoController implements OnModuleInit {
     @ApiResponse({ status: 404, description: 'Пользователь не найден' })
     @UseFilters(HttpExceptionFilter)
     @UseInterceptors(TracingInterceptor)
-    @HTTPTrace('UserInfoTest.getById')
+    @HTTPTrace('UserInfo.getById')
     async getById(@Param('id') id: string): Promise<GrpcDto<ResGetUserDto>> {
         try {
-            const user = await this.userInfoService.GetUserById({ id: +id });
-            return user;
+            return await this.userInfoRpcService.GetUserById({
+                id: +id,
+            });
         } catch (e) {
             throw new HttpException(e.message, HttpStatus.NOT_FOUND);
         }
@@ -114,11 +113,13 @@ export class UserInfoController implements OnModuleInit {
     @ApiBearerAuth('defaultBearerAuth')
     @UseFilters(HttpExceptionFilter)
     @UseInterceptors(TracingInterceptor)
-    @HTTPTrace('UserInfoTest.checkJwt')
+    @HTTPTrace('UserInfo.checkJwt')
     async checkJwt(@Headers() headers): Promise<GrpcDto<ResCheckJwtDto>> {
         try {
             const localToken = headers.authorization.split(' ')[1];
-            return await this.userInfoService.CheckJWT({ token: localToken });
+            return await this.userInfoRpcService.CheckJWT({
+                token: localToken,
+            });
         } catch (e) {
             throw new HttpException(e.message, HttpStatus.UNAUTHORIZED);
         }
@@ -150,12 +151,12 @@ export class UserInfoController implements OnModuleInit {
     })
     @UseFilters(HttpExceptionFilter)
     @UseInterceptors(TracingInterceptor)
-    @HTTPTrace('UserInfoTest.updateProfile')
-    async updateProfile(
+    @HTTPTrace('UserInfo.updateUser')
+    async updateUser(
         @Body() dto: ReqUpdateUserDto,
     ): Promise<GrpcDto<ResUpdateUserDto>> {
         try {
-            return await this.userInfoService.UpdateUserProfile(dto);
+            return await this.userInfoRpcService.UpdateUserProfile(dto);
         } catch (e) {
             throw new HttpException(e.message, HttpStatus.NOT_FOUND);
         }
@@ -163,7 +164,7 @@ export class UserInfoController implements OnModuleInit {
 
     @Post('/users/:id/avatar')
     @ApiOperation({
-        summary: 'Загрузить аватарку через gRPC',
+        summary: 'Загрузить аватарку',
         operationId: 'user-upload-avatar',
     })
     @ApiConsumes('multipart/form-data')
@@ -189,20 +190,17 @@ export class UserInfoController implements OnModuleInit {
     @UseInterceptors(FileInterceptor('file'))
     @UseFilters(HttpExceptionFilter)
     @UseInterceptors(TracingInterceptor)
-    @HTTPTrace('UserInfoTest.uploadAvatar')
+    @HTTPTrace('UserInfo.uploadAvatar')
     async uploadAvatar(
         @Param('id') id: string,
         @UploadedFile() file: Express.Multer.File,
     ): Promise<GrpcDto<ResUploadAvatarDto>> {
-        console.log(file.buffer);
-
         try {
-            const result = await this.userInfoService.UploadAvatar({
+            return await this.userInfoRpcService.UploadAvatar({
                 id: +id,
                 filename: file.originalname,
                 fileData: file.buffer,
             });
-            return result;
         } catch (e) {
             throw new HttpException(
                 e.message,
