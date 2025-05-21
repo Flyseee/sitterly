@@ -140,7 +140,7 @@ export class FuncOrderController implements OnModuleInit {
                 durationMinutes: { type: 'number' },
                 cost: { type: 'number' },
                 kidsDescription: { type: 'string' },
-                date: { type: 'string' },
+                date: { type: 'string', format: 'date' },
             },
         },
     })
@@ -180,7 +180,7 @@ export class FuncOrderController implements OnModuleInit {
                 durationMinutes: { type: 'number' },
                 cost: { type: 'number' },
                 kidsDescription: { type: 'string' },
-                date: { type: 'string' },
+                date: { type: 'string', format: 'date' },
             },
         },
     })

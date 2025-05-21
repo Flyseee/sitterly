@@ -116,6 +116,13 @@ export class UserInfoController implements OnModuleInit {
     @HTTPTrace('UserInfo.checkJwt')
     async checkJwt(@Headers() headers): Promise<GrpcDto<ResCheckJwtDto>> {
         try {
+            if (!headers.authorization) {
+                throw new HttpException(
+                    'headers.authorization is empty',
+                    HttpStatus.UNAUTHORIZED,
+                );
+            }
+
             const localToken = headers.authorization.split(' ')[1];
             return await this.userInfoRpcService.CheckJWT({
                 token: localToken,
