@@ -63,11 +63,11 @@ export class UserInfoService {
         return resCheckJwt;
     }
 
-    @Trace('UserInfoService.updateUserProfile', {
+    @Trace('UserInfoService.updateUser', {
         logInput: true,
         logOutput: true,
     })
-    async updateUserProfile(
+    async updateUser(
         reqUpdateUserDto: ReqUpdateUserDto,
     ): Promise<ResUpdateUserDto> {
         const user = await this.userService.findOne({

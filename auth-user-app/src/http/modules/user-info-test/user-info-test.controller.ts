@@ -153,8 +153,8 @@ export class UserInfoTestController implements OnModuleInit {
     })
     @UseFilters(HttpExceptionFilter)
     @UseInterceptors(TracingInterceptor)
-    @HTTPTrace('UserInfoTest.updateProfile')
-    async updateProfile(
+    @HTTPTrace('UserInfoTest.updateUser')
+    async updateUser(
         @Body() dto: ReqUpdateUserDto,
     ): Promise<GrpcDto<ResUpdateUserDto>> {
         try {

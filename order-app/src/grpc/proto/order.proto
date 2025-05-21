@@ -9,6 +9,18 @@ message Error {
   string message = 2;
 }
 
+message CreateOrderArgs {
+  int32 parentId = 2;
+  int32 sitterId = 3;
+  string description = 4;
+  string location = 5;
+  int32 durationHours = 6;
+  int32 durationMinutes = 7;
+  int32 cost = 8;
+  string kidsDescription = 9;
+  string date = 10;
+}
+
 message Order {
   int32 id = 1;
   int32 parentId = 2;
@@ -51,6 +63,6 @@ message OrderResult {
 service FuncOrderRpcService {
   rpc getActualOrders (google.protobuf.Empty) returns (OrderArrayResult);
   rpc getOrdersForUser (getOrderArg) returns (OrderArrayResult);
-  rpc createOrder (Order) returns (OrderResult);
+  rpc createOrder (CreateOrderArgs) returns (OrderResult);
   rpc updateOrder (Order) returns (OrderResult);
 }

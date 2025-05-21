@@ -42,18 +42,18 @@ export class UserInfoController {
         return await this.userInfoService.checkJWT(dto);
     }
 
-    @GrpcMethod('UserInfoRpcService', 'UpdateUserProfile')
-    @GRPCTrace('UserInfoRpcService.updateUserProfile')
+    @GrpcMethod('UserInfoRpcService', 'UpdateUser')
+    @GRPCTrace('UserInfoRpcService.updateUser')
     @UseFilters(GrpcExceptionFilter)
     @UseInterceptors(GrpcResultWrapperInterceptor)
-    async updateUserProfile(
+    async updateUser(
         updateUserDto: ReqUpdateUserDto,
     ): Promise<ResUpdateUserDto> {
         const dto = await ValidationUtils.validateInput(
             ReqUpdateUserDto,
             updateUserDto,
         );
-        return await this.userInfoService.updateUserProfile(dto);
+        return await this.userInfoService.updateUser(dto);
     }
 
     @GrpcMethod('UserInfoRpcService', 'UploadAvatar')

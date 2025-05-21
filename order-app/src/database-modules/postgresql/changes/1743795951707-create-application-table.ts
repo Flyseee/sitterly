@@ -9,6 +9,7 @@ export class CreateApplicationTable1743795951707 implements MigrationInterface {
             (
                 id
                 INTEGER
+                SERIAL
                 PRIMARY
                 KEY,
                 order_id

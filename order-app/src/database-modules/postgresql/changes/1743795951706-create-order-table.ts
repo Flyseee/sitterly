@@ -9,6 +9,7 @@ export class CreateOrderTable1743795951706 implements MigrationInterface {
             (
                 id
                 INTEGER
+                SERIAL
                 PRIMARY
                 KEY,
                 parent_id
