@@ -77,7 +77,6 @@ export class OrderApplicationController implements OnModuleInit {
     @ApiBody({
         schema: {
             properties: {
-                id: { type: 'number' },
                 orderId: { type: 'number' },
                 sitterId: { type: 'number' },
             },

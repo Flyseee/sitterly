@@ -131,7 +131,6 @@ export class FuncOrderController implements OnModuleInit {
     @ApiBody({
         schema: {
             properties: {
-                id: { type: 'number' },
                 parentId: { type: 'number' },
                 sitterId: { type: 'number' },
                 description: { type: 'string' },

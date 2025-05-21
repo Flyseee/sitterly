@@ -8,6 +8,11 @@ message GetApplicationArgs {
   int32 orderId = 1;
 }
 
+message CreateApplicationArgs {
+  int32 orderId = 2;
+  int32 sitterId = 3;
+}
+
 message Application {
   int32 id = 1;
   int32 orderId = 2;
@@ -39,7 +44,7 @@ message Empty {
 }
 
 service OrderApplicationRpcService {
-  rpc applyOrder (Application) returns (CreateResult);
+  rpc applyOrder (CreateApplicationArgs) returns (CreateResult);
   rpc getApplicationsForOrder (GetApplicationArgs) returns (GetResult);
   rpc cancelOrderApplication (CancelApplicationArgs) returns (Empty);
 }
