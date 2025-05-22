@@ -17,15 +17,15 @@ import { join } from 'path';
 import { HTTPTrace } from '~src/app/decorators/http-trace.decorator';
 import { GrpcExceptionFilter } from '~src/app/filter/grpc-exception.filter';
 import { GrpcResultWrapperInterceptor } from '~src/app/interceptors/grpc-result-wrapper.interceptor';
-import { ReqCreateOrderDto } from '~src/data-modules/order/dto/request-dto/req-create-order.dto';
-import { ReqGetOrdersForUserDto } from '~src/data-modules/order/dto/request-dto/req-get-orders-for-user.dto';
-import { ReqUpdateOrderDto } from '~src/data-modules/order/dto/request-dto/req-update-order.dto';
-import { ResCreateOrderDto } from '~src/data-modules/order/dto/response-dto/res-create-order.dto';
-import { ResGetActualOrders } from '~src/data-modules/order/dto/response-dto/res-get-actual-orders.dto';
-import { ResGetOrdersForUserDto } from '~src/data-modules/order/dto/response-dto/res-get-orders-for-user.dto';
-import { ResUpdateOrderDto } from '~src/data-modules/order/dto/response-dto/res-update-order.dto';
-import { OrderDateType } from '~src/data-modules/order/enums/order-date-type.enum';
-import { ProfileType } from '~src/data-modules/order/enums/profile-type.enum';
+import { OrderDateType } from '~src/data-modules/enums/order-date-type.enum';
+import { ProfileType } from '~src/data-modules/enums/profile-type.enum';
+import { ReqCreateOrderDto } from '~src/data-modules/order/request-dto/req-create-order.dto';
+import { ReqGetOrdersForUserDto } from '~src/data-modules/order/request-dto/req-get-orders-for-user.dto';
+import { ReqUpdateOrderDto } from '~src/data-modules/order/request-dto/req-update-order.dto';
+import { ResCreateOrderDto } from '~src/data-modules/order/response-dto/res-create-order.dto';
+import { ResGetActualOrders } from '~src/data-modules/order/response-dto/res-get-actual-orders.dto';
+import { ResGetOrdersForUserDto } from '~src/data-modules/order/response-dto/res-get-orders-for-user.dto';
+import { ResUpdateOrderDto } from '~src/data-modules/order/response-dto/res-update-order.dto';
 
 class GrpcDto<T> {
     data: T;
@@ -33,7 +33,7 @@ class GrpcDto<T> {
 }
 
 interface FuncOrderRpcService {
-    getActualOrders(): Promise<GrpcDto<ResGetActualOrders[]>>;
+    getActualOrders({}): Promise<GrpcDto<ResGetActualOrders[]>>;
 
     getOrdersForUser(
         dto: ReqGetOrdersForUserDto,
@@ -80,7 +80,7 @@ export class FuncOrderController implements OnModuleInit {
     @UseFilters(GrpcExceptionFilter)
     @UseInterceptors(GrpcResultWrapperInterceptor)
     getActualOrders(): Promise<GrpcDto<ResGetActualOrders[]>> {
-        return this.funcOrderRpcService.getActualOrders();
+        return this.funcOrderRpcService.getActualOrders({});
     }
 
     @Post('/orders')
@@ -127,7 +127,6 @@ export class FuncOrderController implements OnModuleInit {
         description: 'Заказ создан',
         type: GrpcDto<ResCreateOrderDto>,
     })
-    @ApiResponse({ status: 409, description: 'Заказ уже существует' })
     @ApiBody({
         schema: {
             properties: {
@@ -139,7 +138,7 @@ export class FuncOrderController implements OnModuleInit {
                 durationMinutes: { type: 'number' },
                 cost: { type: 'number' },
                 kidsDescription: { type: 'string' },
-                date: { type: 'string', format: 'date' },
+                date: { type: 'string', format: 'date-time' },
             },
         },
     })
@@ -179,7 +178,7 @@ export class FuncOrderController implements OnModuleInit {
                 durationMinutes: { type: 'number' },
                 cost: { type: 'number' },
                 kidsDescription: { type: 'string' },
-                date: { type: 'string', format: 'date' },
+                date: { type: 'string', format: 'date-time' },
             },
         },
     })

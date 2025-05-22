@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+package rating;
+
+enum ProfileType {
+    PARENT = 0;
+    SITTER = 1;
+}
+
+message GetRatingArgs {
+  int32 profileId = 1;
+  ProfileType profileType = 2;
+}
+
+message Rating {
+  int32 profileId = 1;
+  ProfileType profileType = 2;
+  float rating = 3;
+  int32 reviewsAmount = 4;
+}
+
+message Error {
+  string code = 1;
+  string message = 2;
+}
+
+message RatingResult {
+  optional Rating data = 1;
+  optional Error _error = 100;
+}
+
+message CalcRatingDto {
+  int32 stars = 1;
+}
+
+service UserRatingRpcService {
+  rpc get (GetRatingArgs) returns (RatingResult);
+  rpc put (Rating) returns (RatingResult);
+}

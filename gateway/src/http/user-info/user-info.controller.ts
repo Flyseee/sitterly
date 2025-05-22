@@ -27,14 +27,14 @@ import { join } from 'path';
 import { HTTPTrace } from '~src/app/decorators/http-trace.decorator';
 import { HttpExceptionFilter } from '~src/app/filter/error.filter';
 import { TracingInterceptor } from '~src/app/interceptors/tracing.interceptor';
-import { ReqCheckJwtDto } from '~src/data-modules/user/dto/request-dto/req-check-jwt.dto';
-import { ReqGetUserDto } from '~src/data-modules/user/dto/request-dto/req-get-user.dto';
-import { ReqUpdateUserDto } from '~src/data-modules/user/dto/request-dto/req-update-user.dto';
-import { ReqUploadAvatarDto } from '~src/data-modules/user/dto/request-dto/req-upload-avatar.dto';
-import { ResCheckJwtDto } from '~src/data-modules/user/dto/response-dto/res-check-jwt.dto';
-import { ResGetUserDto } from '~src/data-modules/user/dto/response-dto/res-get-user.dto';
-import { ResUpdateUserDto } from '~src/data-modules/user/dto/response-dto/res-update-user.dto';
-import { ResUploadAvatarDto } from '~src/data-modules/user/dto/response-dto/res-upload-avatar-dto';
+import { ReqCheckJwtDto } from '~src/data-modules/user/request-dto/req-check-jwt.dto';
+import { ReqGetUserDto } from '~src/data-modules/user/request-dto/req-get-user.dto';
+import { ReqUpdateUserDto } from '~src/data-modules/user/request-dto/req-update-user.dto';
+import { ReqUploadAvatarDto } from '~src/data-modules/user/request-dto/req-upload-avatar.dto';
+import { ResCheckJwtDto } from '~src/data-modules/user/response-dto/res-check-jwt.dto';
+import { ResGetUserDto } from '~src/data-modules/user/response-dto/res-get-user.dto';
+import { ResUpdateUserDto } from '~src/data-modules/user/response-dto/res-update-user.dto';
+import { ResUploadAvatarDto } from '~src/data-modules/user/response-dto/res-upload-avatar-dto';
 
 class GrpcDto<T> {
     data: T;

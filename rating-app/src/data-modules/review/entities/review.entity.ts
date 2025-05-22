@@ -1,9 +1,9 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { ProfileType } from '~src/data-modules/review/enums/profile-type.enum';
 
 @Entity({ name: 'review' })
 export class Review {
-    @PrimaryColumn({ name: 'id' })
+    @PrimaryGeneratedColumn({ name: 'id' })
     id: number;
 
     @Column({ name: 'profile_from_id' })
