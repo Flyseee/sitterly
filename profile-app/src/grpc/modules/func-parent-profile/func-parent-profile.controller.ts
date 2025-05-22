@@ -6,6 +6,7 @@ import { GrpcResultWrapperInterceptor } from '~src/app/interceptors/grpc-result-
 import { ReqCreateParentProfileDto } from '~src/data-modules/parent-profile/dto/request-dto/req-create-parent-profile.dto';
 import { ReqGetParentProfileDto } from '~src/data-modules/parent-profile/dto/request-dto/req-get-parent-profile.dto';
 import { ReqUpdateParentProfileDto } from '~src/data-modules/parent-profile/dto/request-dto/req-update-parent-profile.dto';
+import { ResCreateParentProfileDto } from '~src/data-modules/parent-profile/dto/response-dto/res-create-parent-profile.dto';
 import { ResGetParentProfileDto } from '~src/data-modules/parent-profile/dto/response-dto/res-get-parent-profile.dto';
 import { ResUpdateParentProfileDto } from '~src/data-modules/parent-profile/dto/response-dto/res-update-parent-profile.dto';
 import { FuncParentProfileService } from '~src/grpc/modules/func-parent-profile/func-parent-profile.service';
@@ -37,7 +38,7 @@ export class FuncParentProfileController {
     @UseInterceptors(GrpcResultWrapperInterceptor)
     async put(
         createParentProfileDto: ReqCreateParentProfileDto,
-    ): Promise<ResUpdateParentProfileDto | null> {
+    ): Promise<ResCreateParentProfileDto | null> {
         const dto = await ValidationUtils.validateInput(
             ReqCreateParentProfileDto,
             createParentProfileDto,

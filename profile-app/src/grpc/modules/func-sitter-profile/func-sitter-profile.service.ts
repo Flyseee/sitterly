@@ -4,6 +4,7 @@ import { GrpcStatusCode } from '~src/app/filter/grpc-status-code.enum';
 import { ReqCreateSitterProfileDto } from '~src/data-modules/sitter-profile/dto/request-dto/req-create-sitter-profile.dto';
 import { ReqGetSitterProfileDto } from '~src/data-modules/sitter-profile/dto/request-dto/req-get-sitter-profile.dto';
 import { ReqUpdateSitterProfileDto } from '~src/data-modules/sitter-profile/dto/request-dto/req-update-sitter-profile.dto';
+import { ResCreateSitterProfileDto } from '~src/data-modules/sitter-profile/dto/response-dto/res-create-sitter-profile.dto';
 import { ResGetSitterProfileDto } from '~src/data-modules/sitter-profile/dto/response-dto/res-get-sitter-profile.dto';
 import { ResUpdateSitterProfileDto } from '~src/data-modules/sitter-profile/dto/response-dto/res-update-sitter-profile.dto';
 import { SitterProfileService } from '~src/data-modules/sitter-profile/sitter-profile.service';
@@ -25,8 +26,8 @@ export class FuncSitterProfileService {
     @Trace('FuncSitterProfileService.put', { logInput: true, logOutput: true })
     async put(
         createSitterProfileDto: ReqCreateSitterProfileDto,
-    ): Promise<ResUpdateSitterProfileDto | null> {
-        const resSitter: ResUpdateSitterProfileDto | null =
+    ): Promise<ResCreateSitterProfileDto | null> {
+        const resSitter: ResCreateSitterProfileDto | null =
             await this.sitterProfileService.put(createSitterProfileDto);
         return resSitter;
     }

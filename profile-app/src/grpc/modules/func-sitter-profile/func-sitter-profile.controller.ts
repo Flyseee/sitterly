@@ -6,6 +6,7 @@ import { GrpcResultWrapperInterceptor } from '~src/app/interceptors/grpc-result-
 import { ReqCreateSitterProfileDto } from '~src/data-modules/sitter-profile/dto/request-dto/req-create-sitter-profile.dto';
 import { ReqGetSitterProfileDto } from '~src/data-modules/sitter-profile/dto/request-dto/req-get-sitter-profile.dto';
 import { ReqUpdateSitterProfileDto } from '~src/data-modules/sitter-profile/dto/request-dto/req-update-sitter-profile.dto';
+import { ResCreateSitterProfileDto } from '~src/data-modules/sitter-profile/dto/response-dto/res-create-sitter-profile.dto';
 import { ResGetSitterProfileDto } from '~src/data-modules/sitter-profile/dto/response-dto/res-get-sitter-profile.dto';
 import { ResUpdateSitterProfileDto } from '~src/data-modules/sitter-profile/dto/response-dto/res-update-sitter-profile.dto';
 import { FuncSitterProfileService } from '~src/grpc/modules/func-sitter-profile/func-sitter-profile.service';
@@ -37,7 +38,7 @@ export class FuncSitterProfileController {
     @UseInterceptors(GrpcResultWrapperInterceptor)
     async put(
         createSitterProfileDto: ReqCreateSitterProfileDto,
-    ): Promise<ResUpdateSitterProfileDto | null> {
+    ): Promise<ResCreateSitterProfileDto | null> {
         const dto = await ValidationUtils.validateInput(
             ReqCreateSitterProfileDto,
             createSitterProfileDto,

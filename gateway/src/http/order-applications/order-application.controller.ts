@@ -73,7 +73,6 @@ export class OrderApplicationController implements OnModuleInit {
         description: 'Заявка создана',
         type: GrpcDto<ResCreateApplicationDto>,
     })
-    @ApiResponse({ status: 409, description: 'Заявка уже существует' })
     @ApiBody({
         schema: {
             properties: {
