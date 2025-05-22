@@ -15,8 +15,8 @@ import { Client, ClientGrpc, Transport } from '@nestjs/microservices';
 import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { join } from 'path';
 import { HTTPTrace } from '~src/app/decorators/http-trace.decorator';
-import { GrpcExceptionFilter } from '~src/app/filter/grpc-exception.filter';
-import { GrpcResultWrapperInterceptor } from '~src/app/interceptors/grpc-result-wrapper.interceptor';
+import { HttpExceptionFilter } from '~src/app/filter/error.filter';
+import { TracingInterceptor } from '~src/app/interceptors/tracing.interceptor';
 import { OrderDateType } from '~src/data-modules/enums/order-date-type.enum';
 import { ProfileType } from '~src/data-modules/enums/profile-type.enum';
 import { ReqCreateOrderDto } from '~src/data-modules/order/request-dto/req-create-order.dto';
@@ -77,8 +77,8 @@ export class FuncOrderController implements OnModuleInit {
         type: GrpcDto<ResGetActualOrders[]>,
     })
     @HTTPTrace('FuncOrderRpcService.getActualOrders')
-    @UseFilters(GrpcExceptionFilter)
-    @UseInterceptors(GrpcResultWrapperInterceptor)
+    @UseFilters(HttpExceptionFilter)
+    @UseInterceptors(TracingInterceptor)
     getActualOrders(): Promise<GrpcDto<ResGetActualOrders[]>> {
         return this.funcOrderRpcService.getActualOrders({});
     }
@@ -109,8 +109,8 @@ export class FuncOrderController implements OnModuleInit {
         type: GrpcDto<ResGetOrdersForUserDto[] | undefined>,
     })
     @HTTPTrace('FuncOrderRpcService.getOrdersForUser')
-    @UseFilters(GrpcExceptionFilter)
-    @UseInterceptors(GrpcResultWrapperInterceptor)
+    @UseFilters(HttpExceptionFilter)
+    @UseInterceptors(TracingInterceptor)
     async getOrdersForUser(
         @Body() dto: ReqGetOrdersForUserDto,
     ): Promise<GrpcDto<ResGetOrdersForUserDto[] | undefined>> {
@@ -143,8 +143,8 @@ export class FuncOrderController implements OnModuleInit {
         },
     })
     @HTTPTrace('FuncOrderRpcService.createOrder')
-    @UseFilters(GrpcExceptionFilter)
-    @UseInterceptors(GrpcResultWrapperInterceptor)
+    @UseFilters(HttpExceptionFilter)
+    @UseInterceptors(TracingInterceptor)
     async createOrder(
         @Body() dto: ReqCreateOrderDto,
     ): Promise<GrpcDto<ResCreateOrderDto>> {
@@ -183,8 +183,8 @@ export class FuncOrderController implements OnModuleInit {
         },
     })
     @HTTPTrace('FuncOrderRpcService.updateOrder')
-    @UseFilters(GrpcExceptionFilter)
-    @UseInterceptors(GrpcResultWrapperInterceptor)
+    @UseFilters(HttpExceptionFilter)
+    @UseInterceptors(TracingInterceptor)
     async updateOrder(
         @Body() dto: ReqUpdateOrderDto,
     ): Promise<GrpcDto<ResUpdateOrderDto>> {

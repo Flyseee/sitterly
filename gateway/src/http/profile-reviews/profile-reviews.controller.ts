@@ -11,8 +11,8 @@ import { Client, ClientGrpc, Transport } from '@nestjs/microservices';
 import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { join } from 'path';
 import { HTTPTrace } from '~src/app/decorators/http-trace.decorator';
-import { GrpcExceptionFilter } from '~src/app/filter/grpc-exception.filter';
-import { GrpcResultWrapperInterceptor } from '~src/app/interceptors/grpc-result-wrapper.interceptor';
+import { HttpExceptionFilter } from '~src/app/filter/error.filter';
+import { TracingInterceptor } from '~src/app/interceptors/tracing.interceptor';
 import { ProfileType } from '~src/data-modules/enums/profile-type.enum';
 import { ReqCreateReviewDto } from '~src/data-modules/review/request-dto/req-create-review.dto';
 import { ReqGetReviewsForProfileDto } from '~src/data-modules/review/request-dto/req-get-reviews-for-profile.dto';
@@ -78,8 +78,8 @@ export class ProfileReviewsController implements OnModuleInit {
         },
     })
     @HTTPTrace('ProfileReviewsRpcService.put')
-    @UseFilters(GrpcExceptionFilter)
-    @UseInterceptors(GrpcResultWrapperInterceptor)
+    @UseFilters(HttpExceptionFilter)
+    @UseInterceptors(TracingInterceptor)
     async put(
         @Body() dto: ReqCreateReviewDto,
     ): Promise<GrpcDto<ResCreateReviewDto>> {
@@ -108,8 +108,8 @@ export class ProfileReviewsController implements OnModuleInit {
         },
     })
     @HTTPTrace('ProfileReviewsRpcService.getListForProfile')
-    @UseFilters(GrpcExceptionFilter)
-    @UseInterceptors(GrpcResultWrapperInterceptor)
+    @UseFilters(HttpExceptionFilter)
+    @UseInterceptors(TracingInterceptor)
     async getListForProfile(
         @Body() dto: ReqGetReviewsForProfileDto,
     ): Promise<GrpcDto<ResGetReviewsForProfileDto[]>> {

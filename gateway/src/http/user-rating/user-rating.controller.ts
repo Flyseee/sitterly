@@ -1,4 +1,5 @@
 import {
+    Body,
     Controller,
     OnModuleInit,
     Post,
@@ -10,8 +11,8 @@ import { Client, ClientGrpc, Transport } from '@nestjs/microservices';
 import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { join } from 'path';
 import { HTTPTrace } from '~src/app/decorators/http-trace.decorator';
-import { GrpcExceptionFilter } from '~src/app/filter/grpc-exception.filter';
-import { GrpcResultWrapperInterceptor } from '~src/app/interceptors/grpc-result-wrapper.interceptor';
+import { HttpExceptionFilter } from '~src/app/filter/error.filter';
+import { TracingInterceptor } from '~src/app/interceptors/tracing.interceptor';
 import { ProfileType } from '~src/data-modules/enums/profile-type.enum';
 import { ReqCreateRatingDto } from '~src/data-modules/rating/request-dto/req-create-rating.dto';
 import { ReqGetRatingDto } from '~src/data-modules/rating/request-dto/req-get-rating.dto';
@@ -74,9 +75,11 @@ export class UserRatingController implements OnModuleInit {
         },
     })
     @HTTPTrace('UserRatingRpcService.put')
-    @UseFilters(GrpcExceptionFilter)
-    @UseInterceptors(GrpcResultWrapperInterceptor)
-    async put(dto: ReqCreateRatingDto): Promise<GrpcDto<ResCreateRatingDto>> {
+    @UseFilters(HttpExceptionFilter)
+    @UseInterceptors(TracingInterceptor)
+    async put(
+        @Body() dto: ReqCreateRatingDto,
+    ): Promise<GrpcDto<ResCreateRatingDto>> {
         return this.userRatingRpcService.put(dto);
     }
 
@@ -102,9 +105,9 @@ export class UserRatingController implements OnModuleInit {
         type: GrpcDto<ResGetRatingDto>,
     })
     @HTTPTrace('UserRatingRpcService.get')
-    @UseFilters(GrpcExceptionFilter)
-    @UseInterceptors(GrpcResultWrapperInterceptor)
-    async get(dto: ReqGetRatingDto): Promise<GrpcDto<ResGetRatingDto>> {
+    @UseFilters(HttpExceptionFilter)
+    @UseInterceptors(TracingInterceptor)
+    async get(@Body() dto: ReqGetRatingDto): Promise<GrpcDto<ResGetRatingDto>> {
         return this.userRatingRpcService.get(dto);
     }
 }

@@ -14,8 +14,8 @@ import { Client, ClientGrpc, Transport } from '@nestjs/microservices';
 import { ApiBody, ApiOperation, ApiParam, ApiResponse } from '@nestjs/swagger';
 import { join } from 'path';
 import { HTTPTrace } from '~src/app/decorators/http-trace.decorator';
-import { GrpcExceptionFilter } from '~src/app/filter/grpc-exception.filter';
-import { GrpcResultWrapperInterceptor } from '~src/app/interceptors/grpc-result-wrapper.interceptor';
+import { HttpExceptionFilter } from '~src/app/filter/error.filter';
+import { TracingInterceptor } from '~src/app/interceptors/tracing.interceptor';
 import { ReqCancelApplicationDto } from '~src/data-modules/application/request-dto/req-cancel-application.dto';
 import { ReqCreateApplicationDto } from '~src/data-modules/application/request-dto/req-create-application.dto';
 import { ReqGetApplicationDto } from '~src/data-modules/application/request-dto/req-get-application.dto';
@@ -83,8 +83,8 @@ export class OrderApplicationController implements OnModuleInit {
         },
     })
     @HTTPTrace('OrderApplicationRpcService.applyOrder')
-    @UseFilters(GrpcExceptionFilter)
-    @UseInterceptors(GrpcResultWrapperInterceptor)
+    @UseFilters(HttpExceptionFilter)
+    @UseInterceptors(TracingInterceptor)
     async applyOrder(
         @Body() dto: ReqCreateApplicationDto,
     ): Promise<GrpcDto<ResCreateApplicationDto>> {
@@ -107,8 +107,8 @@ export class OrderApplicationController implements OnModuleInit {
         type: GrpcDto<ResGetApplicationDto[]>,
     })
     @HTTPTrace('OrderApplicationRpcService.getApplicationsForOrder')
-    @UseFilters(GrpcExceptionFilter)
-    @UseInterceptors(GrpcResultWrapperInterceptor)
+    @UseFilters(HttpExceptionFilter)
+    @UseInterceptors(TracingInterceptor)
     async getApplicationsForOrder(
         @Param('id') id: string,
     ): Promise<GrpcDto<ResGetApplicationDto[]>> {
@@ -130,8 +130,8 @@ export class OrderApplicationController implements OnModuleInit {
     })
     @ApiResponse({ status: 404, description: 'Заявка не найдена' })
     @HTTPTrace('OrderApplicationRpcService.cancelOrderApplication')
-    @UseFilters(GrpcExceptionFilter)
-    @UseInterceptors(GrpcResultWrapperInterceptor)
+    @UseFilters(HttpExceptionFilter)
+    @UseInterceptors(TracingInterceptor)
     async cancelOrderApplication(
         @Param('id') id: string,
     ): Promise<GrpcDto<ResCancelApplicationDto>> {

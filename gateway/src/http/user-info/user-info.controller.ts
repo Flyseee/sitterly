@@ -76,7 +76,7 @@ export class UserInfoController implements OnModuleInit {
 
     @Get('/users/:id')
     @ApiOperation({
-        summary: 'Получить пользователя по ID через gRPC',
+        summary: 'Получить пользователя по ID',
         operationId: 'get-by-id',
     })
     @ApiParam({ name: 'id', type: 'number', description: 'ID пользователя' })
