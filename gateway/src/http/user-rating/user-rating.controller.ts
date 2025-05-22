@@ -1,6 +1,7 @@
 import {
     Controller,
-    Get,
+    OnModuleInit,
+    Post,
     Put,
     UseFilters,
     UseInterceptors,
@@ -29,7 +30,7 @@ interface UserRatingRpcService {
 }
 
 @Controller('userRating')
-export class UserRatingController {
+export class UserRatingController implements OnModuleInit {
     private userRatingRpcService: UserRatingRpcService;
 
     @Client({
@@ -49,7 +50,7 @@ export class UserRatingController {
             );
     }
 
-    @Get('/rating')
+    @Put('/rating')
     @ApiOperation({
         summary: 'Создать рейтинг для профиля',
         operationId: 'create-profile-rating',
@@ -79,7 +80,7 @@ export class UserRatingController {
         return this.userRatingRpcService.put(dto);
     }
 
-    @Put('/rating')
+    @Post('/rating')
     @ApiOperation({
         summary: 'Получить рейтинг профиля',
         operationId: 'get-profile-rating',

@@ -1,8 +1,8 @@
 import {
     Body,
     Controller,
-    Get,
     OnModuleInit,
+    Post,
     Put,
     UseFilters,
     UseInterceptors,
@@ -39,7 +39,7 @@ export class ProfileReviewsController implements OnModuleInit {
     @Client({
         transport: Transport.GRPC,
         options: {
-            package: 'reviews',
+            package: 'review',
             protoPath: join(__dirname, '../../grpc/proto/review.proto'),
             url: '89.169.2.227:54055',
         },
@@ -86,7 +86,7 @@ export class ProfileReviewsController implements OnModuleInit {
         return this.profileReviewsRpcService.put(dto);
     }
 
-    @Get('/reviews')
+    @Post('/reviews')
     @ApiOperation({
         summary: 'Получить отзывы профиля',
         operationId: 'get-profile-reviews',
