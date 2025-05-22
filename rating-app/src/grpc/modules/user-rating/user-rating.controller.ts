@@ -7,7 +7,7 @@ import { ReqCreateRatingDto } from '~src/data-modules/rating/dto/request-dto/req
 import { ReqGetRatingDto } from '~src/data-modules/rating/dto/request-dto/req-get-rating.dto';
 import { ResCreateRatingDto } from '~src/data-modules/rating/dto/response-dto/res-create-rating.dto';
 import { ResGetRatingDto } from '~src/data-modules/rating/dto/response-dto/res-get-rating.dto';
-import { UserRatingService } from '~src/grpc/modules/userRating/user-rating.service';
+import { UserRatingService } from '~src/grpc/modules/user-rating/user-rating.service';
 import { ValidationUtils } from '~src/utils/validation.utils';
 
 @Controller('userRating')

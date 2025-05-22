@@ -8,8 +8,8 @@ import { PostgresqlModule } from 'src/database-modules/postgresql/postgresql.mod
 import { RedisModule } from 'src/database-modules/redis/redis.module';
 import { RequestLogMiddleware } from '~src/app/middleware/request-log.middleware';
 import { GrpcModule } from '~src/grpc/grpc.module';
-import { ProfileReviewsModule } from '~src/grpc/modules/profileReviews/profile-reviews.module';
-import { UserRatingModule } from '~src/grpc/modules/userRating/user-rating.module';
+import { ProfileReviewsModule } from '~src/grpc/modules/profile-reviews/profile-reviews.module';
+import { UserRatingModule } from '~src/grpc/modules/user-rating/user-rating.module';
 import { HttpModule } from '~src/http/http.module';
 import { TraceModule } from '~src/telemetry/trace/trace.module';
 import { XRequestMiddleware } from './middleware/x-request.middleware';

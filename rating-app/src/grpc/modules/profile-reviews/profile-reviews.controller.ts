@@ -7,7 +7,7 @@ import { ReqCreateReviewDto } from '~src/data-modules/review/dto/request-dto/req
 import { ReqGetReviewsForProfileDto } from '~src/data-modules/review/dto/request-dto/req-get-reviews-for-profile.dto';
 import { ResCreateReviewDto } from '~src/data-modules/review/dto/response-dto/res-create-review.dto';
 import { ResGetReviewsForProfileDto } from '~src/data-modules/review/dto/response-dto/res-get-reviews-for-profile.dto';
-import { ProfileReviewsService } from '~src/grpc/modules/profileReviews/profile-reviews.service';
+import { ProfileReviewsService } from '~src/grpc/modules/profile-reviews/profile-reviews.service';
 import { ValidationUtils } from '~src/utils/validation.utils';
 
 @Controller('profileReviews')

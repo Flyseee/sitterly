@@ -9,7 +9,9 @@ import { GrpcModule } from '~src/grpc/grpc.module';
 import { FuncOrderModule } from '~src/http/func-order/func-order.module';
 import { HttpModule } from '~src/http/http.module';
 import { OrderApplicationModule } from '~src/http/order-applications/order-application.module';
+import { ProfileReviewsModule } from '~src/http/profile-reviews/profile-reviews.module';
 import { UserInfoModule } from '~src/http/user-info/user-info.module';
+import { UserRatingModule } from '~src/http/user-rating/user-rating.module';
 import { TraceModule } from '~src/telemetry/trace/trace.module';
 import { TracingInterceptor } from './interceptors/tracing.interceptor';
 import { XRequestMiddleware } from './middleware/x-request.middleware';
@@ -27,6 +29,8 @@ import { XRequestMiddleware } from './middleware/x-request.middleware';
         UserInfoModule,
         OrderApplicationModule,
         FuncOrderModule,
+        ProfileReviewsModule,
+        UserRatingModule,
     ],
     controllers: [],
     providers: [

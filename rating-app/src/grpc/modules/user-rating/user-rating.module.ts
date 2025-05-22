@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { RatingModule } from '~src/data-modules/rating/rating.module';
 import { ReviewModule } from '~src/data-modules/review/review.module';
-import { UserRatingController } from '~src/grpc/modules/userRating/user-rating.controller';
-import { UserRatingService } from '~src/grpc/modules/userRating/user-rating.service';
+import { UserRatingController } from '~src/grpc/modules/user-rating/user-rating.controller';
+import { UserRatingService } from '~src/grpc/modules/user-rating/user-rating.service';
 
 @Module({
     imports: [RatingModule, ReviewModule],
