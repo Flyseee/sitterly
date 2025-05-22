@@ -57,7 +57,7 @@ export class UserRatingController implements OnModuleInit {
         operationId: 'create-profile-rating',
     })
     @ApiResponse({
-        status: 200,
+        status: 201,
         description: 'Рейтинг создан',
         type: GrpcDto<ResCreateRatingDto>,
     })

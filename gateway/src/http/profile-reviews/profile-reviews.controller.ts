@@ -59,7 +59,7 @@ export class ProfileReviewsController implements OnModuleInit {
         operationId: 'create-review',
     })
     @ApiResponse({
-        status: 200,
+        status: 201,
         description: 'Отзыв создан',
         type: GrpcDto<ResCreateReviewDto>,
     })

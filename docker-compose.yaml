@@ -134,7 +134,7 @@ services:
       - PG_USERNAME=myuser
       - PG_PASSWORD=mypassword
       - PG_DATABASE=postgres
-      - PG_HOST=postgres_orderё
+      - PG_HOST=postgres_order
       - PG_PORT=5432
       - REDIS_URL=redis://redis:6379
       - RPC_HOST=nest_order:50055
