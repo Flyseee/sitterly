@@ -46,7 +46,7 @@ interface UserInfoRpcService {
 
     CheckJWT(checkJwtDto: ReqCheckJwtDto): Promise<GrpcDto<ResCheckJwtDto>>;
 
-    UpdateUserProfile(
+    UpdateUser(
         updateUserDto: ReqUpdateUserDto,
     ): Promise<GrpcDto<ResUpdateUserDto>>;
 
@@ -163,7 +163,7 @@ export class UserInfoController implements OnModuleInit {
         @Body() dto: ReqUpdateUserDto,
     ): Promise<GrpcDto<ResUpdateUserDto>> {
         try {
-            return await this.userInfoRpcService.UpdateUserProfile(dto);
+            return await this.userInfoRpcService.UpdateUser(dto);
         } catch (e) {
             throw new HttpException(e.message, HttpStatus.NOT_FOUND);
         }

@@ -1,4 +1,5 @@
 import {
+    IsDate,
     IsInt,
     IsNotEmpty,
     IsString,
@@ -6,7 +7,7 @@ import {
     MinLength,
 } from 'class-validator';
 
-export class ReqCreateUserDto {
+export class ReqCreateUserWithCorrectDateDto {
     @IsString({ message: 'user phoneNumber must be string' })
     @IsNotEmpty({ message: 'phoneNumber is empty' })
     @Matches(/^\+7\d{10}$/, {
@@ -40,8 +41,8 @@ export class ReqCreateUserDto {
     @IsString({ message: 'user secondName must be string' })
     secondName?: string;
 
-    @IsString({ message: 'user birthDate must be string' })
-    birthDate?: string;
+    @IsDate({ message: 'user birthDate must be date' })
+    birthDate?: Date;
 
     @IsString({ message: 'user email must be string' })
     email?: string;

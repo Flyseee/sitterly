@@ -11,11 +11,14 @@ message User {
   int32   id = 1;
   string  phone_number = 2;
   string  password = 3;
-  string  first_name = 4;
-  string  last_name = 5;
-  string  second_name = 6;
-  string  email = 7;
-  string  avatar_url = 8;
+  int32  sitterProfileId = 4;
+  int32  parentProfileId = 5;
+  string  first_name = 6;
+  string  last_name = 7;
+  string  second_name = 8;
+  string birthDate = 9;
+  string  email = 10;
+  string  avatar_url = 11;
 }
 
 message UserResponseDto {
@@ -27,11 +30,13 @@ message UpdateUserRequest {
   int32   id = 1;
   string  phone_number = 2;
   string  password = 3;
-  string  first_name = 4;
-  string  last_name = 5;
-  string  second_name = 6;
-  string  email = 7;
-  string  avatar_url = 8;
+  int32  sitterProfileId = 4;
+  int32  parentProfileId = 5;
+  string  first_name = 6;
+  string  last_name = 7;
+  string  second_name = 8;
+  string birthDate = 9;
+  string  email = 10;
 }
 
 message GetUserByIdRequest {
@@ -60,6 +65,6 @@ message UploadAvatarResponseDto {
 service UserInfoRpcService {
   rpc GetUserById (GetUserByIdRequest) returns (UserResponseDto);
   rpc CheckJWT (CheckJWTRequest) returns (UserResponseDto);
-  rpc UpdateUserProfile (UpdateUserRequest) returns (UserResponseDto);
+  rpc UpdateUser (UpdateUserRequest) returns (UserResponseDto);
   rpc UploadAvatar (UploadAvatarRequest) returns (UploadAvatarResponseDto);
 }

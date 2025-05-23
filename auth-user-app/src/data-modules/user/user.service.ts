@@ -2,11 +2,11 @@ import { Inject, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { ReqLoginDto } from '~src/data-modules/auth/dto/request-dto/req-login.dto';
 import { ReqGetUserDto } from '~src/data-modules/user/dto/request-dto/req-get-user.dto';
+import { ReqUpdateUserWithCorrectDateDto } from '~src/data-modules/user/dto/request-dto/req-update-user-with-correct-date.dto';
 import { UserEntity } from '~src/data-modules/user/entities/user.entity';
 import { Trace } from '~src/telemetry/trace/decorators/trace.decorator';
 import { AuthUtils } from '~src/utils/auth.utils';
 import { ReqCreateUserDto } from './dto/request-dto/req-create-user.dto';
-import { ReqUpdateUserDto } from './dto/request-dto/req-update-user.dto';
 
 /**
  * Сервис для управления сущностями пользователей.
@@ -40,7 +40,9 @@ export class UserService {
      * @returns Promise, возвращающий обновленную сущность UserEntity или null, если пользователь не найден.
      */
     @Trace('UserService.update', { logInput: true, logOutput: true })
-    async update(updateUserDto: ReqUpdateUserDto): Promise<UserEntity | null> {
+    async update(
+        updateUserDto: ReqUpdateUserWithCorrectDateDto,
+    ): Promise<UserEntity | null> {
         if (updateUserDto.password) {
             updateUserDto.password = await AuthUtils.hashPassword(
                 updateUserDto.password,
