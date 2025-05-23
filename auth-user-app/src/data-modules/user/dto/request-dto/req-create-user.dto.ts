@@ -41,6 +41,12 @@ export class ReqCreateUserDto {
     secondName?: string;
 
     @IsString({ message: 'user birthDate must be string' })
+    @Matches(
+        /^(19\d{2}|20\d{2}|21\d{2}|2200)-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|30)$/,
+        {
+            message: 'date must be correct and in format yyyy-mm-dd',
+        },
+    )
     birthDate?: string;
 
     @IsString({ message: 'user email must be string' })
