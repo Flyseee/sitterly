@@ -1,5 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { ProfileType } from '~src/data-modules/review/enums/profile-type.enum';
+import { ProfileType } from '~src/data-modules/enums/profile-type.enum';
 
 @Entity({ name: 'review' })
 export class Review {

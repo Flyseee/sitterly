@@ -1,5 +1,5 @@
 import { IsEnum, IsInt, IsNotEmpty, Min } from 'class-validator';
-import { ProfileType } from '~src/data-modules/review/enums/profile-type.enum';
+import { ProfileType } from '~src/data-modules/enums/profile-type.enum';
 
 export class GetUnconsideredResultAg {
     @IsInt({ message: 'review profileToId must be integer' })

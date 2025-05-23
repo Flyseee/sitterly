@@ -1,5 +1,5 @@
 import { IsEnum, IsInt, IsNotEmpty, IsNumber, Max, Min } from 'class-validator';
-import { ProfileType } from '~src/data-modules/review/enums/profile-type.enum';
+import { ProfileType } from '~src/data-modules/enums/profile-type.enum';
 
 export class ReqCreateRatingDto {
     @IsInt({ message: 'rating profileId must be integer' })

@@ -170,7 +170,6 @@ export class FuncOrderController implements OnModuleInit {
         schema: {
             properties: {
                 id: { type: 'number' },
-                orderId: { type: 'number' },
                 sitterId: { type: 'number' },
                 description: { type: 'string' },
                 location: { type: 'string' },

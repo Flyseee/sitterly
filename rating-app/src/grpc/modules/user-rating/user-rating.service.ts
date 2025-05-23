@@ -1,8 +1,11 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
 import { Cron } from '@nestjs/schedule';
 import { Validator } from 'class-validator';
 import { GrpcStatusCode } from '~src/app/filter/grpc-status-code.enum';
+import { ParentProfileDataService } from '~src/data-modules/client/parent-profile/parent-profile-data.service';
+import { SitterProfileDataService } from '~src/data-modules/client/sitter-profile/sitter-profile.service';
+import { ProfileType } from '~src/data-modules/enums/profile-type.enum';
 import { ReqCreateRatingDto } from '~src/data-modules/rating/dto/request-dto/req-create-rating.dto';
 import { ReqGetRatingDto } from '~src/data-modules/rating/dto/request-dto/req-get-rating.dto';
 import { ResCreateRatingDto } from '~src/data-modules/rating/dto/response-dto/res-create-rating.dto';
@@ -19,7 +22,8 @@ export class UserRatingService {
     constructor(
         private ratingService: RatingService,
         private reviewService: ReviewService,
-        private logger: Logger,
+        private sitterProfileDataService: SitterProfileDataService,
+        private parentProfileDataService: ParentProfileDataService,
     ) {}
 
     @Trace('UserRatingService.get', { logInput: true, logOutput: true })
@@ -43,6 +47,30 @@ export class UserRatingService {
     async put(
         createRatingDto: ReqCreateRatingDto,
     ): Promise<ResCreateRatingDto> {
+        let profile;
+        if (createRatingDto.profileType == ProfileType.SITTER) {
+            profile = await this.sitterProfileDataService.get(
+                createRatingDto.profileId,
+            );
+        } else if (createRatingDto.profileType == ProfileType.PARENT) {
+            profile = await this.parentProfileDataService.get(
+                createRatingDto.profileId,
+            );
+        } else {
+            throw new RpcException({
+                message: `profile type = ${createRatingDto.profileType} does not exist`,
+                code: GrpcStatusCode.INVALID_ARGUMENT,
+            });
+        }
+        if (!(profile | profile.data)) {
+            throw new RpcException({
+                message:
+                    `profile with id = ${createRatingDto.profileId} and` +
+                    `type = ${createRatingDto.profileType} does not exist`,
+                code: GrpcStatusCode.INVALID_ARGUMENT,
+            });
+        }
+
         const rating = await this.ratingService.get({
             profileId: createRatingDto.profileId,
             profileType: createRatingDto.profileType,

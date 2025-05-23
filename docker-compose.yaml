@@ -180,36 +180,36 @@ services:
       - postgres_profile
       - jaeger
 
-  nest_rating:
-    build:
-      context: ./rating-app
-      dockerfile: Dockerfile
-      args:
-        - NODE_ENV=development
-    dns:
-      - 8.8.8.8
-    ports:
-      - 4040:3000
-      - 54055:50055
-    environment:
-      - PORT=3000
-      - PG_USERNAME=myuser
-      - PG_PASSWORD=mypassword
-      - PG_DATABASE=postgres
-      - PG_HOST=postgres_rating
-      - PG_PORT=5432
-      - REDIS_URL=redis://redis:6379
-      - RPC_HOST=nest_rating:50055
-      - SWAGGER_TITLE=Rating App
-      - SERVICE_NAME=Rating App
-      - SWAGGER_DESC=Сервис Rating
-    volumes:
-      - .:/usr/src/app
-    depends_on:
-      - mongodb
-      - redis
-      - postgres_rating
-      - jaeger
+  #  nest_rating:
+  #    build:
+  #      context: ./rating-app
+  #      dockerfile: Dockerfile
+  #      args:
+  #        - NODE_ENV=development
+  #    dns:
+  #      - 8.8.8.8
+  #    ports:
+  #      - 4040:3000
+  #      - 54055:50055
+  #    environment:
+  #      - PORT=3000
+  #      - PG_USERNAME=myuser
+  #      - PG_PASSWORD=mypassword
+  #      - PG_DATABASE=postgres
+  #      - PG_HOST=postgres_rating
+  #      - PG_PORT=5432
+  #      - REDIS_URL=redis://redis:6379
+  #      - RPC_HOST=nest_rating:50055
+  #      - SWAGGER_TITLE=Rating App
+  #      - SERVICE_NAME=Rating App
+  #      - SWAGGER_DESC=Сервис Rating
+  #    volumes:
+  #      - .:/usr/src/app
+  #    depends_on:
+  #      - mongodb
+  #      - redis
+  #      - postgres_rating
+  #      - jaeger
 
   #  nest_gateway:
   #    build:

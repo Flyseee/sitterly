@@ -7,6 +7,8 @@ import { RedisModule } from 'src/database-modules/redis/redis.module';
 import { RequestLogMiddleware } from '~src/app/middleware/request-log.middleware';
 import { GrpcModule } from '~src/grpc/grpc.module';
 import { FuncOrderModule } from '~src/http/func-order/func-order.module';
+import { FuncParentProfileModule } from '~src/http/func-parent-profile/func-parent-profile.module';
+import { FuncSitterProfileModule } from '~src/http/func-sitter-profile/func-sitter-profile.module';
 import { HttpModule } from '~src/http/http.module';
 import { OrderApplicationModule } from '~src/http/order-applications/order-application.module';
 import { ProfileReviewsModule } from '~src/http/profile-reviews/profile-reviews.module';
@@ -20,7 +22,6 @@ import { XRequestMiddleware } from './middleware/x-request.middleware';
     imports: [
         ConfigModule,
         LoggingModule,
-        // PostgresqlModule,
         RedisModule,
         TraceModule,
         CacheModule.register({}),
@@ -31,6 +32,8 @@ import { XRequestMiddleware } from './middleware/x-request.middleware';
         FuncOrderModule,
         ProfileReviewsModule,
         UserRatingModule,
+        FuncSitterProfileModule,
+        FuncParentProfileModule,
     ],
     controllers: [],
     providers: [

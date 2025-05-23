@@ -14,12 +14,6 @@ export class ReqUpdateOrderDto {
     id: number;
 
     @IsOptional()
-    @IsInt({ message: 'order parentId must be integer' })
-    @IsNotEmpty({ message: 'parentId is empty' })
-    @Min(0)
-    parentId?: number;
-
-    @IsOptional()
     @IsInt({ message: 'order sitterId must be integer' })
     @IsNotEmpty({ message: 'sitterId is empty' })
     @Min(0)
