@@ -1,4 +1,4 @@
-export class ResCreateParentProfileDto {
+export class ResGetParentProfileDto {
     id: number;
     ordersAmount: number;
 }

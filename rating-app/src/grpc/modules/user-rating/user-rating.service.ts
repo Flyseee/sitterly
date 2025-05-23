@@ -20,10 +20,10 @@ export class UserRatingService {
     readonly validator = new Validator();
 
     constructor(
-        private ratingService: RatingService,
-        private reviewService: ReviewService,
-        private sitterProfileDataService: SitterProfileDataService,
-        private parentProfileDataService: ParentProfileDataService,
+        private readonly ratingService: RatingService,
+        private readonly reviewService: ReviewService,
+        private readonly sitterProfileDataService: SitterProfileDataService,
+        private readonly parentProfileDataService: ParentProfileDataService,
     ) {}
 
     @Trace('UserRatingService.get', { logInput: true, logOutput: true })

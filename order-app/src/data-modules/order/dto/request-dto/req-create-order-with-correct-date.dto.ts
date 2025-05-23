@@ -7,9 +7,8 @@ export class ReqCreateOrderWithCorrectDateDto {
     parentId: number;
 
     @IsInt({ message: 'order sitterId must be integer' })
-    @IsNotEmpty({ message: 'sitterId is empty' })
     @Min(0)
-    sitterId: number;
+    sitterId?: number;
 
     @IsString({ message: 'order description must be string' })
     @IsNotEmpty({ message: 'description is empty' })

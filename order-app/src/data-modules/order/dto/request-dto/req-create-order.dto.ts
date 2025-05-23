@@ -1,4 +1,11 @@
-import { IsInt, IsNotEmpty, IsString, Max, Min } from 'class-validator';
+import {
+    IsInt,
+    IsNotEmpty,
+    IsOptional,
+    IsString,
+    Max,
+    Min,
+} from 'class-validator';
 
 export class ReqCreateOrderDto {
     @IsInt({ message: 'order parentId must be integer' })
@@ -6,10 +13,10 @@ export class ReqCreateOrderDto {
     @Min(0)
     parentId: number;
 
+    @IsOptional()
     @IsInt({ message: 'order sitterId must be integer' })
-    @IsNotEmpty({ message: 'sitterId is empty' })
     @Min(0)
-    sitterId: number;
+    sitterId?: number;
 
     @IsString({ message: 'order description must be string' })
     @IsNotEmpty({ message: 'description is empty' })

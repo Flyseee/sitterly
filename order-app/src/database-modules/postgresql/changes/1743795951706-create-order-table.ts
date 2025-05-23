@@ -16,9 +16,7 @@ export class CreateOrderTable1743795951706 implements MigrationInterface {
                 NOT
                 NULL,
                 sitter_id
-                INTEGER
-                NOT
-                NULL,
+                INTEGER,
                 description
                 VARCHAR
             (

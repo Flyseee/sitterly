@@ -1,4 +1,4 @@
-export class ResCreateSitterProfileDto {
+export class ResGetSitterProfileDto {
     id: number;
     ordersAmount: number;
     price: number;

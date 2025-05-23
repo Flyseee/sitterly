@@ -1,11 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { FindOperator, LessThan, MoreThan, Repository } from 'typeorm';
+import { OrderDateType } from '~src/data-modules/enums/order-date-type.enum';
+import { ProfileType } from '~src/data-modules/enums/profile-type.enum';
 import { ReqCreateOrderWithCorrectDateDto } from '~src/data-modules/order/dto/request-dto/req-create-order-with-correct-date.dto';
 import { ReqGetOrdersForUserDto } from '~src/data-modules/order/dto/request-dto/req-get-orders-for-user.dto';
 import { ReqUpdateOrderWithCorrectDateDto } from '~src/data-modules/order/dto/request-dto/req-update-order-with-correct-date.dto';
 import { Order } from '~src/data-modules/order/entities/order.entity';
-import { OrderDateType } from '~src/data-modules/order/enums/order-date-type.enum';
-import { ProfileType } from '~src/data-modules/order/enums/profile-type.enum';
 
 @Injectable()
 export class OrderService {
