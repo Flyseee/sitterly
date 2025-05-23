@@ -1,6 +1,6 @@
 import { PartialType } from '@nestjs/swagger';
 import { IsInt, IsNotEmpty, Min } from 'class-validator';
-import { ReqCreateParentProfileDto } from '~src/data-modules/client/func-parent-profile/dto/request-dto/req-create-parent-profile.dto';
+import { ReqCreateParentProfileDto } from '~src/data-modules/client/parent-profile/dto/request-dto/req-create-parent-profile.dto';
 
 export class ReqUpdateParentProfileDto extends PartialType(
     ReqCreateParentProfileDto,

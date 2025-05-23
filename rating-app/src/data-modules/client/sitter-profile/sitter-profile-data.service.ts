@@ -1,12 +1,9 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { Client, ClientGrpc, Transport } from '@nestjs/microservices';
 import { join } from 'path';
-import { ReqCreateSitterProfileDto } from '~src/data-modules/client/sitter-profile/dto/request-dto/req-create-sitter-profile.dto';
+import { lastValueFrom, Observable } from 'rxjs';
 import { ReqGetSitterProfileDto } from '~src/data-modules/client/sitter-profile/dto/request-dto/req-get-sitter-profile.dto';
-import { ReqUpdateSitterProfileDto } from '~src/data-modules/client/sitter-profile/dto/request-dto/req-update-sitter-profile.dto';
-import { ResCreateSitterProfileDto } from '~src/data-modules/client/sitter-profile/dto/response-dto/res-create-sitter-profile.dto';
 import { ResGetSitterProfileDto } from '~src/data-modules/client/sitter-profile/dto/response-dto/res-get-sitter-profile.dto';
-import { ResUpdateSitterProfileDto } from '~src/data-modules/client/sitter-profile/dto/response-dto/res-update-sitter-profile.dto';
 import { Trace } from '~src/telemetry/trace/decorators/trace.decorator';
 
 class GrpcDto<T> {
@@ -17,15 +14,7 @@ class GrpcDto<T> {
 interface FuncSitterProfileRpcService {
     get(
         dto: ReqGetSitterProfileDto,
-    ): Promise<GrpcDto<ResGetSitterProfileDto | null>>;
-
-    put(
-        dto: ReqCreateSitterProfileDto,
-    ): Promise<GrpcDto<ResCreateSitterProfileDto | null>>;
-
-    update(
-        dto: ReqUpdateSitterProfileDto,
-    ): Promise<GrpcDto<ResUpdateSitterProfileDto | null>>;
+    ): Observable<GrpcDto<ResGetSitterProfileDto | null>>;
 }
 
 @Injectable()
@@ -36,7 +25,10 @@ export class SitterProfileDataService implements OnModuleInit {
         transport: Transport.GRPC,
         options: {
             package: 'sitterProfile',
-            protoPath: join(__dirname, '../../grpc/proto/sitter-profile.proto'),
+            protoPath: join(
+                __dirname,
+                '../../../grpc/proto/client/sitter-profile.proto',
+            ),
             url: '89.169.2.227:53055',
         },
     })
@@ -54,6 +46,8 @@ export class SitterProfileDataService implements OnModuleInit {
         logOutput: true,
     })
     async get(id: number): Promise<GrpcDto<ResGetSitterProfileDto | null>> {
-        return this.funcSitterProfileRpcService.get({ id });
+        return await lastValueFrom(
+            this.funcSitterProfileRpcService.get({ id }),
+        );
     }
 }

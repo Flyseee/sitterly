@@ -4,6 +4,7 @@ import { ParentProfileDataService } from '~src/data-modules/client/parent-profil
 @Module({
     imports: [],
     providers: [ParentProfileDataService],
+    exports: [ParentProfileDataService],
     controllers: [],
 })
 export class ParentProfileDataModule {}

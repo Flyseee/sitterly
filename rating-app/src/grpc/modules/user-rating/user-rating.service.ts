@@ -4,7 +4,7 @@ import { Cron } from '@nestjs/schedule';
 import { Validator } from 'class-validator';
 import { GrpcStatusCode } from '~src/app/filter/grpc-status-code.enum';
 import { ParentProfileDataService } from '~src/data-modules/client/parent-profile/parent-profile-data.service';
-import { SitterProfileDataService } from '~src/data-modules/client/sitter-profile/sitter-profile.service';
+import { SitterProfileDataService } from '~src/data-modules/client/sitter-profile/sitter-profile-data.service';
 import { ProfileType } from '~src/data-modules/enums/profile-type.enum';
 import { ReqCreateRatingDto } from '~src/data-modules/rating/dto/request-dto/req-create-rating.dto';
 import { ReqGetRatingDto } from '~src/data-modules/rating/dto/request-dto/req-get-rating.dto';
@@ -34,8 +34,8 @@ export class UserRatingService {
         if (!rating)
             throw new RpcException({
                 message:
-                    `rating was not found for id: ${getRatingDto.profileId}` +
-                    ` and profile type: ${getRatingDto.profileType}`,
+                    `rating was not found for id: ${getRatingDto.profileId} ` +
+                    `and profile type: ${getRatingDto.profileType}`,
                 code: GrpcStatusCode.NOT_FOUND,
             });
 
@@ -62,10 +62,10 @@ export class UserRatingService {
                 code: GrpcStatusCode.INVALID_ARGUMENT,
             });
         }
-        if (!(profile | profile.data)) {
+        if (!profile || profile._error || !profile.data) {
             throw new RpcException({
                 message:
-                    `profile with id = ${createRatingDto.profileId} and` +
+                    `profile with id = ${createRatingDto.profileId} and ` +
                     `type = ${createRatingDto.profileType} does not exist`,
                 code: GrpcStatusCode.INVALID_ARGUMENT,
             });
@@ -78,7 +78,7 @@ export class UserRatingService {
         if (rating)
             throw new RpcException({
                 message:
-                    `rating with profileId = ${createRatingDto.profileId} and` +
+                    `rating with profileId = ${createRatingDto.profileId} and ` +
                     `profileType = ${createRatingDto.profileType} already exists`,
                 code: GrpcStatusCode.NOT_FOUND,
             });

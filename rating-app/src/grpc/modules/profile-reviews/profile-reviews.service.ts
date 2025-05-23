@@ -3,7 +3,7 @@ import { RpcException } from '@nestjs/microservices';
 import { Validator } from 'class-validator';
 import { GrpcStatusCode } from '~src/app/filter/grpc-status-code.enum';
 import { ParentProfileDataService } from '~src/data-modules/client/parent-profile/parent-profile-data.service';
-import { SitterProfileDataService } from '~src/data-modules/client/sitter-profile/sitter-profile.service';
+import { SitterProfileDataService } from '~src/data-modules/client/sitter-profile/sitter-profile-data.service';
 import { ProfileType } from '~src/data-modules/enums/profile-type.enum';
 import { ReqCreateFullReviewDto } from '~src/data-modules/review/dto/request-dto/req-create-full-review.dto';
 import { ReqGetReviewsForProfileDto } from '~src/data-modules/review/dto/request-dto/req-get-reviews-for-profile.dto';
@@ -47,7 +47,7 @@ export class ProfileReviewsService {
                 code: GrpcStatusCode.INVALID_ARGUMENT,
             });
         }
-        if (!(profileTo | profileTo.data)) {
+        if (!profileTo || !profileTo.data || profileTo._error) {
             throw new RpcException({
                 message:
                     `profileTo with id = ${createFullReviewDto.profileToId} and` +
@@ -55,7 +55,7 @@ export class ProfileReviewsService {
                 code: GrpcStatusCode.INVALID_ARGUMENT,
             });
         }
-        if (!(profileFrom | profileFrom.data)) {
+        if (!profileFrom || !profileFrom.data || profileFrom._error) {
             throw new RpcException({
                 message: `profileFrom with id = ${createFullReviewDto.profileFromId} does not exist`,
                 code: GrpcStatusCode.INVALID_ARGUMENT,
