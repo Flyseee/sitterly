@@ -1,5 +1,5 @@
 import { status } from '@grpc/grpc-js';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { RpcException } from '@nestjs/microservices';
 import { GrpcStatusCode } from '~src/app/filters/grpc-status-code.enum';
