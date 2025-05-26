@@ -59,7 +59,7 @@ message UploadAvatarRequest {
 }
 
 message GetByProfileRequest {
-  int32  id = 1;
+  int32  profileId = 1;
   ProfileType profileType = 2;
 }
 

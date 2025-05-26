@@ -87,12 +87,12 @@ export class UserInfoController {
     async getByProfile(
         getByProfileDto: ReqGetByProfileDto,
     ): Promise<ResGetByProfileDto | undefined | null> {
+        this.logger.log('user controller ' + getByProfileDto.profileId);
         const dto = await ValidationUtils.validateInput(
             ReqGetByProfileDto,
             getByProfileDto,
         );
 
-        this.logger.log('user controller ' + dto);
         return await this.userInfoService.getByProfile(getByProfileDto);
     }
 }

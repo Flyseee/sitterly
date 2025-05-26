@@ -139,7 +139,7 @@ export class UserService implements OnModuleInit {
         }
     }
 
-    @Trace('UserService.getByProfileDto', {
+    @Trace('UserService.getByProfile', {
         logInput: true,
         logOutput: true,
     })
@@ -147,7 +147,7 @@ export class UserService implements OnModuleInit {
         getByProfileDto: ReqGetByProfileDto,
     ): Promise<GrpcDto<ResGetByProfileDto | undefined | null>> {
         try {
-            console.log('gateway user service');
+            console.log('gateway user service ' + getByProfileDto.profileId);
             return lastValueFrom(
                 this.userInfoRpcService.getByProfile(getByProfileDto),
             );
