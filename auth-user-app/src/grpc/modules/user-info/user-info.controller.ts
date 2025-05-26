@@ -83,7 +83,8 @@ export class UserInfoController {
             ReqGetByProfileDto,
             getByProfileDto,
         );
-        console.log(dto);
+
+        console.log('user controller ' + dto);
         return await this.userInfoService.getByProfile(getByProfileDto);
     }
 }

@@ -182,6 +182,7 @@ export class GatewayController {
                 _error: null,
             };
             for (let order of actualOrders.data) {
+                console.log('gateway controller ' + order.parentId);
                 const parentUser = await this.userService.getByProfile({
                     profileId: order.parentId,
                     profileType: ProfileType.PARENT,

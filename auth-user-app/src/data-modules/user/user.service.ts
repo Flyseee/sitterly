@@ -95,6 +95,7 @@ export class UserService {
     async getByProfileId(
         getByProfileDto: ReqGetByProfileDto,
     ): Promise<UserEntity | null | undefined> {
+        console.log('user rep servvice ', getByProfileDto);
         if (getByProfileDto.profileType == ProfileType.SITTER) {
             return await this.userEntityRepository.findOneBy({
                 sitterProfileId: getByProfileDto.profileId,

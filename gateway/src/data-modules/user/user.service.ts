@@ -147,6 +147,7 @@ export class UserService implements OnModuleInit {
         getByProfileDto: ReqGetByProfileDto,
     ): Promise<GrpcDto<ResGetByProfileDto | undefined | null>> {
         try {
+            console.log('gateway user service');
             return lastValueFrom(
                 this.userInfoRpcService.getByProfile(getByProfileDto),
             );
