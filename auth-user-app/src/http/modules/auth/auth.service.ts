@@ -22,7 +22,7 @@ export class AuthService {
      * Регистрирует нового пользователя.
      * @param ReqRegisterDto DTO для создания пользователя
      */
-    @Trace('UserService.register', { logInput: true, logOutput: true })
+    @Trace('AuthService.register', { logInput: true, logOutput: true })
     async register(registerDto: ReqRegisterDto) {
         await this.userDataService.create({
             password: registerDto.password,
@@ -33,12 +33,16 @@ export class AuthService {
     /**
      * Проверяет телефон и пароль, возвращает пользователя или null.
      */
-    @Trace('UserService.validateUser', { logInput: true, logOutput: true })
+    @Trace('AuthService.validateUser', { logInput: true, logOutput: true })
     async validateUser(
         loginDto: ReqLoginDto,
     ): Promise<ResValidateUserDto | null> {
-        const resValidation: Promise<ResValidateUserDto | null> =
-            this.userDataService.validateUser(loginDto);
+        const resValidation: ResValidateUserDto | null =
+            await this.userDataService.validateUser(loginDto);
+
+        if (resValidation) {
+            console.log('AuthService validateUser user id:' + resValidation.id);
+        }
         return resValidation;
     }
 
@@ -46,8 +50,9 @@ export class AuthService {
      * Генерирует JWT для авторизованного пользователя.
      * @param ReqLoginUserDto DTO c cущностью пользователя
      */
-    @Trace('UserService.login', { logInput: true, logOutput: true })
+    @Trace('AuthService.login', { logInput: true, logOutput: true })
     async login(loginUserDto: ReqLoginUserDto): Promise<ResLoginDto> {
+        console.log('AuthService login user id:' + loginUserDto.id);
         const payload = {
             sub: loginUserDto.id,
             phoneNumber: loginUserDto.phoneNumber,

@@ -5,5 +5,6 @@ import { ParentProfileService } from '~src/data-modules/parent-profile/parent-pr
     imports: [],
     providers: [ParentProfileService],
     controllers: [],
+    exports: [ParentProfileService],
 })
 export class ParentProfileModule {}

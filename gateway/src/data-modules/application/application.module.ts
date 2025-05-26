@@ -5,5 +5,6 @@ import { ApplicationService } from '~src/data-modules/application/application.se
     imports: [],
     providers: [ApplicationService],
     controllers: [],
+    exports: [ApplicationService],
 })
 export class ApplicationModule {}

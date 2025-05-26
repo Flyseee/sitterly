@@ -118,7 +118,7 @@ export class UserInfoController implements OnModuleInit {
         try {
             if (!headers.authorization) {
                 throw new HttpException(
-                    'headers.authorization is empty',
+                    'JWT token not found',
                     HttpStatus.UNAUTHORIZED,
                 );
             }

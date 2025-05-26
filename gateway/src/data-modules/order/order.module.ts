@@ -5,5 +5,6 @@ import { OrderService } from '~src/data-modules/order/order.service';
     imports: [],
     providers: [OrderService],
     controllers: [],
+    exports: [OrderService],
 })
 export class OrderModule {}

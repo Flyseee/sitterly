@@ -5,5 +5,6 @@ import { ReviewService } from '~src/data-modules/review/review.service';
     imports: [],
     providers: [ReviewService],
     controllers: [],
+    exports: [ReviewService],
 })
 export class ReviewModule {}

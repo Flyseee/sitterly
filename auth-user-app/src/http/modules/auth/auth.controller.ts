@@ -92,6 +92,7 @@ export class AuthController {
             });
         }
 
+        console.log('AuthHttpService authorize user id:' + user.id);
         const { accessToken } = await this.authService.login(user);
         if (!redirectUri) {
             return res.redirect(

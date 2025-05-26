@@ -5,5 +5,6 @@ import { RatingService } from '~src/data-modules/rating/rating.service';
     imports: [],
     providers: [RatingService],
     controllers: [],
+    exports: [RatingService],
 })
 export class RatingModule {}

@@ -5,5 +5,6 @@ import { SitterProfileService } from './sitter-profile.service';
     imports: [],
     providers: [SitterProfileService],
     controllers: [],
+    exports: [SitterProfileService],
 })
 export class SitterProfileModule {}

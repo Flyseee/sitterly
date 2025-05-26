@@ -89,6 +89,8 @@ export class GatewayController {
             throw new HttpException(`error with JWT`, HttpStatus.UNAUTHORIZED);
         }
 
+        console.log(user.data);
+
         let profileId: number | undefined;
         if (dto.profileType == ProfileType.PARENT) {
             profileId = user.data.parentProfileId;
@@ -155,7 +157,17 @@ export class GatewayController {
     @HTTPTrace('GatewayController.getUserInfo')
     @UseFilters(HttpExceptionFilter)
     @UseInterceptors(TracingInterceptor)
-    async GetActualOrders(): Promise<GrpcDto<ResGetActualOrdersDto[]>> {
+    async GetActualOrders(
+        @Headers() headers,
+    ): Promise<GrpcDto<ResGetActualOrdersDto[]>> {
+        const user = await this.userService.checkJwt(headers);
+        if (user._error) {
+            throw new HttpException(user._error.message, user._error.code);
+        }
+        if (!user.data) {
+            throw new HttpException(`error with JWT`, HttpStatus.UNAUTHORIZED);
+        }
+
         const actualOrders = await this.orderService.getActualOrders();
 
         if (actualOrders._error) {
@@ -202,9 +214,41 @@ export class GatewayController {
         return resActualOrders;
     }
 
+    @Post('/createParent')
+    @ApiOperation({
+        summary: 'Создать профиль родителя',
+        operationId: 'create-parent-profile',
+    })
+    @ApiBody({
+        schema: {
+            properties: {
+                userId: { type: 'number' },
+                ordersAmount: { type: 'number' },
+            },
+        },
+    })
+    @ApiResponse({
+        status: 200,
+        description: 'Профиль родителя создан',
+        type: ReqCreateParentProfileDto,
+    })
+    @ApiResponse({ status: 401, description: 'Неверный токен авторизации' })
+    @ApiBearerAuth('defaultBearerAuth')
+    @HTTPTrace('GatewayController.getUserInfo')
+    @UseFilters(HttpExceptionFilter)
+    @UseInterceptors(TracingInterceptor)
     async CreateParent(
+        @Headers() headers,
         dto: ReqCreateParentProfileDto,
     ): Promise<GrpcDto<ResCreateParentProfileDto | null>> {
+        const user = await this.userService.checkJwt(headers);
+        if (user._error) {
+            throw new HttpException(user._error.message, user._error.code);
+        }
+        if (!user.data) {
+            throw new HttpException(`error with JWT`, HttpStatus.UNAUTHORIZED);
+        }
+
         const { userId, ...parentInfo } = dto;
         const parent = await this.parentProfileService.put(parentInfo);
 
@@ -233,9 +277,43 @@ export class GatewayController {
         return parent;
     }
 
+    @Post('/createSitter')
+    @ApiOperation({
+        summary: 'Создать профиль ситтера',
+        operationId: 'create-parent-sitter',
+    })
+    @ApiBody({
+        schema: {
+            properties: {
+                userId: { type: 'number' },
+                ordersAmount: { type: 'number' },
+                price: { type: 'number' },
+                location: { type: 'string' },
+            },
+        },
+    })
+    @ApiResponse({
+        status: 200,
+        description: 'Профиль ситтера создан',
+        type: ResCreateSitterProfileDto,
+    })
+    @ApiResponse({ status: 401, description: 'Неверный токен авторизации' })
+    @ApiBearerAuth('defaultBearerAuth')
+    @HTTPTrace('GatewayController.getUserInfo')
+    @UseFilters(HttpExceptionFilter)
+    @UseInterceptors(TracingInterceptor)
     async CreateSitter(
+        @Headers() headers,
         dto: ReqCreateSitterProfileDto,
     ): Promise<GrpcDto<ResCreateSitterProfileDto | null>> {
+        const user = await this.userService.checkJwt(headers);
+        if (user._error) {
+            throw new HttpException(user._error.message, user._error.code);
+        }
+        if (!user.data) {
+            throw new HttpException(`error with JWT`, HttpStatus.UNAUTHORIZED);
+        }
+
         const { userId, ...sitterInfo } = dto;
         const sitter = await this.sitterProfileService.put(sitterInfo);
 

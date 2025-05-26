@@ -86,6 +86,7 @@ export class UserService {
             user &&
             (await AuthUtils.verifyPassword(user.password, loginDto.password))
         ) {
+            console.log('userService validateUser user id:' + user.id);
             return user;
         }
         return null;
