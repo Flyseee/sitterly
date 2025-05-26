@@ -25,20 +25,18 @@ class GrpcDto<T> {
 }
 
 interface UserInfoRpcService {
-    GetUserById(getUserDto: ReqGetUserDto): Observable<GrpcDto<ResGetUserDto>>;
+    GetUserById(dto: ReqGetUserDto): Observable<GrpcDto<ResGetUserDto>>;
 
-    CheckJWT(checkJwtDto: ReqCheckJwtDto): Observable<GrpcDto<ResCheckJwtDto>>;
+    CheckJWT(dto: ReqCheckJwtDto): Observable<GrpcDto<ResCheckJwtDto>>;
 
-    UpdateUser(
-        updateUserDto: ReqUpdateUserDto,
-    ): Observable<GrpcDto<ResUpdateUserDto>>;
+    UpdateUser(dto: ReqUpdateUserDto): Observable<GrpcDto<ResUpdateUserDto>>;
 
     UploadAvatar(
-        uploadAvatarDto: ReqUploadAvatarDto,
+        dto: ReqUploadAvatarDto,
     ): Observable<GrpcDto<ResUploadAvatarDto>>;
 
-    getByProfile(
-        getByProfileDto: ReqGetByProfileDto,
+    GetByProfile(
+        dto: ReqGetByProfileDto,
     ): Observable<GrpcDto<ResGetByProfileDto | undefined | null>>;
 }
 
@@ -149,7 +147,7 @@ export class UserService implements OnModuleInit {
         try {
             console.log('gateway user service ' + getByProfileDto.profileId);
             return lastValueFrom(
-                this.userInfoRpcService.getByProfile(getByProfileDto),
+                this.userInfoRpcService.GetByProfile(getByProfileDto),
             );
         } catch (e) {
             throw new HttpException(e.message, HttpStatus.NOT_FOUND);
