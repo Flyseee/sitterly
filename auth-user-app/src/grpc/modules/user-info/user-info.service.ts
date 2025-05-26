@@ -153,6 +153,8 @@ export class UserInfoService {
         getByProfileDto: ReqGetByProfileDto,
     ): Promise<ResGetByProfileDto | undefined | null> {
         const user = await this.userService.getByProfileId(getByProfileDto);
+
+        console.log(user);
         if (!user) {
             throw new RpcException({
                 code: GrpcStatusCode.NOT_FOUND,

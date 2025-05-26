@@ -59,7 +59,6 @@ export class GatewayController {
     @ApiBody({
         schema: {
             properties: {
-                id: { type: 'number' },
                 profileType: {
                     type: 'string',
                     enum: Object.values(ProfileType),
@@ -88,8 +87,6 @@ export class GatewayController {
         if (!user.data) {
             throw new HttpException(`error with JWT`, HttpStatus.UNAUTHORIZED);
         }
-
-        console.log(user.data);
 
         let profileId: number | undefined;
         if (dto.profileType == ProfileType.PARENT) {
@@ -154,10 +151,12 @@ export class GatewayController {
         description: 'Актуальные заказы получены',
         type: ResGetActualOrdersDto,
     })
+    @ApiResponse({ status: 401, description: 'Неверный токен авторизации' })
+    @ApiBearerAuth('defaultBearerAuth')
     @HTTPTrace('GatewayController.getUserInfo')
     @UseFilters(HttpExceptionFilter)
     @UseInterceptors(TracingInterceptor)
-    async GetActualOrders(
+    async getActualOrders(
         @Headers() headers,
     ): Promise<GrpcDto<ResGetActualOrdersDto[]>> {
         const user = await this.userService.checkJwt(headers);
@@ -222,7 +221,6 @@ export class GatewayController {
     @ApiBody({
         schema: {
             properties: {
-                userId: { type: 'number' },
                 ordersAmount: { type: 'number' },
             },
         },
@@ -237,7 +235,7 @@ export class GatewayController {
     @HTTPTrace('GatewayController.getUserInfo')
     @UseFilters(HttpExceptionFilter)
     @UseInterceptors(TracingInterceptor)
-    async CreateParent(
+    async createParent(
         @Headers() headers,
         dto: ReqCreateParentProfileDto,
     ): Promise<GrpcDto<ResCreateParentProfileDto | null>> {
@@ -249,8 +247,7 @@ export class GatewayController {
             throw new HttpException(`error with JWT`, HttpStatus.UNAUTHORIZED);
         }
 
-        const { userId, ...parentInfo } = dto;
-        const parent = await this.parentProfileService.put(parentInfo);
+        const parent = await this.parentProfileService.put(dto);
 
         if (parent._error) {
             throw new HttpException(parent._error.message, parent._error.code);
@@ -263,7 +260,7 @@ export class GatewayController {
         }
 
         await this.userService.updateUser({
-            id: userId,
+            id: user.data.id,
             parentProfileId: parent.data.id,
         });
 
@@ -285,7 +282,6 @@ export class GatewayController {
     @ApiBody({
         schema: {
             properties: {
-                userId: { type: 'number' },
                 ordersAmount: { type: 'number' },
                 price: { type: 'number' },
                 location: { type: 'string' },
@@ -302,7 +298,7 @@ export class GatewayController {
     @HTTPTrace('GatewayController.getUserInfo')
     @UseFilters(HttpExceptionFilter)
     @UseInterceptors(TracingInterceptor)
-    async CreateSitter(
+    async createSitter(
         @Headers() headers,
         dto: ReqCreateSitterProfileDto,
     ): Promise<GrpcDto<ResCreateSitterProfileDto | null>> {
@@ -314,8 +310,7 @@ export class GatewayController {
             throw new HttpException(`error with JWT`, HttpStatus.UNAUTHORIZED);
         }
 
-        const { userId, ...sitterInfo } = dto;
-        const sitter = await this.sitterProfileService.put(sitterInfo);
+        const sitter = await this.sitterProfileService.put(dto);
 
         if (sitter._error) {
             throw new HttpException(sitter._error.message, sitter._error.code);
@@ -328,7 +323,7 @@ export class GatewayController {
         }
 
         await this.userService.updateUser({
-            id: userId,
+            id: user.data.id,
             sitterProfileId: sitter.data.id,
         });
 

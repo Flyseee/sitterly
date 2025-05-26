@@ -39,10 +39,6 @@ export class AuthService {
     ): Promise<ResValidateUserDto | null> {
         const resValidation: ResValidateUserDto | null =
             await this.userDataService.validateUser(loginDto);
-
-        if (resValidation) {
-            console.log('AuthService validateUser user id:' + resValidation.id);
-        }
         return resValidation;
     }
 
@@ -52,7 +48,6 @@ export class AuthService {
      */
     @Trace('AuthService.login', { logInput: true, logOutput: true })
     async login(loginUserDto: ReqLoginUserDto): Promise<ResLoginDto> {
-        console.log('AuthService login user id:' + loginUserDto.id);
         const payload = {
             sub: loginUserDto.id,
             phoneNumber: loginUserDto.phoneNumber,
