@@ -14,10 +14,10 @@ import { HTTPTrace } from '~src/app/decorators/http-trace.decorator';
 import { HttpExceptionFilter } from '~src/app/filter/error.filter';
 import { TracingInterceptor } from '~src/app/interceptors/tracing.interceptor';
 import { ProfileType } from '~src/data-modules/enums/profile-type.enum';
-import { ReqCreateReviewDto } from '~src/data-modules/review/request-dto/req-create-review.dto';
-import { ReqGetReviewsForProfileDto } from '~src/data-modules/review/request-dto/req-get-reviews-for-profile.dto';
-import { ResCreateReviewDto } from '~src/data-modules/review/response-dto/res-create-review.dto';
-import { ResGetReviewsForProfileDto } from '~src/data-modules/review/response-dto/res-get-reviews-for-profile.dto';
+import { ReqCreateReviewDto } from '~src/data-modules/review/dto/request-dto/req-create-review.dto';
+import { ReqGetReviewsForProfileDto } from '~src/data-modules/review/dto/request-dto/req-get-reviews-for-profile.dto';
+import { ResCreateReviewDto } from '~src/data-modules/review/dto/response-dto/res-create-review.dto';
+import { ResGetReviewsForProfileDto } from '~src/data-modules/review/dto/response-dto/res-get-reviews-for-profile.dto';
 
 class GrpcDto<T> {
     data: T;

@@ -15,12 +15,12 @@ import { join } from 'path';
 import { HTTPTrace } from '~src/app/decorators/http-trace.decorator';
 import { HttpExceptionFilter } from '~src/app/filter/error.filter';
 import { TracingInterceptor } from '~src/app/interceptors/tracing.interceptor';
-import { ReqCreateParentProfileDto } from '~src/data-modules/parent-profile/request-dto/req-create-parent-profile.dto';
-import { ReqGetParentProfileDto } from '~src/data-modules/parent-profile/request-dto/req-get-parent-profile.dto';
-import { ReqUpdateParentProfileDto } from '~src/data-modules/parent-profile/request-dto/req-update-parent-profile.dto';
-import { ResCreateParentProfileDto } from '~src/data-modules/parent-profile/response-dto/res-create-parent-profile.dto';
-import { ResGetParentProfileDto } from '~src/data-modules/parent-profile/response-dto/res-get-parent-profile.dto';
-import { ResUpdateParentProfileDto } from '~src/data-modules/parent-profile/response-dto/res-update-parent-profile.dto';
+import { ReqCreateParentProfileDto } from '~src/data-modules/parent-profile/dto/request-dto/req-create-parent-profile.dto';
+import { ReqGetParentProfileDto } from '~src/data-modules/parent-profile/dto/request-dto/req-get-parent-profile.dto';
+import { ReqUpdateParentProfileDto } from '~src/data-modules/parent-profile/dto/request-dto/req-update-parent-profile.dto';
+import { ResCreateParentProfileDto } from '~src/data-modules/parent-profile/dto/response-dto/res-create-parent-profile.dto';
+import { ResGetParentProfileDto } from '~src/data-modules/parent-profile/dto/response-dto/res-get-parent-profile.dto';
+import { ResUpdateParentProfileDto } from '~src/data-modules/parent-profile/dto/response-dto/res-update-parent-profile.dto';
 
 class GrpcDto<T> {
     data: T;

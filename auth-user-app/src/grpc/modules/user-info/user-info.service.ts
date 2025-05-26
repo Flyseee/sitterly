@@ -3,13 +3,13 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { RpcException } from '@nestjs/microservices';
 import { GrpcStatusCode } from '~src/app/filters/grpc-status-code.enum';
-import { ParentProfileDataService } from '~src/data-modules/client/parent-profile/parent-profile-data.service';
-import { SitterProfileDataService } from '~src/data-modules/client/sitter-profile/sitter-profile-data.service';
 import { ReqCheckJwtDto } from '~src/data-modules/user/dto/request-dto/req-check-jwt.dto';
+import { ReqGetByProfileDto } from '~src/data-modules/user/dto/request-dto/req-get-by-profile.dto';
 import { ReqGetUserDto } from '~src/data-modules/user/dto/request-dto/req-get-user.dto';
 import { ReqUpdateUserDto } from '~src/data-modules/user/dto/request-dto/req-update-user.dto';
 import { ReqUploadAvatarDto } from '~src/data-modules/user/dto/request-dto/req-upload-avatar.dto';
 import { ResCheckJwtDto } from '~src/data-modules/user/dto/response-dto/res-check-jwt.dto';
+import { ResGetByProfileDto } from '~src/data-modules/user/dto/response-dto/res-get-by-profile.dto';
 import { ResGetUserDto } from '~src/data-modules/user/dto/response-dto/res-get-user.dto';
 import { ResUpdateUserDto } from '~src/data-modules/user/dto/response-dto/res-update-user.dto';
 import { ResUploadAvatarDto } from '~src/data-modules/user/dto/response-dto/res-upload-avatar-dto';
@@ -23,8 +23,6 @@ export class UserInfoService {
         private readonly userService: UserService,
         private readonly jwtService: JwtService,
         private readonly s3Service: S3Service,
-        private readonly sitterProfileDataService: SitterProfileDataService,
-        private readonly parentProfileDataService: ParentProfileDataService,
     ) {}
 
     @Trace('UserInfoService.getUserInfo', { logInput: true, logOutput: true })
@@ -73,29 +71,6 @@ export class UserInfoService {
     async updateUser(
         reqUpdateUserDto: ReqUpdateUserDto,
     ): Promise<ResUpdateUserDto> {
-        if (reqUpdateUserDto.sitterProfileId) {
-            const sitterProfile = await this.sitterProfileDataService.get(
-                reqUpdateUserDto.sitterProfileId,
-            );
-            if (sitterProfile._error || !sitterProfile.data) {
-                throw new RpcException({
-                    message: `sitter profile with id = ${reqUpdateUserDto.sitterProfileId} does not exist`,
-                    code: GrpcStatusCode.INVALID_ARGUMENT,
-                });
-            }
-        }
-        if (reqUpdateUserDto.parentProfileId) {
-            const parentProfile = await this.parentProfileDataService.get(
-                reqUpdateUserDto.parentProfileId,
-            );
-            if (parentProfile._error || !parentProfile.data) {
-                throw new RpcException({
-                    message: `parent profile with id = ${reqUpdateUserDto.parentProfileId} does not exist`,
-                    code: GrpcStatusCode.INVALID_ARGUMENT,
-                });
-            }
-        }
-
         const user = await this.userService.findOne({
             id: reqUpdateUserDto.id,
         });
@@ -168,5 +143,22 @@ export class UserInfoService {
             default:
                 return 'application/octet-stream';
         }
+    }
+
+    @Trace('UserInfoService.getByProfile', {
+        logInput: true,
+        logOutput: true,
+    })
+    async getByProfile(
+        getByProfileDto: ReqGetByProfileDto,
+    ): Promise<ResGetByProfileDto | undefined | null> {
+        const user = await this.userService.getByProfileId(getByProfileDto);
+        if (!user) {
+            throw new RpcException({
+                code: GrpcStatusCode.NOT_FOUND,
+                message: `user was not found for profile id = ${getByProfileDto.profileId} and profile type = ${getByProfileDto.profileType}`,
+            });
+        }
+        return user;
     }
 }

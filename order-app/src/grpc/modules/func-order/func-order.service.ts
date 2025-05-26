@@ -2,15 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
 import { plainToInstance } from 'class-transformer';
 import { GrpcStatusCode } from '~src/app/filter/grpc-status-code.enum';
-import { ParentProfileDataService } from '~src/data-modules/client/parent-profile/parent-profile-data.service';
-import { SitterProfileDataService } from '~src/data-modules/client/sitter-profile/sitter-profile-data.service';
 import { ReqCreateOrderWithCorrectDateDto } from '~src/data-modules/order/dto/request-dto/req-create-order-with-correct-date.dto';
 import { ReqCreateOrderDto } from '~src/data-modules/order/dto/request-dto/req-create-order.dto';
 import { ReqGetOrderDto } from '~src/data-modules/order/dto/request-dto/req-get-order.dto';
 import { ReqGetOrdersForUserDto } from '~src/data-modules/order/dto/request-dto/req-get-orders-for-user.dto';
 import { ReqUpdateOrderDto } from '~src/data-modules/order/dto/request-dto/req-update-order.dto';
 import { ResCreateOrderDto } from '~src/data-modules/order/dto/response-dto/res-create-order.dto';
-import { ResGetActualOrders } from '~src/data-modules/order/dto/response-dto/res-get-actual-orders.dto';
+import { ResGetActualOrdersDto } from '~src/data-modules/order/dto/response-dto/res-get-actual-orders.dto';
 import { ResGetOrderDto } from '~src/data-modules/order/dto/response-dto/res-get-order.dto';
 import { ResGetOrdersForUserDto } from '~src/data-modules/order/dto/response-dto/res-get-orders-for-user.dto';
 import { ResUpdateOrderDto } from '~src/data-modules/order/dto/response-dto/res-update-order.dto';
@@ -18,11 +16,7 @@ import { OrderService } from '~src/data-modules/order/order.service';
 
 @Injectable()
 export class FuncOrderService {
-    constructor(
-        private readonly orderService: OrderService,
-        private readonly sitterProfileDataService: SitterProfileDataService,
-        private readonly parentProfileDataService: ParentProfileDataService,
-    ) {}
+    constructor(private readonly orderService: OrderService) {}
 
     async getOrder(
         getOrderDto: ReqGetOrderDto,
@@ -34,8 +28,8 @@ export class FuncOrderService {
         return resGetOrder;
     }
 
-    async getActualOrders(): Promise<ResGetActualOrders[]> {
-        const resGetOrders: ResGetActualOrders[] =
+    async getActualOrders(): Promise<ResGetActualOrdersDto[]> {
+        const resGetOrders: ResGetActualOrdersDto[] =
             await this.orderService.getActualOrders();
 
         return resGetOrders;
@@ -52,27 +46,6 @@ export class FuncOrderService {
     async createOrder(
         createOrderDto: ReqCreateOrderDto,
     ): Promise<ResCreateOrderDto> {
-        if (createOrderDto.sitterId) {
-            const sitterProfile = await this.sitterProfileDataService.get(
-                createOrderDto.sitterId,
-            );
-            if (sitterProfile._error || !sitterProfile.data) {
-                throw new RpcException({
-                    message: `sitter profile with id = ${createOrderDto.sitterId} does not exist`,
-                    code: GrpcStatusCode.INVALID_ARGUMENT,
-                });
-            }
-        }
-        const parentProfile = await this.parentProfileDataService.get(
-            createOrderDto.parentId,
-        );
-        if (parentProfile._error || !parentProfile.data) {
-            throw new RpcException({
-                message: `parent profile with id = ${createOrderDto.parentId} does not exist`,
-                code: GrpcStatusCode.INVALID_ARGUMENT,
-            });
-        }
-
         const orderDate = new Date(createOrderDto.date);
         const minAllowed = new Date(Date.now() + 60 * 60 * 1000);
         if (orderDate < minAllowed) {
@@ -104,18 +77,6 @@ export class FuncOrderService {
                 message: `order was not found for id: ${updateOrderDto.id}`,
                 code: GrpcStatusCode.NOT_FOUND,
             });
-
-        if (updateOrderDto.sitterId) {
-            const sitterProfile = await this.sitterProfileDataService.get(
-                updateOrderDto.sitterId,
-            );
-            if (sitterProfile._error || !sitterProfile.data) {
-                throw new RpcException({
-                    message: `sitter profile with id = ${updateOrderDto.sitterId} does not exist`,
-                    code: GrpcStatusCode.INVALID_ARGUMENT,
-                });
-            }
-        }
 
         if (updateOrderDto.date) {
             const orderDate = new Date(updateOrderDto.date);

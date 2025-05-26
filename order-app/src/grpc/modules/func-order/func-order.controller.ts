@@ -7,7 +7,7 @@ import { ReqCreateOrderDto } from '~src/data-modules/order/dto/request-dto/req-c
 import { ReqGetOrdersForUserDto } from '~src/data-modules/order/dto/request-dto/req-get-orders-for-user.dto';
 import { ReqUpdateOrderDto } from '~src/data-modules/order/dto/request-dto/req-update-order.dto';
 import { ResCreateOrderDto } from '~src/data-modules/order/dto/response-dto/res-create-order.dto';
-import { ResGetActualOrders } from '~src/data-modules/order/dto/response-dto/res-get-actual-orders.dto';
+import { ResGetActualOrdersDto } from '~src/data-modules/order/dto/response-dto/res-get-actual-orders.dto';
 import { ResGetOrdersForUserDto } from '~src/data-modules/order/dto/response-dto/res-get-orders-for-user.dto';
 import { ResUpdateOrderDto } from '~src/data-modules/order/dto/response-dto/res-update-order.dto';
 import { FuncOrderService } from '~src/grpc/modules/func-order/func-order.service';
@@ -21,7 +21,7 @@ export class FuncOrderController {
     @GRPCTrace('FuncOrderRpcService.getActualOrders')
     @UseFilters(GrpcExceptionFilter)
     @UseInterceptors(GrpcResultWrapperInterceptor)
-    getActualOrders(): Promise<ResGetActualOrders[]> {
+    getActualOrders(): Promise<ResGetActualOrdersDto[]> {
         return this.funcOrderService.getActualOrders();
     }
 

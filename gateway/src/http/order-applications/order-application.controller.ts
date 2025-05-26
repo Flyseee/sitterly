@@ -16,12 +16,12 @@ import { join } from 'path';
 import { HTTPTrace } from '~src/app/decorators/http-trace.decorator';
 import { HttpExceptionFilter } from '~src/app/filter/error.filter';
 import { TracingInterceptor } from '~src/app/interceptors/tracing.interceptor';
-import { ReqCancelApplicationDto } from '~src/data-modules/application/request-dto/req-cancel-application.dto';
-import { ReqCreateApplicationDto } from '~src/data-modules/application/request-dto/req-create-application.dto';
-import { ReqGetApplicationDto } from '~src/data-modules/application/request-dto/req-get-application.dto';
-import { ResCancelApplicationDto } from '~src/data-modules/application/response-dto/res-cancel-application.dto';
-import { ResCreateApplicationDto } from '~src/data-modules/application/response-dto/res-create-application.dto';
-import { ResGetApplicationDto } from '~src/data-modules/application/response-dto/res-get-application.dto';
+import { ReqCancelApplicationDto } from '~src/data-modules/application/dto/request-dto/req-cancel-application.dto';
+import { ReqCreateApplicationDto } from '~src/data-modules/application/dto/request-dto/req-create-application.dto';
+import { ReqGetApplicationDto } from '~src/data-modules/application/dto/request-dto/req-get-application.dto';
+import { ResCancelApplicationDto } from '~src/data-modules/application/dto/response-dto/res-cancel-application.dto';
+import { ResCreateApplicationDto } from '~src/data-modules/application/dto/response-dto/res-create-application.dto';
+import { ResGetApplicationDto } from '~src/data-modules/application/dto/response-dto/res-get-application.dto';
 
 class GrpcDto<T> {
     data: T;

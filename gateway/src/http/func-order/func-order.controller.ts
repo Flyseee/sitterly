@@ -19,13 +19,13 @@ import { HttpExceptionFilter } from '~src/app/filter/error.filter';
 import { TracingInterceptor } from '~src/app/interceptors/tracing.interceptor';
 import { OrderDateType } from '~src/data-modules/enums/order-date-type.enum';
 import { ProfileType } from '~src/data-modules/enums/profile-type.enum';
-import { ReqCreateOrderDto } from '~src/data-modules/order/request-dto/req-create-order.dto';
-import { ReqGetOrdersForUserDto } from '~src/data-modules/order/request-dto/req-get-orders-for-user.dto';
-import { ReqUpdateOrderDto } from '~src/data-modules/order/request-dto/req-update-order.dto';
-import { ResCreateOrderDto } from '~src/data-modules/order/response-dto/res-create-order.dto';
-import { ResGetActualOrders } from '~src/data-modules/order/response-dto/res-get-actual-orders.dto';
-import { ResGetOrdersForUserDto } from '~src/data-modules/order/response-dto/res-get-orders-for-user.dto';
-import { ResUpdateOrderDto } from '~src/data-modules/order/response-dto/res-update-order.dto';
+import { ReqCreateOrderDto } from '~src/data-modules/order/dto/request-dto/req-create-order.dto';
+import { ReqGetOrdersForUserDto } from '~src/data-modules/order/dto/request-dto/req-get-orders-for-user.dto';
+import { ReqUpdateOrderDto } from '~src/data-modules/order/dto/request-dto/req-update-order.dto';
+import { ResCreateOrderDto } from '~src/data-modules/order/dto/response-dto/res-create-order.dto';
+import { ResGetActualOrdersDto } from '~src/data-modules/order/dto/response-dto/res-get-actual-orders.dto';
+import { ResGetOrdersForUserDto } from '~src/data-modules/order/dto/response-dto/res-get-orders-for-user.dto';
+import { ResUpdateOrderDto } from '~src/data-modules/order/dto/response-dto/res-update-order.dto';
 
 class GrpcDto<T> {
     data: T;
@@ -33,7 +33,7 @@ class GrpcDto<T> {
 }
 
 interface FuncOrderRpcService {
-    getActualOrders({}): Promise<GrpcDto<ResGetActualOrders[]>>;
+    getActualOrders({}): Promise<GrpcDto<ResGetActualOrdersDto[]>>;
 
     getOrdersForUser(
         dto: ReqGetOrdersForUserDto,
@@ -74,12 +74,12 @@ export class FuncOrderController implements OnModuleInit {
     @ApiResponse({
         status: 200,
         description: 'Заказы получены',
-        type: GrpcDto<ResGetActualOrders[]>,
+        type: GrpcDto<ResGetActualOrdersDto[]>,
     })
     @HTTPTrace('FuncOrderRpcService.getActualOrders')
     @UseFilters(HttpExceptionFilter)
     @UseInterceptors(TracingInterceptor)
-    getActualOrders(): Promise<GrpcDto<ResGetActualOrders[]>> {
+    getActualOrders(): Promise<GrpcDto<ResGetActualOrdersDto[]>> {
         return this.funcOrderRpcService.getActualOrders({});
     }
 

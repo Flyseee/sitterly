@@ -14,10 +14,10 @@ import { HTTPTrace } from '~src/app/decorators/http-trace.decorator';
 import { HttpExceptionFilter } from '~src/app/filter/error.filter';
 import { TracingInterceptor } from '~src/app/interceptors/tracing.interceptor';
 import { ProfileType } from '~src/data-modules/enums/profile-type.enum';
-import { ReqCreateRatingDto } from '~src/data-modules/rating/request-dto/req-create-rating.dto';
-import { ReqGetRatingDto } from '~src/data-modules/rating/request-dto/req-get-rating.dto';
-import { ResCreateRatingDto } from '~src/data-modules/rating/response-dto/res-create-rating.dto';
-import { ResGetRatingDto } from '~src/data-modules/rating/response-dto/res-get-rating.dto';
+import { ReqCreateRatingDto } from '~src/data-modules/rating/dto/request-dto/req-create-rating.dto';
+import { ReqGetRatingDto } from '~src/data-modules/rating/dto/request-dto/req-get-rating.dto';
+import { ResCreateRatingDto } from '~src/data-modules/rating/dto/response-dto/res-create-rating.dto';
+import { ResGetRatingDto } from '~src/data-modules/rating/dto/response-dto/res-get-rating.dto';
 
 class GrpcDto<T> {
     data: T;

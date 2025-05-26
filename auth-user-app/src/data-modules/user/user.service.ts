@@ -1,6 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { ReqLoginDto } from '~src/data-modules/auth/dto/request-dto/req-login.dto';
+import { ProfileType } from '~src/data-modules/enums/profile-type.enum';
+import { ReqGetByProfileDto } from '~src/data-modules/user/dto/request-dto/req-get-by-profile.dto';
 import { ReqGetUserDto } from '~src/data-modules/user/dto/request-dto/req-get-user.dto';
 import { ReqUpdateUserWithCorrectDateDto } from '~src/data-modules/user/dto/request-dto/req-update-user-with-correct-date.dto';
 import { UserEntity } from '~src/data-modules/user/entities/user.entity';
@@ -89,13 +91,28 @@ export class UserService {
         return null;
     }
 
+    @Trace('UserService.getByProfileId', { logInput: true, logOutput: true })
+    async getByProfileId(
+        getByProfileDto: ReqGetByProfileDto,
+    ): Promise<UserEntity | null | undefined> {
+        if (getByProfileDto.profileType == ProfileType.SITTER) {
+            return await this.userEntityRepository.findOneBy({
+                sitterProfileId: getByProfileDto.profileId,
+            });
+        } else if (getByProfileDto.profileType == ProfileType.PARENT) {
+            return await this.userEntityRepository.findOneBy({
+                parentProfileId: getByProfileDto.profileId,
+            });
+        }
+    }
+
     /**
      * Возвращает список всех пользователей.
      * @returns Promise, возвращающий массив сущностей UserEntity.
      */
     @Trace('UserService.findAll', { logInput: true, logOutput: true })
     async findAll(): Promise<UserEntity[]> {
-        return this.userEntityRepository.find();
+        return await this.userEntityRepository.find();
     }
 
     /**
