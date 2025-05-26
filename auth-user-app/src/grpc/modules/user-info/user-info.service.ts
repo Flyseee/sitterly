@@ -23,6 +23,7 @@ export class UserInfoService {
         private readonly userService: UserService,
         private readonly jwtService: JwtService,
         private readonly s3Service: S3Service,
+        private readonly logger: Logger,
     ) {}
 
     @Trace('UserInfoService.getUserInfo', { logInput: true, logOutput: true })
@@ -153,7 +154,7 @@ export class UserInfoService {
         getByProfileDto: ReqGetByProfileDto,
     ): Promise<ResGetByProfileDto | undefined | null> {
         const user = await this.userService.getByProfileId(getByProfileDto);
-        console.log('user service ' + user);
+        this.logger.log('user service ' + user);
         if (!user) {
             throw new RpcException({
                 code: GrpcStatusCode.NOT_FOUND,

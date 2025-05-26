@@ -1,4 +1,9 @@
-import { Controller, UseFilters, UseInterceptors } from '@nestjs/common';
+import {
+    Controller,
+    Logger,
+    UseFilters,
+    UseInterceptors,
+} from '@nestjs/common';
 import { GrpcMethod } from '@nestjs/microservices';
 import { GRPCTrace } from '~src/app/decorators/grpc-trace.decorator';
 import { GrpcExceptionFilter } from '~src/app/filters/grpc-exception.filter';
@@ -18,7 +23,10 @@ import { ValidationUtils } from '~src/utils/validation.utils';
 
 @Controller()
 export class UserInfoController {
-    constructor(private readonly userInfoService: UserInfoService) {}
+    constructor(
+        private readonly userInfoService: UserInfoService,
+        private readonly logger: Logger,
+    ) {}
 
     @GrpcMethod('UserInfoRpcService', 'GetUserById')
     @GRPCTrace('UserInfoRpcService.getUserById')
@@ -84,7 +92,7 @@ export class UserInfoController {
             getByProfileDto,
         );
 
-        console.log('user controller ' + dto);
+        this.logger.log('user controller ' + dto);
         return await this.userInfoService.getByProfile(getByProfileDto);
     }
 }
