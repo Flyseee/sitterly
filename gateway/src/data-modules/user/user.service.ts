@@ -91,6 +91,7 @@ export class UserService implements OnModuleInit {
             }
 
             const localToken = headers.authorization.split(' ')[1];
+            console.log('localToken ' + localToken);
             return lastValueFrom(
                 this.userInfoRpcService.CheckJWT({
                     token: localToken,

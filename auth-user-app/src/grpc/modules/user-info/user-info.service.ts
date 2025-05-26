@@ -51,7 +51,7 @@ export class UserInfoService {
                 message: 'invalid token',
             });
         }
-        const user = await this.userService.findOne(payload.sub);
+        const user = await this.userService.findOne({ id: payload.sub });
         if (!user) {
             throw new RpcException({
                 code: GrpcStatusCode.NOT_FOUND,
