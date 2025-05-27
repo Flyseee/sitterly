@@ -193,7 +193,7 @@ export class GatewayController {
                 );
                 const parentUser = await this.userService.getByProfile({
                     profileId: order.parentId,
-                    profileType: ProfileType.SITTER,
+                    profileType: ProfileType.PARENT,
                 });
                 this.logger.log('parentUser');
                 this.logger.log(parentUser);
