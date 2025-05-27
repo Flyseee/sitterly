@@ -113,7 +113,7 @@ services:
     volumes:
       - .:/usr/src/app
     depends_on:
-      - mongodb
+      #      - mongodb
       - redis
       - postgres_auth
       - jaeger
@@ -144,7 +144,7 @@ services:
     volumes:
       - .:/usr/src/app
     depends_on:
-      - mongodb
+      #      - mongodb
       - redis
       - postgres_order
       - jaeger
@@ -175,7 +175,7 @@ services:
     volumes:
       - .:/usr/src/app
     depends_on:
-      - mongodb
+      #      - mongodb
       - redis
       - postgres_profile
       - jaeger
@@ -206,7 +206,7 @@ services:
     volumes:
       - .:/usr/src/app
     depends_on:
-      - mongodb
+      #      - mongodb
       - redis
       - postgres_rating
       - jaeger
@@ -239,7 +239,7 @@ services:
   #    volumes:
   #      - .:/usr/src/app
   #    depends_on:
-  #      - mongodb
+  ##      - mongodb
   #      - redis
   #      - jaeger
   #      - nest_auth
