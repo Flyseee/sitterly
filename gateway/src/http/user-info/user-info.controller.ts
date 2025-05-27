@@ -24,8 +24,11 @@ import {
 import { HTTPTrace } from '~src/app/decorators/http-trace.decorator';
 import { HttpExceptionFilter } from '~src/app/filter/error.filter';
 import { TracingInterceptor } from '~src/app/interceptors/tracing.interceptor';
+import { ProfileType } from '~src/data-modules/enums/profile-type.enum';
+import { ReqGetByProfileDto } from '~src/data-modules/user/dto/request-dto/req-get-by-profile.dto';
 import { ReqUpdateUserDto } from '~src/data-modules/user/dto/request-dto/req-update-user.dto';
 import { ResCheckJwtDto } from '~src/data-modules/user/dto/response-dto/res-check-jwt.dto';
+import { ResGetByProfileDto } from '~src/data-modules/user/dto/response-dto/res-get-by-profile.dto';
 import { ResGetUserDto } from '~src/data-modules/user/dto/response-dto/res-get-user.dto';
 import { ResUpdateUserDto } from '~src/data-modules/user/dto/response-dto/res-update-user.dto';
 import { ResUploadAvatarDto } from '~src/data-modules/user/dto/response-dto/res-upload-avatar-dto';
@@ -38,7 +41,7 @@ class GrpcDto<T> {
 
 @Controller('userInfo')
 export class UserInfoController {
-    private userService: UserService;
+    constructor(private readonly userService: UserService) {}
 
     @Get('/users/:id')
     @ApiOperation({
@@ -165,6 +168,41 @@ export class UserInfoController {
                 e.message,
                 HttpStatus.INTERNAL_SERVER_ERROR,
             );
+        }
+    }
+
+    @Post('/users/getByProfile')
+    @ApiOperation({
+        summary: 'Получить пользователя по профилю',
+        operationId: 'get-by-profile',
+    })
+    @ApiConsumes('multipart/form-data')
+    @ApiBody({
+        schema: {
+            properties: {
+                profileId: { type: 'number' },
+                profileType: {
+                    type: 'string',
+                    enum: Object.values(ProfileType),
+                },
+            },
+        },
+    })
+    @ApiResponse({
+        status: 200,
+        description: 'Профиль получен',
+        type: GrpcDto<ResGetByProfileDto>,
+    })
+    @UseFilters(HttpExceptionFilter)
+    @UseInterceptors(TracingInterceptor)
+    @HTTPTrace('UserInfo.getByProfile')
+    async getByProfile(
+        @Body() dto: ReqGetByProfileDto,
+    ): Promise<GrpcDto<ResGetByProfileDto | undefined | null>> {
+        try {
+            return this.userService.getByProfile(dto);
+        } catch (e) {
+            throw new HttpException(e.message, HttpStatus.NOT_FOUND);
         }
     }
 }

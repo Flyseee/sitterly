@@ -142,13 +142,11 @@ export class UserService implements OnModuleInit {
         logOutput: true,
     })
     async getByProfile(
-        getByProfileDto: ReqGetByProfileDto,
+        dto: ReqGetByProfileDto,
     ): Promise<GrpcDto<ResGetByProfileDto | undefined | null>> {
         try {
-            console.log('gateway user service ' + getByProfileDto.profileId);
-            return lastValueFrom(
-                this.userInfoRpcService.GetByProfile(getByProfileDto),
-            );
+            console.log('gateway user service ' + dto.profileId);
+            return lastValueFrom(this.userInfoRpcService.GetByProfile(dto));
         } catch (e) {
             throw new HttpException(e.message, HttpStatus.NOT_FOUND);
         }
