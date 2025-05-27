@@ -1,5 +1,5 @@
 import { status } from '@grpc/grpc-js';
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { RpcException } from '@nestjs/microservices';
 import { GrpcStatusCode } from '~src/app/filters/grpc-status-code.enum';
@@ -23,7 +23,6 @@ export class UserInfoService {
         private readonly userService: UserService,
         private readonly jwtService: JwtService,
         private readonly s3Service: S3Service,
-        private readonly logger: Logger,
     ) {}
 
     @Trace('UserInfoService.getUserInfo', { logInput: true, logOutput: true })
@@ -154,7 +153,6 @@ export class UserInfoService {
         getByProfileDto: ReqGetByProfileDto,
     ): Promise<ResGetByProfileDto> {
         const user = await this.userService.getByProfileId(getByProfileDto);
-        this.logger.log('user service ' + user);
         if (!user) {
             throw new RpcException({
                 code: GrpcStatusCode.NOT_FOUND,

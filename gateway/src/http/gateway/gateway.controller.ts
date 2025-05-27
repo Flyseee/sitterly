@@ -1,6 +1,5 @@
 import {
     Body,
-    ConsoleLogger,
     Controller,
     Get,
     Headers,
@@ -51,7 +50,6 @@ export class GatewayController {
         private readonly applicationService: ApplicationService,
         private readonly ratingService: RatingService,
         private readonly reviewService: ReviewService,
-        private readonly logger: ConsoleLogger,
     ) {}
 
     @Post('/userInfo')
@@ -185,18 +183,10 @@ export class GatewayController {
                 _error: null,
             };
             for (let order of actualOrders.data) {
-                console.log(
-                    'gateway controller ' +
-                        order.parentId +
-                        ' ' +
-                        ProfileType.PARENT,
-                );
                 const parentUser = await this.userService.getByProfile({
                     profileId: order.parentId,
                     profileType: ProfileType.PARENT,
                 });
-                this.logger.log('parentUser');
-                this.logger.log(parentUser);
 
                 if (parentUser._error) {
                     throw new HttpException(
@@ -211,7 +201,7 @@ export class GatewayController {
                     );
                 }
 
-                const parentName = `${parentUser.data.secondName} ${parentUser.data.firstName}`;
+                const parentName = `${parentUser.data.lastName} ${parentUser.data.firstName}`;
 
                 resActualOrders.data.push({ ...order, parentName: parentName });
             }

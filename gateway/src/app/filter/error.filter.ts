@@ -51,10 +51,6 @@ export class HttpExceptionFilter implements ExceptionFilter {
             }
         }
 
-        console.log(
-            `instance: ${exception instanceof HttpException} code: ${status} message: ${message}`,
-        );
-
         const rsBody = {
             _error: {
                 code: code || status,

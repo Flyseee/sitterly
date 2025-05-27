@@ -9,9 +9,9 @@ message GetRequest {
 }
 
 message PutRequest {
-  int32 ordersAmount = 2;
-  int32 price = 3;
-  string location = 4;
+  int32 ordersAmount = 1;
+  int32 price = 2;
+  string location = 3;
 }
 
 message UpdateRequest {

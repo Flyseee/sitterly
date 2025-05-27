@@ -1,4 +1,4 @@
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { ReqLoginDto } from '~src/data-modules/auth/dto/request-dto/req-login.dto';
 import { ProfileType } from '~src/data-modules/enums/profile-type.enum';
@@ -23,7 +23,6 @@ export class UserService {
     constructor(
         @Inject('USER_REPOSITORY')
         private readonly userEntityRepository: Repository<UserEntity>,
-        private readonly logger: Logger,
     ) {}
 
     /**
@@ -96,7 +95,6 @@ export class UserService {
     async getByProfileId(
         getByProfileDto: ReqGetByProfileDto,
     ): Promise<UserEntity | null | undefined> {
-        this.logger.log('user rep service ', getByProfileDto);
         if (getByProfileDto.profileType == ProfileType.SITTER) {
             return await this.userEntityRepository.findOneBy({
                 sitterProfileId: getByProfileDto.profileId,

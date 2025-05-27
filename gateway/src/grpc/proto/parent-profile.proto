@@ -9,7 +9,7 @@ message GetRequest {
 }
 
 message PutRequest {
-  int32 ordersAmount = 2;
+  int32 ordersAmount = 1;
 }
 
 message UpdateRequest {
