@@ -37,7 +37,7 @@ interface UserInfoRpcService {
 
     GetByProfile(
         dto: ReqGetByProfileDto,
-    ): Observable<GrpcDto<ResGetByProfileDto | undefined | null>>;
+    ): Observable<GrpcDto<ResGetByProfileDto>>;
 }
 
 @Controller('userInfo')
@@ -143,9 +143,9 @@ export class UserService implements OnModuleInit {
     })
     async getByProfile(
         dto: ReqGetByProfileDto,
-    ): Promise<GrpcDto<ResGetByProfileDto | undefined | null>> {
+    ): Promise<GrpcDto<ResGetByProfileDto>> {
         try {
-            console.log('gateway user service ' + dto.profileId);
+            console.log('gateway user service ');
             return lastValueFrom(this.userInfoRpcService.GetByProfile(dto));
         } catch (e) {
             throw new HttpException(e.message, HttpStatus.NOT_FOUND);

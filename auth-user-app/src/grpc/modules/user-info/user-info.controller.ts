@@ -8,6 +8,7 @@ import { GrpcMethod } from '@nestjs/microservices';
 import { GRPCTrace } from '~src/app/decorators/grpc-trace.decorator';
 import { GrpcExceptionFilter } from '~src/app/filters/grpc-exception.filter';
 import { GrpcResultWrapperInterceptor } from '~src/app/interceptors/grpc-result-wrapper.interceptor';
+import { ProfileType } from '~src/data-modules/enums/profile-type.enum';
 import { ReqCheckJwtDto } from '~src/data-modules/user/dto/request-dto/req-check-jwt.dto';
 import { ReqGetByProfileDto } from '~src/data-modules/user/dto/request-dto/req-get-by-profile.dto';
 import { ReqGetUserDto } from '~src/data-modules/user/dto/request-dto/req-get-user.dto';
@@ -86,13 +87,17 @@ export class UserInfoController {
     @UseInterceptors(GrpcResultWrapperInterceptor)
     async getByProfile(
         getByProfileDto: ReqGetByProfileDto,
-    ): Promise<ResGetByProfileDto | undefined | null> {
-        this.logger.log('user controller ' + getByProfileDto.profileType);
+    ): Promise<ResGetByProfileDto> {
+        const type = getByProfileDto.profileType as unknown as Number;
+
+        getByProfileDto.profileType =
+            type === 1 ? ProfileType.SITTER : ProfileType.PARENT;
+
         const dto = await ValidationUtils.validateInput(
             ReqGetByProfileDto,
             getByProfileDto,
         );
 
-        return await this.userInfoService.getByProfile(getByProfileDto);
+        return await this.userInfoService.getByProfile(dto);
     }
 }

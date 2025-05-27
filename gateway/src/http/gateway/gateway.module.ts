@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { ConsoleLogger, Module } from '@nestjs/common';
 import { ApplicationModule } from '~src/data-modules/application/application.module';
 import { OrderModule } from '~src/data-modules/order/order.module';
 import { ParentProfileModule } from '~src/data-modules/parent-profile/parent-profile.module';
@@ -18,7 +18,7 @@ import { GatewayController } from './gateway.controller';
         RatingModule,
         ReviewModule,
     ],
-    providers: [],
+    providers: [ConsoleLogger],
     controllers: [GatewayController],
 })
 export class GatewayModule {}

@@ -152,7 +152,7 @@ export class UserInfoService {
     })
     async getByProfile(
         getByProfileDto: ReqGetByProfileDto,
-    ): Promise<ResGetByProfileDto | undefined | null> {
+    ): Promise<ResGetByProfileDto> {
         const user = await this.userService.getByProfileId(getByProfileDto);
         this.logger.log('user service ' + user);
         if (!user) {

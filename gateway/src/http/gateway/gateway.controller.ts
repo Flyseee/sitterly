@@ -1,8 +1,10 @@
 import {
     Body,
+    ConsoleLogger,
     Controller,
     Get,
     Headers,
+    HttpCode,
     HttpException,
     HttpStatus,
     Post,
@@ -49,6 +51,7 @@ export class GatewayController {
         private readonly applicationService: ApplicationService,
         private readonly ratingService: RatingService,
         private readonly reviewService: ReviewService,
+        private readonly logger: ConsoleLogger,
     ) {}
 
     @Post('/userInfo')
@@ -71,6 +74,7 @@ export class GatewayController {
         description: 'Информация о пользователе получена',
         type: ResGetUserInfoDto,
     })
+    @HttpCode(200)
     @ApiResponse({ status: 401, description: 'Неверный токен авторизации' })
     @ApiBearerAuth('defaultBearerAuth')
     @HTTPTrace('GatewayController.getUserInfo')
@@ -87,7 +91,6 @@ export class GatewayController {
         if (!user.data) {
             throw new HttpException(`error with JWT`, HttpStatus.UNAUTHORIZED);
         }
-
         let profileId: number | undefined;
         if (dto.profileType == ProfileType.PARENT) {
             profileId = user.data.parentProfileId;
@@ -190,8 +193,11 @@ export class GatewayController {
                 );
                 const parentUser = await this.userService.getByProfile({
                     profileId: order.parentId,
-                    profileType: ProfileType.PARENT,
+                    profileType: ProfileType.SITTER,
                 });
+                this.logger.log('parentUser');
+                this.logger.log(parentUser);
+
                 if (parentUser._error) {
                     throw new HttpException(
                         parentUser._error.message,

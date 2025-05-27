@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import {
     ArgumentsHost,
     Catch,
@@ -7,7 +5,6 @@ import {
     HttpException,
     HttpStatus,
 } from '@nestjs/common';
-import { HttpArgumentsHost } from '@nestjs/common/interfaces';
 import { Response } from 'express';
 import { grpcToHttpMap } from '~src/app/filter/grpc-to http-exception-code';
 import { TraceService } from '~src/telemetry/trace/trace.service';
@@ -20,37 +17,43 @@ export class HttpExceptionFilter implements ExceptionFilter {
 
     catch(exception: unknown, host: ArgumentsHost): void {
         const span = this.traceService.getSpan();
+        const ctx = host.switchToHttp();
+        const response = ctx.getResponse<Response>();
+        const request = ctx.getRequest();
 
-        const ctx: HttpArgumentsHost = host.switchToHttp();
-        const response: Response<
-            any,
-            Record<string, any>
-        > = ctx.getResponse<Response>();
-        const status: number =
-            (exception as HttpException).getStatus() > 99
-                ? (exception as HttpException).getStatus()
-                : grpcToHttpMap[(exception as any).code] ||
-                  HttpStatus.INTERNAL_SERVER_ERROR;
-        let message: string | object;
+        const isHttpException = exception instanceof HttpException;
+        const isRpcWithCode =
+            typeof exception === 'object' &&
+            exception !== null &&
+            'code' in exception &&
+            typeof (exception as any).code === 'number';
+
+        const status: number = isHttpException
+            ? (exception as HttpException).getStatus()
+            : isRpcWithCode
+              ? grpcToHttpMap[(exception as any).code] ||
+                HttpStatus.INTERNAL_SERVER_ERROR
+              : HttpStatus.INTERNAL_SERVER_ERROR;
+
+        let message: string | object = 'Произошла непредвиденная ошибка.';
         let code: string | null = null;
 
-        if (exception instanceof HttpException) {
-            const responseMessage: string | object = exception.getResponse();
+        if (isHttpException) {
+            const responseMessage = (exception as HttpException).getResponse();
             message =
                 typeof responseMessage === 'string'
                     ? responseMessage
                     : (responseMessage as CustomHttpException).message ||
                       responseMessage;
+
             if (exception instanceof CustomHttpException) {
                 code = exception.getErrorCode() || null;
             }
-        } else {
-            message = 'Произошла непредвиденная ошибка.';
         }
+
         console.log(
-            `instance: ${typeof exception} code: ${status} message: ${message}`,
+            `instance: ${exception instanceof HttpException} code: ${status} message: ${message}`,
         );
-        const req = ctx.getRequest();
 
         const rsBody = {
             _error: {
@@ -58,13 +61,13 @@ export class HttpExceptionFilter implements ExceptionFilter {
                 text: message,
                 details: {
                     time: new Date(),
-                    method: req.method,
-                    url: `${req.protocol}://${req.hostname}${req.originalUrl}`,
+                    method: request.method,
+                    url: `${request.protocol}://${request.hostname}${request.originalUrl}`,
                     definition_name: null,
                     stack: (exception as Error)?.stack ?? null,
                     external_error: null,
-                    ...(req.x_request_id
-                        ? { x_request_id: req.x_request_id }
+                    ...(request.x_request_id
+                        ? { x_request_id: request.x_request_id }
                         : {}),
                 },
             },
@@ -81,8 +84,10 @@ export class HttpExceptionFilter implements ExceptionFilter {
             },
             span,
         );
+
         this.traceService.recordException(exception as Error, span);
         span.end();
-        response.status(status).json(rsBody);
+
+        response.status(status < 100 ? 500 : status).json(rsBody);
     }
 }
