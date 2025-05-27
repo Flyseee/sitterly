@@ -1,11 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus } from '@nestjs/common';
+import {
+    ArgumentsHost,
+    Catch,
+    ExceptionFilter,
+    HttpException,
+    HttpStatus,
+} from '@nestjs/common';
 import { HttpArgumentsHost } from '@nestjs/common/interfaces';
 import { Response } from 'express';
-import { CustomHttpException } from './http-exceptions.type';
+import { grpcToHttpMap } from '~src/app/filter/grpc-to http-exception-code';
 import { TraceService } from '~src/telemetry/trace/trace.service';
 import { StringUtils } from '~src/utils/string.utils';
+import { CustomHttpException } from './http-exceptions.type';
 
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
@@ -20,9 +27,10 @@ export class HttpExceptionFilter implements ExceptionFilter {
             Record<string, any>
         > = ctx.getResponse<Response>();
         const status: number =
-            exception instanceof HttpException
-                ? exception.getStatus()
-                : HttpStatus.INTERNAL_SERVER_ERROR;
+            (exception as HttpException).getStatus() > 99
+                ? (exception as HttpException).getStatus()
+                : grpcToHttpMap[(exception as any).code] ||
+                  HttpStatus.INTERNAL_SERVER_ERROR;
         let message: string | object;
         let code: string | null = null;
 
@@ -39,7 +47,9 @@ export class HttpExceptionFilter implements ExceptionFilter {
         } else {
             message = 'Произошла непредвиденная ошибка.';
         }
-
+        console.log(
+            `instance: ${typeof exception} code: ${status} message: ${message}`,
+        );
         const req = ctx.getRequest();
 
         const rsBody = {

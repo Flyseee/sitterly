@@ -87,7 +87,7 @@ export class UserInfoController {
     async getByProfile(
         getByProfileDto: ReqGetByProfileDto,
     ): Promise<ResGetByProfileDto | undefined | null> {
-        this.logger.log('user controller ' + getByProfileDto.profileId);
+        this.logger.log('user controller ' + getByProfileDto.profileType);
         const dto = await ValidationUtils.validateInput(
             ReqGetByProfileDto,
             getByProfileDto,

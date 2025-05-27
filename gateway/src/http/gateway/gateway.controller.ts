@@ -82,7 +82,7 @@ export class GatewayController {
     ): Promise<ResGetUserInfoDto> {
         const user = await this.userService.checkJwt(headers);
         if (user._error) {
-            throw new HttpException(user._error.message, user._error.code);
+            throw new HttpException(user._error.message, +user._error.code);
         }
         if (!user.data) {
             throw new HttpException(`error with JWT`, HttpStatus.UNAUTHORIZED);
@@ -110,7 +110,7 @@ export class GatewayController {
         if (profile._error) {
             throw new HttpException(
                 profile._error.message,
-                profile._error.code,
+                +profile._error.code,
             );
         }
         if (!profile.data) {
@@ -161,7 +161,7 @@ export class GatewayController {
     ): Promise<GrpcDto<ResGetActualOrdersDto[]>> {
         const user = await this.userService.checkJwt(headers);
         if (user._error) {
-            throw new HttpException(user._error.message, user._error.code);
+            throw new HttpException(user._error.message, +user._error.code);
         }
         if (!user.data) {
             throw new HttpException(`error with JWT`, HttpStatus.UNAUTHORIZED);
@@ -172,7 +172,7 @@ export class GatewayController {
         if (actualOrders._error) {
             throw new HttpException(
                 actualOrders._error.message,
-                actualOrders._error.code,
+                +actualOrders._error.code,
             );
         }
 
@@ -195,7 +195,7 @@ export class GatewayController {
                 if (parentUser._error) {
                     throw new HttpException(
                         parentUser._error.message,
-                        parentUser._error.code,
+                        +parentUser._error.code,
                     );
                 }
                 if (!parentUser.data) {
@@ -247,7 +247,7 @@ export class GatewayController {
     ): Promise<GrpcDto<ResCreateParentProfileDto | null>> {
         const user = await this.userService.checkJwt(headers);
         if (user._error) {
-            throw new HttpException(user._error.message, user._error.code);
+            throw new HttpException(user._error.message, +user._error.code);
         }
         if (!user.data) {
             throw new HttpException(`error with JWT`, HttpStatus.UNAUTHORIZED);
@@ -256,7 +256,7 @@ export class GatewayController {
         const parent = await this.parentProfileService.put(dto);
 
         if (parent._error) {
-            throw new HttpException(parent._error.message, parent._error.code);
+            throw new HttpException(parent._error.message, +parent._error.code);
         }
         if (!parent.data) {
             throw new HttpException(
@@ -310,7 +310,7 @@ export class GatewayController {
     ): Promise<GrpcDto<ResCreateSitterProfileDto | null>> {
         const user = await this.userService.checkJwt(headers);
         if (user._error) {
-            throw new HttpException(user._error.message, user._error.code);
+            throw new HttpException(user._error.message, +user._error.code);
         }
         if (!user.data) {
             throw new HttpException(`error with JWT`, HttpStatus.UNAUTHORIZED);
@@ -319,7 +319,7 @@ export class GatewayController {
         const sitter = await this.sitterProfileService.put(dto);
 
         if (sitter._error) {
-            throw new HttpException(sitter._error.message, sitter._error.code);
+            throw new HttpException(sitter._error.message, +sitter._error.code);
         }
         if (!sitter.data) {
             throw new HttpException(

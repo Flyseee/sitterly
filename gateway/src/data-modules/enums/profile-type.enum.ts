@@ -1,4 +1,4 @@
 export enum ProfileType {
-    PARENT = 'PARENT',
-    SITTER = 'SITTER',
+    PARENT = 0,
+    SITTER = 1,
 }

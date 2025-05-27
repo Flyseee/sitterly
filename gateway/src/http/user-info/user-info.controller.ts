@@ -5,7 +5,6 @@ import {
     Headers,
     HttpException,
     HttpStatus,
-    OnModuleInit,
     Param,
     Patch,
     Post,
@@ -13,7 +12,6 @@ import {
     UseFilters,
     UseInterceptors,
 } from '@nestjs/common';
-import { Client, ClientGrpc, Transport } from '@nestjs/microservices';
 import { FileInterceptor } from '@nestjs/platform-express';
 import {
     ApiBearerAuth,
@@ -23,56 +21,24 @@ import {
     ApiParam,
     ApiResponse,
 } from '@nestjs/swagger';
-import { join } from 'path';
 import { HTTPTrace } from '~src/app/decorators/http-trace.decorator';
 import { HttpExceptionFilter } from '~src/app/filter/error.filter';
 import { TracingInterceptor } from '~src/app/interceptors/tracing.interceptor';
-import { ReqCheckJwtDto } from '~src/data-modules/user/dto/request-dto/req-check-jwt.dto';
-import { ReqGetUserDto } from '~src/data-modules/user/dto/request-dto/req-get-user.dto';
 import { ReqUpdateUserDto } from '~src/data-modules/user/dto/request-dto/req-update-user.dto';
-import { ReqUploadAvatarDto } from '~src/data-modules/user/dto/request-dto/req-upload-avatar.dto';
 import { ResCheckJwtDto } from '~src/data-modules/user/dto/response-dto/res-check-jwt.dto';
 import { ResGetUserDto } from '~src/data-modules/user/dto/response-dto/res-get-user.dto';
 import { ResUpdateUserDto } from '~src/data-modules/user/dto/response-dto/res-update-user.dto';
 import { ResUploadAvatarDto } from '~src/data-modules/user/dto/response-dto/res-upload-avatar-dto';
+import { UserService } from '~src/data-modules/user/user.service';
 
 class GrpcDto<T> {
     data: T;
     _error: any;
 }
 
-interface UserInfoRpcService {
-    GetUserById(getUserDto: ReqGetUserDto): Promise<GrpcDto<ResGetUserDto>>;
-
-    CheckJWT(checkJwtDto: ReqCheckJwtDto): Promise<GrpcDto<ResCheckJwtDto>>;
-
-    UpdateUser(
-        updateUserDto: ReqUpdateUserDto,
-    ): Promise<GrpcDto<ResUpdateUserDto>>;
-
-    UploadAvatar(
-        uploadAvatarDto: ReqUploadAvatarDto,
-    ): Promise<GrpcDto<ResUploadAvatarDto>>;
-}
-
 @Controller('userInfo')
-export class UserInfoController implements OnModuleInit {
-    private userInfoRpcService: UserInfoRpcService;
-
-    @Client({
-        transport: Transport.GRPC,
-        options: {
-            package: 'userInfo',
-            protoPath: join(__dirname, '../../grpc/proto/user-info.proto'),
-            url: '89.169.2.227:51055',
-        },
-    })
-    private client: ClientGrpc;
-
-    onModuleInit() {
-        this.userInfoRpcService =
-            this.client.getService<UserInfoRpcService>('UserInfoRpcService');
-    }
+export class UserInfoController {
+    private userService: UserService;
 
     @Get('/users/:id')
     @ApiOperation({
@@ -91,9 +57,7 @@ export class UserInfoController implements OnModuleInit {
     @HTTPTrace('UserInfo.getById')
     async getById(@Param('id') id: string): Promise<GrpcDto<ResGetUserDto>> {
         try {
-            return await this.userInfoRpcService.GetUserById({
-                id: +id,
-            });
+            return await this.userService.getById(+id);
         } catch (e) {
             throw new HttpException(e.message, HttpStatus.NOT_FOUND);
         }
@@ -116,16 +80,8 @@ export class UserInfoController implements OnModuleInit {
     @HTTPTrace('UserInfo.checkJwt')
     async checkJwt(@Headers() headers): Promise<GrpcDto<ResCheckJwtDto>> {
         try {
-            if (!headers.authorization) {
-                throw new HttpException(
-                    'JWT token not found',
-                    HttpStatus.UNAUTHORIZED,
-                );
-            }
-
-            const localToken = headers.authorization.split(' ')[1];
-            return await this.userInfoRpcService.CheckJWT({
-                token: localToken,
+            return await this.userService.checkJwt({
+                headers,
             });
         } catch (e) {
             throw new HttpException(e.message, HttpStatus.UNAUTHORIZED);
@@ -163,7 +119,7 @@ export class UserInfoController implements OnModuleInit {
         @Body() dto: ReqUpdateUserDto,
     ): Promise<GrpcDto<ResUpdateUserDto>> {
         try {
-            return await this.userInfoRpcService.UpdateUser(dto);
+            return await this.userService.updateUser(dto);
         } catch (e) {
             throw new HttpException(e.message, HttpStatus.NOT_FOUND);
         }
@@ -203,11 +159,7 @@ export class UserInfoController implements OnModuleInit {
         @UploadedFile() file: Express.Multer.File,
     ): Promise<GrpcDto<ResUploadAvatarDto>> {
         try {
-            return await this.userInfoRpcService.UploadAvatar({
-                id: +id,
-                filename: file.originalname,
-                fileData: file.buffer,
-            });
+            return await this.userService.uploadAvatar(+id, file);
         } catch (e) {
             throw new HttpException(
                 e.message,
