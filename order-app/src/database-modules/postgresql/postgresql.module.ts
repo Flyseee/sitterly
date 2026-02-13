@@ -1,8 +1,7 @@
 import { Logger, Module } from '@nestjs/common';
-import dataSourceProvider from './provider/data-source.provider';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule } from '~src/common-modules/config/config.module';
 import { ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import dataSourceProvider from './provider/data-source.provider';
 
 @Module({
     imports: [

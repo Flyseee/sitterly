@@ -41,7 +41,7 @@ export class ProfileReviewsController implements OnModuleInit {
         options: {
             package: 'review',
             protoPath: join(__dirname, '../../grpc/proto/review.proto'),
-            url: '89.169.2.227:54055',
+            url: 'localhost:50455',
         },
     })
     private client: ClientGrpc;

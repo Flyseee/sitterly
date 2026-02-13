@@ -5,28 +5,28 @@
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://89.169.2.227:5437/postgres</jdbc-url>
+      <jdbc-url>jdbc:postgresql://localhost:5437/postgres</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
     <data-source source="LOCAL" name="order" uuid="e56edf35-5b6b-4ed9-af44-49aeb12fed99">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://89.169.2.227:5435/postgres</jdbc-url>
+      <jdbc-url>jdbc:postgresql://localhost:5435/postgres</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
     <data-source source="LOCAL" name="auth" uuid="ef23db29-622d-4cff-ac81-f7d1b3cbb915">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://89.169.2.227:5434/postgres</jdbc-url>
+      <jdbc-url>jdbc:postgresql://localhost:5434/postgres</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
     <data-source source="LOCAL" name="profile" uuid="c531e5a2-ea6b-4b27-9f67-8c313b62391e">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://89.169.2.227:5436/postgres</jdbc-url>
+      <jdbc-url>jdbc:postgresql://localhost:5436/postgres</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

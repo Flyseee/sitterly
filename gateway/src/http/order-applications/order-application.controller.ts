@@ -51,7 +51,7 @@ export class OrderApplicationController implements OnModuleInit {
         options: {
             package: 'application',
             protoPath: join(__dirname, '../../grpc/proto/application.proto'),
-            url: '89.169.2.227:52055',
+            url: 'localhost:50255',
         },
     })
     private client: ClientGrpc;

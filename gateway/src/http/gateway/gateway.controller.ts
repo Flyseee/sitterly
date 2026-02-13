@@ -10,6 +10,7 @@ import {
     UseFilters,
     UseInterceptors,
 } from '@nestjs/common';
+import { CacheKey, CacheTTL } from '@nestjs/common/cache';
 import {
     ApiBearerAuth,
     ApiBody,
@@ -154,9 +155,11 @@ export class GatewayController {
     })
     @ApiResponse({ status: 401, description: 'Неверный токен авторизации' })
     @ApiBearerAuth('defaultBearerAuth')
-    @HTTPTrace('GatewayController.getUserInfo')
+    @HTTPTrace('GatewayController.getActualOrders')
     @UseFilters(HttpExceptionFilter)
     @UseInterceptors(TracingInterceptor)
+    @CacheKey('actual_orders')
+    @CacheTTL(10000)
     async getActualOrders(
         @Headers() headers,
     ): Promise<GrpcDto<ResGetActualOrdersDto[]>> {
@@ -234,12 +237,12 @@ export class GatewayController {
     })
     @ApiResponse({ status: 401, description: 'Неверный токен авторизации' })
     @ApiBearerAuth('defaultBearerAuth')
-    @HTTPTrace('GatewayController.getUserInfo')
+    @HTTPTrace('GatewayController.createParent')
     @UseFilters(HttpExceptionFilter)
     @UseInterceptors(TracingInterceptor)
     async createParent(
         @Headers() headers,
-        dto: ReqCreateParentProfileDto,
+        @Body() dto: ReqCreateParentProfileDto,
     ): Promise<GrpcDto<ResCreateParentProfileDto | null>> {
         const user = await this.userService.checkJwt(headers);
         if (user._error) {
@@ -297,12 +300,12 @@ export class GatewayController {
     })
     @ApiResponse({ status: 401, description: 'Неверный токен авторизации' })
     @ApiBearerAuth('defaultBearerAuth')
-    @HTTPTrace('GatewayController.getUserInfo')
+    @HTTPTrace('GatewayController.createSitter')
     @UseFilters(HttpExceptionFilter)
     @UseInterceptors(TracingInterceptor)
     async createSitter(
         @Headers() headers,
-        dto: ReqCreateSitterProfileDto,
+        @Body() dto: ReqCreateSitterProfileDto,
     ): Promise<GrpcDto<ResCreateSitterProfileDto | null>> {
         const user = await this.userService.checkJwt(headers);
         if (user._error) {

@@ -1,3 +1,4 @@
+import { CacheModule } from '@nestjs/cache-manager';
 import { ConsoleLogger, Module } from '@nestjs/common';
 import { ApplicationModule } from '~src/data-modules/application/application.module';
 import { OrderModule } from '~src/data-modules/order/order.module';
@@ -17,6 +18,7 @@ import { GatewayController } from './gateway.controller';
         ApplicationModule,
         RatingModule,
         ReviewModule,
+        CacheModule.register({}),
     ],
     providers: [ConsoleLogger],
     controllers: [GatewayController],

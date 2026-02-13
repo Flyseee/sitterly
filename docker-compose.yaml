@@ -95,7 +95,7 @@ services:
       - 8.8.8.8
     ports:
       - 1010:3000
-      - 51055:50055
+      - 50155:50055
     environment:
       - NODE_ENV=development
       - PORT=3000
@@ -113,7 +113,6 @@ services:
     volumes:
       - .:/usr/src/app
     depends_on:
-      #      - mongodb
       - redis
       - postgres_auth
       - jaeger
@@ -128,7 +127,7 @@ services:
       - 8.8.8.8
     ports:
       - 2020:3000
-      - 52055:50055
+      - 50255:50055
     environment:
       - PORT=3000
       - PG_USERNAME=myuser
@@ -144,7 +143,6 @@ services:
     volumes:
       - .:/usr/src/app
     depends_on:
-      #      - mongodb
       - redis
       - postgres_order
       - jaeger
@@ -159,7 +157,7 @@ services:
       - 8.8.8.8
     ports:
       - 3030:3000
-      - 53055:50055
+      - 50355:50055
     environment:
       - PORT=3000
       - PG_USERNAME=myuser
@@ -175,7 +173,6 @@ services:
     volumes:
       - .:/usr/src/app
     depends_on:
-      #      - mongodb
       - redis
       - postgres_profile
       - jaeger
@@ -190,7 +187,7 @@ services:
       - 8.8.8.8
     ports:
       - 4040:3000
-      - 54055:50055
+      - 50455:50055
     environment:
       - PORT=3000
       - PG_USERNAME=myuser
@@ -206,61 +203,44 @@ services:
     volumes:
       - .:/usr/src/app
     depends_on:
-      #      - mongodb
       - redis
       - postgres_rating
       - jaeger
 
-  #  nest_gateway:
-  #    build:
-  #      context: ./gateway
-  #      dockerfile: Dockerfile
-  #      args:
-  #        - NODE_ENV=development
-  #    dns:
-  #      - 8.8.8.8
-  #    ports:
-  #      - 5050:3000
-  #      - 55055:50055
-  #    environment:
-  #      - NODE_ENV=development
-  #      - PORT=3000
-  #      #      - PG_USERNAME=myuser
-  #      #      - PG_PASSWORD=mypassword
-  #      #      - PG_DATABASE=postgres
-  #      #      - PG_HOST=postgres_auth
-  #      #      - PG_PORT=5432
-  #      - REDIS_URL=redis://redis:6379
-  #      - MINIO_URL=http://minio:9000
-  #      - RPC_HOST=nest_auth:50055
-  #      - SWAGGER_TITLE=Gateway
-  #      - SERVICE_NAME=Gateway
-  #      - SWAGGER_DESC=Gateway
-  #    volumes:
-  #      - .:/usr/src/app
-  #    depends_on:
-  ##      - mongodb
-  #      - redis
-  #      - jaeger
-  #      - nest_auth
-  #      - nest_order
-  #      - nest_profile
-  #      - nest_rating
+  nest_gateway:
+    build:
+      context: ./gateway
+      dockerfile: Dockerfile
+      args:
+        - NODE_ENV=development
+    dns:
+      - 8.8.8.8
+    ports:
+      - 5050:3000
+      - 50555:50055
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - REDIS_URL=redis://redis:6379
+      - MINIO_URL=http://minio:9000
+      - RPC_HOST=nest_gateway:50055
+      - SWAGGER_TITLE=Gateway
+      - SERVICE_NAME=Gateway
+      - SWAGGER_DESC=Gateway
+    volumes:
+      - .:/usr/src/app
+    depends_on:
+      - redis
+      - jaeger
+      - nest_auth
+      - nest_order
+      - nest_profile
+      - nest_rating
 
   redis:
     image: 'redis:alpine'
     ports:
       - '6379:6379'
-
-#  mongodb:
-#    image: 'mongo:latest'
-#    ports:
-#      - '27017:27017'
-#    volumes:
-#      - ./data:/data/db
-#    environment:
-#      - MONGODB_DATABASE=db
-#    restart: unless-stopped
 
 volumes:
   jaeger-data:

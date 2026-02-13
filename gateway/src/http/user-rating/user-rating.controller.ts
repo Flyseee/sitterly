@@ -39,7 +39,7 @@ export class UserRatingController implements OnModuleInit {
         options: {
             package: 'rating',
             protoPath: join(__dirname, '../../grpc/proto/rating.proto'),
-            url: '89.169.2.227:54055',
+            url: 'localhost:50455',
         },
     })
     private client: ClientGrpc;

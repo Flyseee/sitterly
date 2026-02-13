@@ -38,7 +38,7 @@ export class ParentProfileService implements OnModuleInit {
         options: {
             package: 'parentProfile',
             protoPath: join(__dirname, '../../grpc/proto/parent-profile.proto'),
-            url: '89.169.2.227:53055',
+            url: 'localhost:50355',
         },
     })
     private client: ClientGrpc;

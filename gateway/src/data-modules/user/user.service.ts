@@ -49,7 +49,7 @@ export class UserService implements OnModuleInit {
         options: {
             package: 'userInfo',
             protoPath: join(__dirname, '../../grpc/proto/user-info.proto'),
-            url: '89.169.2.227:51055',
+            url: 'localhost:50155',
         },
     })
     private client: ClientGrpc;

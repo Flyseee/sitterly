@@ -38,7 +38,7 @@ export class SitterProfileService implements OnModuleInit {
         options: {
             package: 'sitterProfile',
             protoPath: join(__dirname, '../../grpc/proto/sitter-profile.proto'),
-            url: '89.169.2.227:53055',
+            url: 'localhost:50355',
         },
     })
     private client: ClientGrpc;
