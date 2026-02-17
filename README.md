@@ -47,7 +47,7 @@ Sitterly архитектурно разделён на четыре микро�
 
 1. Клонируйте репозиторий:
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/Flyseee/sitterly
    cd sitterly
    ```
 
